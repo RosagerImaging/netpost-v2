@@ -1,0 +1,121 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const data = JSON.parse(process.argv[1]); const path = data.tool_input?.file_path || data.tool_input?.path || ''; const forbidden = ['.env', 'package-lock.json', '.git/', 'node_modules/', '.claude/settings.json']; const blocked = forbidden.some(p => path.includes(p)); if (blocked) { console.error('⚠️  Blocked access to sensitive file: ' + path); process.exit(2); } process.exit(0);\" \"$(cat)\"",
+            "description": "Block editing of sensitive files"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd $CLAUDE_PROJECT_DIR && npx prettier --write $CLAUDE_FILE_PATHS 2>/dev/null && npx eslint --fix $CLAUDE_FILE_PATHS 2>/dev/null || true",
+            "description": "Format JavaScript/TypeScript files"
+          },
+          {
+            "type": "command",
+            "command": "cd $CLAUDE_PROJECT_DIR && git add -A && git diff --cached --stat",
+            "description": "Stage changes and show git status"
+          },
+          {
+            "type": "command",
+            "command": "cd $CLAUDE_PROJECT_DIR && if [[ $CLAUDE_FILE_PATHS == *.ts* ]]; then npx tsc --noEmit 2>&1 | head -20 || echo '✅ TypeScript check passed'; fi",
+            "description": "Type check TypeScript files"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd $CLAUDE_PROJECT_DIR && npm test 2>&1 | tee test-results.log || echo 'Tests completed with errors - check test-results.log'",
+            "runInBackground": true,
+            "description": "Run tests after editing source files"
+          }
+        ]
+      },
+      {
+        "matcher": "BashTool",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd $CLAUDE_PROJECT_DIR && if [ \"$(git status --porcelain)\" ]; then git add -A && git commit -m \"Auto-commit: Changes made by Claude Code\" && echo '✅ Changes auto-committed'; else echo 'ℹ️ No changes to commit'; fi",
+            "description": "Auto-commit changes after bash operations"
+          }
+        ]
+      },
+      {
+        "matcher": "CreateFile",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd $CLAUDE_PROJECT_DIR && echo '📄 New file created: '$CLAUDE_FILE_PATH && if [[ $CLAUDE_FILE_PATH == *.test.* ]] || [[ $CLAUDE_FILE_PATH == *.spec.* ]]; then echo '🧪 Test file detected - remember to run tests'; fi",
+            "description": "Notify on file creation"
+          }
+        ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '👁️ Reading: '$CLAUDE_FILE_PATH",
+            "runInBackground": true,
+            "description": "Track file reads for debugging"
+          }
+        ]
+      }
+    ],
+    "Error": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '❌ Error occurred!' && cd $CLAUDE_PROJECT_DIR && git status --short && echo '---' && git diff --stat",
+            "description": "Show git status on error"
+          }
+        ]
+      }
+    ],
+    "Completion": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "find $CLAUDE_PROJECT_DIR -name '*.backup' -type f -mmin +60 -delete 2>/dev/null && echo '🧹 Cleaned up old backup files (>1 hour)' || true",
+            "runInBackground": true,
+            "description": "Clean up old backups"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if command -v notify-send >/dev/null 2>&1; then notify-send -u normal -t 5000 'Claude Code' 'Awaiting your input'; elif command -v osascript >/dev/null 2>&1; then osascript -e 'display notification \"Awaiting your input\" with title \"Claude Code\"'; else echo '🔔 Claude needs your input'; fi",
+            "description": "Cross-platform notification"
+          }
+        ]
+      }
+    ]
+  },
+  "customCommands": {
+    "enabled": true,
+    "directory": ".claude/commands"
+  }
+}
