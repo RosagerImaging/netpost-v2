@@ -1,0 +1,30 @@
+**1. High-Level Goal:**
+
+Create a functional and clean Inventory List page for the "AI-Native Reselling Assistant". The page must display all of the user's inventory items in a data table that can be searched and filtered. The page must strictly adhere to our dark, minimalist design system. It must be built using Next.js, TypeScript, and our specified `Shadcn/ui` and `lucide-react` libraries.
+
+**2. Detailed, Step-by-Step Instructions:**
+
+1.  Create a new page file at `app/(app)/inventory/page.tsx`. This page will be rendered inside our main App Shell with the sidebar.
+2.  At the top of the main content area, create a header. The header should contain the title "Inventory" on the left and a primary action `Button` that says "Add New Item" on the right.
+3.  Below the header, create a filter and search bar. This bar should contain two elements:
+    * An `Input` component with a search icon for searching by item title.
+    * A `Select` (dropdown) component to filter by item status (e.g., "All", "Draft", "Listed", "Sold").
+4.  Below the filter bar, create a `Table` component to display the inventory items.
+5.  Define the table columns: "Item" (Image + Title), "SKU", "Purchase Price", "Status", and a final empty column for "Actions".
+6.  Populate the `Table` with 5-6 rows of hardcoded, realistic placeholder data.
+7.  In the "Status" column, use the `Shadcn/ui` `Badge` component to visually represent the status (e.g., a gray badge for "Draft", a blue badge for "Listed", a green badge for "Sold").
+8.  In the "Actions" column for each row, add a `DropdownMenu` component, triggered by a `Button` with a "more horizontal" (`...`) icon.
+9.  The `DropdownMenu` should contain the options: "Edit", "List Now", and a "Delete" option styled with a destructive/red color.
+
+**3. Code Examples, Data Structures & Constraints:**
+
+* **Design System:**
+    * **Color Palette:** Use the established colors (Primary: `#00BFFF`, Text: `#E5E5E5`, etc.).
+    * **Typography:** The primary font MUST be "Inter".
+* **Components:** You MUST use `Shadcn/ui` components, specifically: `<Table>`, `<TableHeader>`, `<TableRow>`, `<TableHead>`, `<TableBody>`, `<TableCell>`, `<Button>`, `<Input>`, `<Select>`, `<Badge>`, and `<DropdownMenu>`.
+* **Icons:** You MUST use icons from the "lucide-react" library for the search bar and actions menu.
+* **Constraint:** This prompt is for the UI ONLY. All inventory data MUST be hardcoded placeholders. Do not implement any API calls. The search and filter functionality should be visually present but does not need to be wired up.
+
+**4. Define a Strict Scope:**
+
+You should only create the page file at `app/(app)/inventory/page.tsx` and any necessary sub-components inside a new `components/inventory/` directory. Do not modify the root layout, sidebar, or any other existing files.

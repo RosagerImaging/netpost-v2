@@ -1,0 +1,38 @@
+**1. High-Level Goal:**
+
+Create a clean, multi-tabbed Settings page for the "AI-Native Reselling Assistant". The page must provide controls for managing the user's account, display preferences, and the AI features. It must be built using Next.js, TypeScript, and Tailwind CSS, and utilize our pre-defined `Shadcn/ui` components and design system.
+
+**2. Detailed, Step-by-Step Instructions:**
+
+1.  Create a new page file at `app/(app)/settings/page.tsx`.
+2.  At the top of the main content area, add a heading that says "Settings".
+3.  Use the `Shadcn/ui` `Tabs` component as the main container for the page content.
+4.  Create three `TabsTrigger` elements for the following sections: "Account", "Display", and "AI Controls".
+5.  **Inside the "Account" `TabsContent`:**
+    * Create a `Card` component with the "Glassmorphism" style.
+    * Inside, display the user's email and their current subscription plan with placeholder data (e.g., "Plan: Pro Tier").
+    * Add a primary `Button` that says "Manage Subscription".
+6.  **Inside the "Display" `TabsContent`:**
+    * Create a `Card` component with the "Glassmorphism" style.
+    * Inside, add a section with a `Label` that says "Theme".
+    * Next to the label, provide a simple way to toggle between "Light" and "Dark" mode (e.g., using two small buttons or a `Switch` component).
+7.  **Inside the "AI Controls" `TabsContent`:**
+    * Create a `Card` component with the "Glassmorphism" style.
+    * Add the title "AI Communication Assistant".
+    * Add a `Label` and a `Switch` component to "Enable Automated Responses".
+    * Add a `Label` and a `Select` component for "Response Tone", with options: 'Friendly', 'Professional', 'Firm'.
+    * Add a `Label` and a `Slider` component to let the user set the "Auto-Decline Offer Threshold", from 0% to 100%.
+
+**3. Code Examples, Data Structures & Constraints:**
+
+* **Design System:**
+    * **Style:** All cards MUST have the "Glassmorphism" effect.
+    * **Color Palette:** Use the established colors (Primary: `#00BFFF`, etc.).
+    * **Typography:** The primary font MUST be "Inter".
+* **Components:** You MUST use `Shadcn/ui` components, specifically: `<Tabs>`, `<TabsList>`, `<TabsTrigger>`, `<TabsContent>`, `<Card>`, `<Switch>`, `<Select>`, `<Slider>`, `<Button>`, and `<Label>`.
+* **Icons:** You MAY use icons from the "lucide-react" library to add clarity to settings.
+* **Constraint:** This is a UI-only prompt. All settings and controls should be visually present, but they do not need to be functional. Toggling switches or moving the slider should only update their own visual state.
+
+**4. Define a Strict Scope:**
+
+You should only create the page file at `app/(app)/settings/page.tsx`. Do not modify any other files.

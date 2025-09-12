@@ -1,0 +1,43 @@
+**1. High-Level Goal:**
+
+Create a modern, data-rich Dashboard page for the "AI-Native Reselling Assistant". The dashboard must provide an at-a-glance overview of the user's business health and give them quick access to their most common tasks. The design must strictly adhere to our dark, minimalist, "Glassmorphism" aesthetic. The page should be built using Next.js, TypeScript, Tailwind CSS, and our specified component libraries.
+
+**2. Detailed, Step-by-Step Instructions:**
+
+1.  Create a new page file at `app/(app)/dashboard/page.tsx`. The page should be wrapped in our main App Shell with the sidebar.
+2.  At the top of the main content area, add a heading that says "Welcome Back, [User Name]!".
+3.  Create a responsive grid layout (e.g., a 2x2 or 4x1 grid).
+4.  **Create Stat Cards:**
+    * In the top row of the grid, create four `Card` components.
+    * Each `Card` must have the "Glassmorphism" style (`bg-white/10 backdrop-blur-md`).
+    * Populate the cards with the following placeholder data, each with an appropriate `lucide-react` icon:
+        * **Card 1:** Title: "Sales (Last 30 Days)", Value: "$1,250.75"
+        * **Card 2:** Title: "Active Listings", Value: "142"
+        * **Card 3:** Title: "Items Sold (Last 30 Days)", Value: "31"
+        * **Card 4:** Title: "Pending Orders", Value: "3"
+5.  **Create a Sales Chart:**
+    * In the second row, create a larger `Card` component that spans at least two columns.
+    * Give it the title "Sales Trend".
+    * Inside, add a simple bar chart using the `recharts` library. The chart should display placeholder sales data for the last 7 days.
+    * Style the chart to match our dark theme. The bars should use our primary interactive color (`#00BFFF`). The text and grid lines should be a light gray (`#8E8E93`).
+6.  **Create a Recent Activity Feed:**
+    * In the remaining grid space, create a final `Card` component with the title "Recent Activity".
+    * Inside, create a list of recent events with placeholder data, each with an icon:
+        * "Item Sold: Vintage Leather Jacket"
+        * "New Offer on: Red Silk Scarf"
+        * "Item Listed: Blue Denim Jeans"
+
+**3. Code Examples, Data Structures & Constraints:**
+
+* **Design System:**
+    * **Style:** All cards MUST have the "Glassmorphism" effect.
+    * **Color Palette:** Use the established colors (Primary: `#00BFFF`, Text: `#E5E5E5`, etc.).
+    * **Typography:** The primary font MUST be "Inter".
+* **Components:** You MUST use `Shadcn/ui` components for `<Card>`, `<CardHeader>`, `<CardTitle>`, `<CardContent>`, etc.
+* **Icons:** You MUST use icons from the "lucide-react" library.
+* **Charts:** You MUST use the `recharts` library for the sales chart.
+* **Constraint:** This prompt is for the UI ONLY. All data (sales figures, chart data, activity feed) MUST be hardcoded placeholder data. Do not implement any API calls.
+
+**4. Define a Strict Scope:**
+
+You should only create the page file at `app/(app)/dashboard/page.tsx` and any necessary sub-components inside a new `components/dashboard/` directory. Do not modify the root layout, sidebar, or any other existing files.

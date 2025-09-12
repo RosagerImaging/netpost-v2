@@ -1,0 +1,37 @@
+**1. High-Level Goal:**
+
+Create a detailed, multi-column Item Detail and Editor page for the "AI-Native Reselling Assistant". This page will serve as the central hub for a single inventory item, allowing users to edit all its details and perform the core cross-listing action. The layout must be responsive and strictly adhere to our dark, minimalist, "Glassmorphism" design system.
+
+**2. Detailed, Step-by-Step Instructions:**
+
+1.  Create a new dynamic route page file at `app/(app)/inventory/[itemId]/page.tsx`.
+2.  The page should use a two-column layout on desktop screens (e.g., `lg` breakpoint and up), which stacks into a single column on smaller screens.
+3.  **In the Left Column (Main Content Area):**
+    * At the top, create an image gallery section for the item's photos. Display one large primary image and several smaller thumbnails below it. Use placeholder images.
+    * Below the gallery, create a large `Card` component with the "Glassmorphism" style.
+    * Inside this card, create a form with the following `Shadcn/ui` components:
+        * A `Label` and `Input` for "Title".
+        * A `Label` and `Input` for "SKU".
+        * A `Label` and `Input` for "Purchase Price".
+        * A `Label` and `Textarea` for "Description". Add a small `Button` with a sparkle icon next to the label that says "Generate Description".
+4.  **In the Right Column (Actions & Status Area):**
+    * Create a separate, tall `Card` component with the "Glassmorphism" style.
+    * At the top of this card, add a `CardHeader` with the title "Marketplace Listings".
+    * Below the header, create a section with a `Label` and `Input` for "Default Listing Price". Add a small `Button` next to the label that says "Suggest Price".
+    * Below the price, create a list of `Checkbox` components, one for each supported marketplace (e.g., "eBay", "Poshmark", "Mercari").
+    * At the very bottom of this card, place a large, primary action `Button` that says "List on Selected Markets".
+    * Above the button, include a section to display the item's current listing status (e.g., "Status: Listed on eBay, Poshmark").
+
+**3. Code Examples, Data Structures & Constraints:**
+
+* **Design System:**
+    * **Style:** All cards MUST have the "Glassmorphism" effect.
+    * **Color Palette:** Use the established colors (Primary Button: `#00BFFF`, etc.).
+    * **Typography:** The primary font MUST be "Inter".
+* **Components:** You MUST use `Shadcn/ui` components, specifically: `<Card>`, `<CardHeader>`, `<CardTitle>`, `<CardContent>`, `<Input>`, `<Textarea>`, `<Button>`, `<Checkbox>`, and `<Label>`.
+* **Icons:** You MUST use icons from the "lucide-react" library for the AI helper buttons.
+* **Constraint:** This is a UI-only prompt. All item data (title, photos, etc.) MUST be hardcoded placeholders. Do not implement any API calls. The form fields should be present but do not need to be functional.
+
+**4. Define a Strict Scope:**
+
+You should only create the page file at `app/(app)/inventory/[itemId]/page.tsx` and any necessary sub-components inside the `components/inventory/` directory. Do not modify the root layout, sidebar, or any other files.

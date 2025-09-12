@@ -1,0 +1,36 @@
+**1. High-Level Goal:**
+
+Create the main application shell for a modern, dark-themed web app, "AI-Native Reselling Assistant". The shell must be built using Next.js 14+ (App Router), TypeScript, and Tailwind CSS. It should feature a persistent, collapsible sidebar on the left for main navigation and a main content area on the right. The design must be clean, modern, minimalist, and adhere strictly to the design system provided below.
+
+**2. Detailed, Step-by-Step Instructions:**
+
+1.  Create a root `layout.tsx` file that sets up the overall page structure.
+2.  The background color for the entire app should be a near-black color from our design system (`#111111`).
+3.  Create a new component `components/shared/Sidebar.tsx`.
+4.  The sidebar should be positioned on the left, with a fixed width of approximately 280px on desktop screens. It should have a slightly lighter background color (`#1C1C1E`) and a subtle right border.
+5.  In the sidebar, include a placeholder for a logo or app name at the top.
+6.  Below the logo, create a vertical navigation list. The navigation items should be: "Dashboard", "Inventory", "AI Assistant", "Marketplace Integrations", and "Settings".
+7.  Use the "Lucide Icons" library for icons next to each navigation item. Choose appropriate icons for each.
+8.  Navigation links should use the "Inter" font. The text color should be a light gray (`#8E8E93`).
+9.  When a navigation link is hovered over or is on the active page, its background should have a subtle glow effect, and the text and icon color should change to the primary interactive color, DeepSkyBlue (`#00BFFF`).
+10. At the bottom of the sidebar, include a user avatar and name, which links to the "Account" section of the settings.
+11. The main content area to the right of the sidebar should have a main tag (`<main>`) with padding to ensure content doesn't sit against the edges.
+12. Ensure the layout is responsive. On screen sizes smaller than `1024px` (Tailwind's `lg` breakpoint), the sidebar should collapse into a "hamburger" menu icon in the top-left corner.
+
+**3. Code Examples, Data Structures & Constraints:**
+
+* **Color Palette:**
+    * Background: `#111111`
+    * Sidebar Background: `#1C1C1E`
+    * Primary Interactive Color: `#00BFFF` (DeepSkyBlue)
+    * Accent Color: `#FFD700` (Gold)
+    * Primary Text: `#E5E5E5`
+    * Secondary Text / Icons: `#8E8E93`
+* **Typography:** The primary font MUST be "Inter".
+* **Icons:** You MUST use icons from the "lucide-react" library.
+* **Dependencies to use:** `lucide-react`, `clsx`, `tailwind-merge`.
+* **Constraint:** Do NOT use any other color unless specified. Do NOT use any other font. Adhere strictly to an 8-point grid system for all spacing and padding.
+
+**4. Define a Strict Scope:**
+
+You should only create the root `layout.tsx` and the `components/shared/Sidebar.tsx` component. The pages themselves (Dashboard, Inventory, etc.) should be placeholder divs for now. Do not build out the full functionality of any page.

@@ -1,0 +1,41 @@
+**1. High-Level Goal:**
+
+Create a modern, minimalist, and secure Login and Sign-up page for the "AI-Native Reselling Assistant". The page should be a single, centered component that allows users to toggle between Login and Sign-up forms. It must be built using Next.js (App Router), TypeScript, and Tailwind CSS, and utilize our pre-defined design system and components.
+
+**2. Detailed, Step-by-Step Instructions:**
+
+1.  Create a new page file at `app/(auth)/login/page.tsx`.
+2.  The page should have a dark background (`#111111`).
+3.  In the center of the page, create a form container with a fixed width (e.g., `max-w-md`).
+4.  Apply a "Glassmorphism" effect to this container: a semi-transparent, blurred background (`bg-white/10 backdrop-blur-md`) and rounded corners.
+5.  Use a state to toggle between a 'login' view and a 'signup' view.
+6.  **For the 'login' view:**
+    * Display the heading "Welcome Back".
+    * Include an `Input` component for "Email" and an `Input` for "Password".
+    * Include a primary `Button` that says "Sign In".
+    * Include a "Forgot Password?" link.
+    * At the bottom, include a link that says "Don't have an account? Sign Up". Clicking this toggles the view.
+7.  **For the 'signup' view:**
+    * Display the heading "Create an Account".
+    * Include `Input` components for "Email", "Password", and "Confirm Password".
+    * Include a primary `Button` that says "Create Account".
+    * At the bottom, include a link that says "Already have an account? Sign In". Clicking this toggles the view.
+8.  All `Input` components should be from `Shadcn/ui` and styled according to our dark theme. They should have `lucide-react` icons inside them (e.g., an 'at-sign' for email, a 'lock' for password).
+9.  All `Button` components must be from `Shadcn/ui`. The primary action buttons should use our primary interactive color (`#00BFFF`).
+10. Ensure all form fields have proper labels and placeholders.
+
+**3. Code Examples, Data Structures & Constraints:**
+
+* **Color Palette:**
+    * Background: `#111111`
+    * Form Container Background: `rgba(255, 255, 255, 0.1)` with `backdrop-blur-md`
+    * Primary Button: `#00BFFF` (DeepSkyBlue)
+    * Text: `#E5E5E5`
+* **Typography:** The primary font MUST be "Inter".
+* **Components:** You MUST use the pre-defined `Shadcn/ui` components for `<Input>`, `<Label>`, and `<Button>`.
+* **Icons:** You MUST use icons from the "lucide-react" library.
+* **Constraint:** This prompt is for the UI ONLY. Do not implement any authentication logic. Form submissions should simply `console.log` the form data for now.
+
+**4. Define a Strict Scope:**
+
+You should only create the page file at `app/(auth)/login/page.tsx`. Do not modify the root layout, the sidebar, or any other existing files.
