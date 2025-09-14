@@ -1,0 +1,60 @@
+name: ⚙️ Technical Task
+description: Create a technical task for NetPost V2
+title: "[TASK] [Component/Area] - Brief description"
+labels: ["task", "ready"]
+body:
+  - type: input
+    id: task-title
+    attributes:
+      label: Task Title
+      description: Clear, specific task description
+      placeholder: "Set up Tailwind CSS design tokens for NetPost V2"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Detailed description of what needs to be done
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Success Criteria
+      description: How will you know this is complete?
+      placeholder: |
+        - [ ] Configuration updated
+        - [ ] Tests pass
+        - [ ] Documentation updated
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Technical Area
+      description: Which part of the system?
+      options:
+        - Frontend/UI
+        - Backend/API
+        - Database
+        - DevOps/Build
+        - Testing
+        - Documentation
+        - Configuration
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - Low
+        - Medium
+        - High
+        - Urgent
+      default: 1

@@ -1,0 +1,107 @@
+name: 📋 User Story
+description: Create a user story for NetPost V2 development
+title: "[STORY] As a [user type], I want [goal] so that [benefit]"
+labels: ["story", "ready"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## User Story Template for NetPost V2
+        Complete all sections to ensure story is ready for development.
+
+  - type: input
+    id: user-type
+    attributes:
+      label: User Type
+      description: Who is this story for? (e.g., reseller, admin, new user)
+      placeholder: "reseller"
+    validations:
+      required: true
+
+  - type: textarea
+    id: user-story
+    attributes:
+      label: User Story
+      description: Complete user story in format "As a [user], I want [goal] so that [benefit]"
+      placeholder: "As a reseller, I want to view my inventory list so that I can see all my items in one place"
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: List specific, testable criteria (use checkboxes)
+      placeholder: |
+        - [ ] Display inventory items in a responsive table/grid
+        - [ ] Show item name, price, status, and thumbnail
+        - [ ] Include search functionality
+        - [ ] Handle loading and empty states
+    validations:
+      required: true
+
+  - type: dropdown
+    id: epic
+    attributes:
+      label: Epic/Feature Area
+      description: Which major feature area does this belong to?
+      options:
+        - Inventory Management
+        - Cross-Platform Listing
+        - AI Communication Assistant
+        - Item Detail Editor
+        - Dashboard & Analytics
+        - Authentication & Onboarding
+        - Settings & Configuration
+        - Mobile Sourcing
+    validations:
+      required: true
+
+  - type: dropdown
+    id: size
+    attributes:
+      label: Story Size Estimate
+      description: T-shirt sizing for effort estimation
+      options:
+        - XS (1-2 hours)
+        - S (Half day)
+        - M (1-2 days)
+        - L (3-4 days)
+        - XL (1 week) - Consider breaking down
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical-notes
+    attributes:
+      label: Technical Implementation Notes
+      description: Any specific technical considerations, components to use, etc.
+      placeholder: |
+        - Use @repo/ui Table component
+        - Implement with Tanstack Query for data fetching
+        - Follow existing design tokens from tailwind.config.js
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: What needs to be completed before this story?
+      placeholder: "Depends on: API endpoints, shared components, etc."
+
+  - type: checkboxes
+    id: definition-of-ready
+    attributes:
+      label: Definition of Ready
+      description: Confirm this story is ready for development
+      options:
+        - label: User story format is complete
+          required: true
+        - label: Acceptance criteria are specific and testable
+          required: true
+        - label: Technical approach is outlined
+          required: true
+        - label: Dependencies are identified
+          required: false
+        - label: Design/mockups are available (if needed)
+          required: false
