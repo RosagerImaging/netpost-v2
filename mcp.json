@@ -5,18 +5,16 @@
       "args": ["-y", "@brave/brave-search-mcp-server", "--transport", "stdio"],
       "env": {
         "BRAVE_API_KEY": "BSAz0289N9SYx7dm3L0c7sMhzNVRJg6"
+      },
+      "playwright": {
+        "type": "stdio",
+        "command": "npx",
+        "args": [
+          "@playwright/mcp@latest"
+        ],
+        "env": {}
       }
-{      
-  "playwright": {
-          "type": "stdio",
-          "command": "npx",
-          "args": [
-            "@playwright/mcp@latest"
-          ],
-          "env": {}
-        }
-      }  
-    }  
+    }
   }
 }
 
