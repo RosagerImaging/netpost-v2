@@ -1,7 +1,9 @@
 # /fix-issue
+
 Find and fix GitHub issue #$ARGUMENTS following netpost development workflow.
 
 ## Process
+
 1. **Understand Issue**
    - Run `gh issue view $ARGUMENTS` to get details
    - Read issue description and reproduction steps
@@ -12,7 +14,7 @@ Find and fix GitHub issue #$ARGUMENTS following netpost development workflow.
    - Create feature branch: `git checkout -b fix-issue-$ARGUMENTS`
    - If working in worktrees, switch to appropriate directory:
      - Backend issues: `cd ../netpost-backend`
-     - Dashboard issues: `cd ../netpost-dashboard` 
+     - Dashboard issues: `cd ../netpost-dashboard`
      - Extension issues: `cd ../netpost-chrome-extension`
 
 3. **Locate & Analyze**

@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import Link from 'next/link'
-import { useRedirectIfAuthenticated } from '../../../../lib/auth/auth-hooks'
-import { AuthService } from '../../../../lib/auth/auth-utils'
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { useRedirectIfAuthenticated } from "../../../../lib/auth/auth-hooks";
+import { AuthService } from "../../../../lib/auth/auth-utils";
 import {
   Card,
   CardHeader,
@@ -14,80 +14,80 @@ import {
   FormField,
   Button,
   FormMessage,
-} from '@netpost/ui'
+} from "@netpost/ui";
 
 export default function ResetPasswordPage() {
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [hasValidToken, setHasValidToken] = useState(false)
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasValidToken, setHasValidToken] = useState(false);
 
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   // Redirect if already authenticated
-  useRedirectIfAuthenticated()
+  useRedirectIfAuthenticated();
 
   useEffect(() => {
     // Check if we have the necessary URL parameters for password reset
-    const accessToken = searchParams.get('access_token')
-    const refreshToken = searchParams.get('refresh_token')
-    const type = searchParams.get('type')
+    const accessToken = searchParams.get("access_token");
+    const refreshToken = searchParams.get("refresh_token");
+    const type = searchParams.get("type");
 
-    if (type === 'recovery' && accessToken && refreshToken) {
-      setHasValidToken(true)
+    if (type === "recovery" && accessToken && refreshToken) {
+      setHasValidToken(true);
     } else {
-      setError('Invalid or expired reset link. Please request a new one.')
+      setError("Invalid or expired reset link. Please request a new one.");
     }
-  }, [searchParams])
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setSuccess('')
-    setIsLoading(true)
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    setIsLoading(true);
 
     // Validate password
-    const passwordValidation = AuthService.validatePassword(password)
+    const passwordValidation = AuthService.validatePassword(password);
     if (!passwordValidation.isValid) {
-      setError(passwordValidation.message || 'Password is invalid')
-      setIsLoading(false)
-      return
+      setError(passwordValidation.message || "Password is invalid");
+      setIsLoading(false);
+      return;
     }
 
     // Check password match
     if (!AuthService.validatePasswordMatch(password, confirmPassword)) {
-      setError('Passwords do not match')
-      setIsLoading(false)
-      return
+      setError("Passwords do not match");
+      setIsLoading(false);
+      return;
     }
 
     try {
-      const result = await AuthService.updatePassword(password)
+      const result = await AuthService.updatePassword(password);
 
       if (result.error) {
-        setError(result.error)
+        setError(result.error);
       } else {
-        setSuccess('Password updated successfully! Redirecting to login...')
+        setSuccess("Password updated successfully! Redirecting to login...");
         setTimeout(() => {
-          router.push('/login')
-        }, 2000)
+          router.push("/login");
+        }, 2000);
       }
     } catch (err) {
-      setError('An unexpected error occurred. Please try again.')
+      setError("An unexpected error occurred. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   if (!hasValidToken) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background/95 to-background/90 px-4">
-        <Card className="w-full max-w-md mx-auto">
+      <div className="from-background via-background/95 to-background/90 flex min-h-screen items-center justify-center bg-gradient-to-br px-4">
+        <Card className="mx-auto w-full max-w-md">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-semibold tracking-tight text-center text-primary-text">
+            <CardTitle className="text-primary-text text-center text-2xl font-semibold tracking-tight">
               Invalid Reset Link
             </CardTitle>
             <CardDescription className="text-center">
@@ -96,22 +96,22 @@ export default function ResetPasswordPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <FormMessage type="error">
-              {error || 'This password reset link is invalid or has expired.'}
+              {error || "This password reset link is invalid or has expired."}
             </FormMessage>
 
-            <div className="text-center space-y-2">
-              <p className="text-sm text-muted-foreground">
+            <div className="space-y-2 text-center">
+              <p className="text-muted-foreground text-sm">
                 <Link
                   href="/forgot-password"
-                  className="font-medium text-primary hover:underline"
+                  className="text-primary font-medium hover:underline"
                 >
                   Request a new reset link
                 </Link>
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 <Link
                   href="/login"
-                  className="font-medium text-primary hover:underline"
+                  className="text-primary font-medium hover:underline"
                 >
                   Back to sign in
                 </Link>
@@ -120,14 +120,14 @@ export default function ResetPasswordPage() {
           </CardContent>
         </Card>
       </div>
-    )
+    );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background/95 to-background/90 px-4">
-      <Card className="w-full max-w-md mx-auto">
+    <div className="from-background via-background/95 to-background/90 flex min-h-screen items-center justify-center bg-gradient-to-br px-4">
+      <Card className="mx-auto w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-semibold tracking-tight text-center text-primary-text">
+          <CardTitle className="text-primary-text text-center text-2xl font-semibold tracking-tight">
             Set new password
           </CardTitle>
           <CardDescription className="text-center">
@@ -135,61 +135,49 @@ export default function ResetPasswordPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <FormField
-            label="New Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your new password"
-            helperText="Must be at least 6 characters long"
-            required
-            disabled={isLoading}
-          />
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <FormField
+              label="New Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your new password"
+              helperText="Must be at least 6 characters long"
+              required
+              disabled={isLoading}
+            />
 
-          <FormField
-            label="Confirm New Password"
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Confirm your new password"
-            required
-            disabled={isLoading}
-          />
+            <FormField
+              label="Confirm New Password"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Confirm your new password"
+              required
+              disabled={isLoading}
+            />
 
-          {error && (
-            <FormMessage type="error">
-              {error}
-            </FormMessage>
-          )}
+            {error && <FormMessage type="error">{error}</FormMessage>}
 
-          {success && (
-            <FormMessage type="success">
-              {success}
-            </FormMessage>
-          )}
+            {success && <FormMessage type="success">{success}</FormMessage>}
 
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={isLoading}
-          >
-            {isLoading ? "Updating password..." : "Update Password"}
-          </Button>
-        </form>
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Updating password..." : "Update Password"}
+            </Button>
+          </form>
 
-        <div className="text-center">
-          <p className="text-sm text-muted-foreground">
-            <Link
-              href="/login"
-              className="font-medium text-primary hover:underline"
-            >
-              Back to sign in
-            </Link>
-          </p>
-        </div>
+          <div className="text-center">
+            <p className="text-muted-foreground text-sm">
+              <Link
+                href="/login"
+                className="text-primary font-medium hover:underline"
+              >
+                Back to sign in
+              </Link>
+            </p>
+          </div>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

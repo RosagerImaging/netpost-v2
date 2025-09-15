@@ -1,9 +1,5 @@
 export const baseEslintConfig = {
-  extends: [
-    "eslint:recommended",
-    "@typescript-eslint/recommended",
-    "prettier",
-  ],
+  extends: ["eslint:recommended", "@typescript-eslint/recommended", "prettier"],
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
   parserOptions: {
@@ -28,10 +24,7 @@ export const baseEslintConfig = {
 
 export const nextEslintConfig = {
   ...baseEslintConfig,
-  extends: [
-    ...baseEslintConfig.extends,
-    "next/core-web-vitals",
-  ],
+  extends: [...baseEslintConfig.extends, "next/core-web-vitals"],
   rules: {
     ...baseEslintConfig.rules,
     "react/no-unescaped-entities": "off",

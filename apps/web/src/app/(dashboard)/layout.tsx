@@ -1,15 +1,11 @@
-'use client'
+"use client";
 
-import { ProtectedRoute } from '../../../lib/auth/protected-route'
+import { ProtectedRoute } from "../../../lib/auth/protected-route";
 
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  return (
-    <ProtectedRoute>
-      {children}
-    </ProtectedRoute>
-  )
+  return <ProtectedRoute>{children}</ProtectedRoute>;
 }

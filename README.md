@@ -238,6 +238,7 @@ This project is proprietary software. All rights reserved.
 ## 🗺️ Roadmap
 
 ### Phase 1: Foundation (Current)
+
 - ✅ Turborepo monorepo setup
 - ✅ Next.js web application
 - ✅ Shared UI component library
@@ -245,12 +246,14 @@ This project is proprietary software. All rights reserved.
 - ✅ TypeScript configurations
 
 ### Phase 2: Core Features (Next)
+
 - 🔄 User authentication and profiles
 - 🔄 Item inventory management
 - 🔄 AI-powered item analysis
 - 🔄 Platform integrations
 
 ### Phase 3: Advanced Features
+
 - 📅 Cross-platform listing automation
 - 📅 Analytics and insights dashboard
 - 📅 Mobile application

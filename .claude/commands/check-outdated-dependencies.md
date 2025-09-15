@@ -1,5 +1,7 @@
 #!/bin/bash
+
 # .claude/commands/deps.sh
+
 echo "📦 Checking dependencies..."
 npm outdated
 echo "---"

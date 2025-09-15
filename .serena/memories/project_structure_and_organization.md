@@ -1,11 +1,13 @@
 # NetPost V2 - Project Structure and Organization
 
 ## Repository Overview
+
 - **Repository Type**: Monorepo using Turborepo
 - **Main Directory**: `/home/optiks/dev/netpost-v2`
 - **Primary Development**: `/home/optiks/dev/netpost-v2/ui-preview` (current focus)
 
 ## Root Directory Structure
+
 ```
 netpost-v2/
 ├── .bmad-core/              # BMAD framework core files
@@ -26,6 +28,7 @@ netpost-v2/
 ```
 
 ## UI Preview Structure (Main Development Area)
+
 ```
 ui-preview/                 # Turborepo monorepo root
 ├── package.json           # Root package.json with workspaces
@@ -75,11 +78,13 @@ ui-preview/                 # Turborepo monorepo root
 ## Key Configuration Files
 
 ### Root Level
+
 - **`ui-preview/package.json`**: Main workspace configuration, dependencies, scripts
 - **`ui-preview/turbo.json`**: Turborepo task configuration and caching
 - **`CLAUDE.md`**: Comprehensive development guidelines and standards
 
 ### Web App (`apps/web/`)
+
 - **`package.json`**: Web app specific dependencies and scripts
 - **`next.config.js`**: Next.js configuration
 - **`tailwind.config.js`**: Tailwind CSS configuration with custom colors and fonts
@@ -87,6 +92,7 @@ ui-preview/                 # Turborepo monorepo root
 - **`tsconfig.json`**: TypeScript configuration
 
 ### Component Structure
+
 ```
 components/
 ├── dashboard/           # Dashboard-specific components
@@ -107,6 +113,7 @@ components/
 ```
 
 ## Planned Extensions (Not Yet Implemented)
+
 ```
 apps/
 ├── mobile/            # React Native mobile app (planned)
@@ -114,6 +121,7 @@ apps/
 ```
 
 ## Package Management
+
 - **Workspaces**: Defined in root `package.json`
 - **Shared Dependencies**: Common packages in root `package.json`
 - **App-Specific**: Each app has its own `package.json` for specific needs
@@ -122,27 +130,32 @@ apps/
 ## Development Patterns
 
 ### Import Patterns
+
 - **Internal UI Components**: `from "@repo/ui"`
 - **Relative Imports**: For local components and utilities
 - **Absolute Imports**: Next.js supports absolute imports from project root
 
 ### File Naming Conventions
+
 - **Components**: PascalCase (e.g., `ItemEditorForm.tsx`)
 - **Utilities**: camelCase (e.g., `utils.ts`)
 - **Configuration**: kebab-case (e.g., `next.config.js`)
 - **Directories**: kebab-case (e.g., `item-detail-editor/`)
 
 ### Route Organization (Next.js App Router)
+
 - **Route Groups**: `(app)` for authenticated routes, `(auth)` for public auth routes
 - **Nested Routes**: Each feature has its own directory with `page.tsx`
 - **Layouts**: `layout.tsx` files for shared layouts
 
 ## Build Output
+
 - **Next.js**: Outputs to `.next/` directory
 - **Turbo Cache**: Cached outputs for faster subsequent builds
 - **Static Assets**: Served from `public/` directories
 
 ## Current Status
+
 - **Active Development**: UI components and Next.js web app
 - **In Progress**: Component library development, basic routing structure
 - **Planned**: Backend API integration, mobile app development

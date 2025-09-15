@@ -79,6 +79,7 @@ gh issue edit {ISSUE_NUMBER} \
 ### 7. Provide Summary
 
 Report to user:
+
 - GitHub issue number created
 - Labels applied
 - Direct link to the issue
@@ -105,6 +106,7 @@ Report to user:
 ## Manual Fallback
 
 If automation fails, provide the user with:
+
 1. Pre-filled issue template content they can copy/paste
 2. Specific labels to apply manually
 3. Instructions for linking back to the story file

@@ -1,9 +1,11 @@
 # /deploy-prep
+
 Prepare netpost application for production deployment to Vercel and Supabase.
 
 ## Pre-deployment Checklist
 
 ### 1. Backend API Preparation
+
 1. **Testing & Quality**
    - Navigate to backend directory: `cd backend/` or `cd ../netpost-backend`
    - Run test suite: `npm test`
@@ -22,7 +24,8 @@ Prepare netpost application for production deployment to Vercel and Supabase.
    - Check authentication flows: Test api/auth/ endpoints
    - Validate error handling in src/middleware/errorHandler.ts
 
-### 2. Dashboard Frontend Preparation  
+### 2. Dashboard Frontend Preparation
+
 1. **Build & Testing**
    - Navigate to dashboard directory: `cd dashboard/` or `cd ../netpost-dashboard`
    - Create production build: `npm run build`
@@ -42,6 +45,7 @@ Prepare netpost application for production deployment to Vercel and Supabase.
    - Test authentication flows with production Supabase
 
 ### 3. Chrome Extension Preparation
+
 1. **Build & Testing**
    - Navigate to extension directory: `cd chrome-extension/` or `cd ../netpost-chrome-extension`
    - Build extension: `npm run build`
@@ -49,6 +53,7 @@ Prepare netpost application for production deployment to Vercel and Supabase.
    - Verify extension works in Chrome
 
 ### 4. Final Validation
+
 1. **Cross-Platform Testing**
    - Test complete user flows: registration → login → core features
    - Verify data sync between dashboard and extension
@@ -68,7 +73,8 @@ Prepare netpost application for production deployment to Vercel and Supabase.
    - Update version numbers in package.json files
 
 ## Deployment Commands
+
 - **Backend**: Deploy via Vercel CLI or GitHub integration
-- **Dashboard**: Deploy via Vercel CLI or GitHub integration  
+- **Dashboard**: Deploy via Vercel CLI or GitHub integration
 - **Database**: Apply migrations via Supabase CLI or dashboard
 - **Extension**: Package for Chrome Web Store submission

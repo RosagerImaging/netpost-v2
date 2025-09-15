@@ -1,14 +1,16 @@
 # NetPost V2 - Essential Development Commands
 
 ## Prerequisites
+
 - **Node.js**: v22.18.0 or higher
-- **npm**: 10.9.3 or higher  
+- **npm**: 10.9.3 or higher
 - **Python**: 3.12+ (for backend when implemented)
 - **UV**: For Python package management (when backend is added)
 
 ## Project Setup Commands
 
 ### Initial Setup
+
 ```bash
 # Clone and enter project
 cd /home/optiks/dev/netpost-v2/ui-preview
@@ -23,6 +25,7 @@ npm install --workspaces
 ## Daily Development Commands
 
 ### Development Server
+
 ```bash
 # Start all apps in development mode
 npm run dev
@@ -37,6 +40,7 @@ turbo dev --filter=web
 ```
 
 ### Building
+
 ```bash
 # Build all apps and packages
 npm run build
@@ -48,6 +52,7 @@ turbo build --filter=web
 ```
 
 ### Code Quality
+
 ```bash
 # Run linting for all packages
 npm run lint
@@ -65,6 +70,7 @@ npm run format
 ## Turborepo-Specific Commands
 
 ### Using Global Turbo (Recommended)
+
 ```bash
 # Install global turbo
 npm install -g turbo
@@ -77,6 +83,7 @@ turbo check-types
 ```
 
 ### Package Management
+
 ```bash
 # Add dependency to specific workspace
 npm install <package> --workspace=web
@@ -91,6 +98,7 @@ npm uninstall <package> --workspace=web
 ## Future Commands (When Backend is Added)
 
 ### Python Development (Using UV)
+
 ```bash
 # Create virtual environment
 uv venv
@@ -115,6 +123,7 @@ uv run mypy src/
 ## Testing Commands (Planned)
 
 ### Frontend Testing
+
 ```bash
 # Run all tests
 npm run test
@@ -127,6 +136,7 @@ npm run test -- --coverage
 ```
 
 ### Backend Testing (When Added)
+
 ```bash
 # Run all Python tests
 uv run pytest
@@ -139,6 +149,7 @@ uv run pytest --cov=src --cov-report=html
 ```
 
 ## Git Workflow Commands
+
 ```bash
 # Standard workflow
 git checkout main && git pull origin main
@@ -151,6 +162,7 @@ git push origin feature/new-feature
 ```
 
 ## Useful System Commands (Linux)
+
 ```bash
 # Use ripgrep instead of grep/find
 rg "pattern"                    # Search for pattern
@@ -163,6 +175,7 @@ ls -la ui-preview/apps/        # List apps directory
 ```
 
 ## Environment Management
+
 ```bash
 # Check versions
 node --version
@@ -175,6 +188,7 @@ lsof -i :3000  # Check what's using port 3000
 ```
 
 ## Debugging Commands
+
 ```bash
 # Check build output
 npm run build --filter=web 2>&1 | tee build.log
@@ -188,10 +202,11 @@ npm install
 ```
 
 ## Task Completion Commands (After Code Changes)
+
 ```bash
 # Always run after making changes:
 npm run lint
-npm run check-types  
+npm run check-types
 npm run build
 
 # If tests exist:
@@ -199,6 +214,7 @@ npm run test
 ```
 
 ## Notes
+
 - Always use the monorepo-aware commands (with --filter or --workspace)
 - Prefer `turbo` commands when available (faster due to caching)
 - Use `rg` (ripgrep) instead of `grep` or `find` for better performance

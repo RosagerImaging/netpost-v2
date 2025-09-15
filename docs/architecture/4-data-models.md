@@ -1,2 +1,3 @@
 # 4. Data Models
-*(Defines the core `User`, `InventoryItem`, `Listing`, and `MarketplaceConnection` models with their key attributes and corresponding TypeScript interfaces.)*
+
+_(Defines the core `User`, `InventoryItem`, `Listing`, and `MarketplaceConnection` models with their key attributes and corresponding TypeScript interfaces.)_

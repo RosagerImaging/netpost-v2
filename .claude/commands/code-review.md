@@ -1,7 +1,9 @@
 # /code-review
+
 Perform comprehensive code review for netpost project following our TypeScript/React standards.
 
 ## Review Checklist
+
 1. **Code Quality**
    - Check TypeScript compilation: `npm run build` in affected directories (backend/dashboard/chrome-extension)
    - Verify ESLint passes: `npx eslint . --ext .ts,.tsx,.js,.jsx`
@@ -34,6 +36,7 @@ Perform comprehensive code review for netpost project following our TypeScript/R
    - Verify Chrome extension manifest.json is correct
 
 ## Post-Review Actions
+
 - Generate summary of findings with file:line references
 - Create GitHub issues for any critical vulnerabilities
 - Update deployment status if review passes

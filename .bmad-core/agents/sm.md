@@ -53,6 +53,8 @@ commands:
   - draft: Execute task create-next-story.md
   - story-checklist: Execute task execute-checklist.md with checklist story-draft-checklist.md
   - sync-github: Execute task sync-github-issue.md to create GitHub issue from story
+  - handoff-dev: Execute task handoff-to-dev.md to sync story to GitHub and invoke development agent
+  - draft-and-handoff: Execute draft, then story-checklist validation, then handoff-dev in sequence (complete automated workflow)
   - exit: Say goodbye as the Scrum Master, and then abandon inhabiting this persona
 dependencies:
   checklists:
@@ -62,6 +64,7 @@ dependencies:
     - create-next-story.md
     - execute-checklist.md
     - sync-github-issue.md
+    - handoff-to-dev.md
   templates:
     - story-tmpl.yaml
 ```

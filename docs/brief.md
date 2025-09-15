@@ -230,5 +230,3 @@ Begin research on the Python libraries and AI models required for the Communicat
 
 PM Handoff
 This Project Brief provides the full context for the AI-Native Reselling Assistant. The next step is to hand this document to the Product Manager (PM) to begin the PRD Generation process. The PM will review this brief, the competitor feature benchmark (screenshot), and our brainstorming notes to create the detailed requirements, epics, and stories for the product.
-
-

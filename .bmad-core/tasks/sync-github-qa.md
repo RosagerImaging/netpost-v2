@@ -23,24 +23,28 @@ To automatically update GitHub issues during QA phases, tracking quality assessm
 ### 3. QA Phase Operations
 
 #### **When Starting QA Review** (`*qa-start`)
+
 - Add comment to GitHub issue: "🧪 QA Review started by Quinn (QA Agent)"
 - Initialize QA Results section in story file
 - Create QA test plan based on acceptance criteria
 - Note any testing environment setup requirements
 
 #### **When Updating QA Progress** (`*qa-update`)
+
 - Add QA progress comment to GitHub issue
 - Update QA Results section with current findings
 - Document any bugs found or issues identified
 - Track testing coverage and progress
 
 #### **When QA Passes** (`*qa-pass`)
+
 - Update GitHub issue labels: Remove `review`, add `done`
 - Close GitHub issue with QA approval comment
 - Complete QA Results section with PASS status
 - Update story status from Draft to Done
 
 #### **When QA Fails** (`*qa-fail`)
+
 - Keep GitHub issue in `review` status, add `qa-failed` label
 - Add detailed failure comment with specific issues
 - Update QA Results with FAIL status and required fixes
@@ -49,6 +53,7 @@ To automatically update GitHub issues during QA phases, tracking quality assessm
 ### 4. GitHub Issue Management
 
 #### **QA Start Comment Template**
+
 ```
 🧪 **QA Review Started**
 
@@ -66,6 +71,7 @@ To automatically update GitHub issues during QA phases, tracking quality assessm
 ```
 
 #### **QA Progress Update Template**
+
 ```
 🔍 **QA Progress Update**
 
@@ -83,6 +89,7 @@ To automatically update GitHub issues during QA phases, tracking quality assessm
 ```
 
 #### **QA Pass Template**
+
 ```
 ✅ **QA APPROVED - Story Complete**
 
@@ -107,6 +114,7 @@ To automatically update GitHub issues during QA phases, tracking quality assessm
 ```
 
 #### **QA Fail Template**
+
 ```
 ❌ **QA CONCERNS - Fixes Required**
 
@@ -131,6 +139,7 @@ To automatically update GitHub issues during QA phases, tracking quality assessm
 ### 5. Story File Updates
 
 #### **QA Results Section**
+
 ```markdown
 ## QA Results
 
@@ -139,6 +148,7 @@ To automatically update GitHub issues during QA phases, tracking quality assessm
 **Assessment Type**: {comprehensive/focused/risk-based}
 
 ### Test Coverage Summary
+
 - **Acceptance Criteria**: {x/y} verified
 - **Functional Testing**: {status}
 - **Integration Testing**: {status}
@@ -147,46 +157,56 @@ To automatically update GitHub issues during QA phases, tracking quality assessm
 - **Security**: {status}
 
 ### Quality Gate Decision
+
 **RESULT**: {PASS/FAIL/CONCERNS/WAIVED}
 
 ### Findings & Recommendations
+
 {detailed_qa_findings}
 
 ### Test Evidence
+
 {links_to_test_results_screenshots_etc}
 
 ### Future Improvements
+
 {suggestions_for_next_iteration}
 ```
 
 #### **Story Status Update**
+
 ```markdown
 ## Status
+
 {Draft → Done (if QA passes)}
 {Draft → Review (if QA fails)}
 ```
 
 #### **Change Log Entry**
+
 ```markdown
-| Date | Version | Description | Author |
-|------|---------|-------------|---------|
+| Date   | Version   | Description                                    | Author           |
+| ------ | --------- | ---------------------------------------------- | ---------------- |
 | {date} | {version} | QA {PASS/FAIL} - {brief_summary_of_assessment} | Quinn (QA Agent) |
 ```
 
 ### 6. Quality Assessment Framework
 
 #### **Risk-Based Testing Approach**
+
 - **High Risk**: Critical user flows, security, data integrity
 - **Medium Risk**: Standard functionality, integrations
 - **Low Risk**: UI polish, minor features
 
 #### **Test Categories**
+
 - **Functional**: All acceptance criteria met
 - **Non-Functional**: Performance, security, accessibility
 - **Integration**: Component interactions work correctly
 - **User Experience**: Design system compliance, usability
 
 #### **Quality Gates**
+
 - **PASS**: All acceptance criteria met, no critical issues
 - **CONCERNS**: Minor issues found, recommendations provided
 - **FAIL**: Critical issues or unmet acceptance criteria
@@ -195,19 +215,23 @@ To automatically update GitHub issues during QA phases, tracking quality assessm
 ### 7. Command Variations
 
 #### **`*qa-start [story-file]`**
+
 - Parse story file and start QA review
 - Initialize QA Results section
 - Add start comment to GitHub issue
 
 #### **`*qa-update [findings]`**
+
 - Add progress comment to GitHub issue
 - Update QA Results with current findings
 
 #### **`*qa-pass [summary]`**
+
 - Close GitHub issue as complete
 - Mark story as Done with QA approval
 
 #### **`*qa-fail [issues]`**
+
 - Keep issue open with failure details
 - Document required fixes in QA Results
 
@@ -237,6 +261,7 @@ To automatically update GitHub issues during QA phases, tracking quality assessm
 ## Manual Fallback
 
 If automation fails, provide the user with:
+
 1. Exact GitHub CLI commands for issue management
 2. QA Results section template for manual update
 3. Quality assessment checklist

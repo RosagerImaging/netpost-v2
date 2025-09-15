@@ -13,6 +13,7 @@ This guide covers development workflows, best practices, and technical details f
 ### Initial Setup
 
 1. **Clone and install dependencies**:
+
 ```bash
 git clone https://github.com/RosagerImaging/netpost-v2.git
 cd netpost-v2
@@ -20,12 +21,14 @@ npm install
 ```
 
 2. **Set up environment variables**:
+
 ```bash
 cp env.example .env.local
 # Edit .env.local with your configuration
 ```
 
 3. **Start development server**:
+
 ```bash
 npm run dev
 ```
@@ -35,6 +38,7 @@ npm run dev
 ### Turborepo Configuration
 
 NetPost V2 uses Turborepo for:
+
 - **Build orchestration**: Parallel builds with dependency awareness
 - **Caching**: Intelligent build and test caching
 - **Task running**: Coordinated script execution across packages
@@ -69,21 +73,25 @@ graph TD
 ### Daily Development
 
 1. **Pull latest changes**:
+
 ```bash
 git pull origin main
 ```
 
 2. **Install any new dependencies**:
+
 ```bash
 npm install
 ```
 
 3. **Start development mode**:
+
 ```bash
 npm run dev
 ```
 
 This starts all packages in watch mode:
+
 - `@netpost/ui`: Rebuilds when component files change
 - `@netpost/config`: Rebuilds when config files change
 - `@netpost/shared-types`: Rebuilds when type files change
@@ -195,7 +203,11 @@ interface ButtonProps {
   variant?: "primary" | "secondary";
 }
 
-export function Button({ onClick, children, variant = "primary" }: ButtonProps) {
+export function Button({
+  onClick,
+  children,
+  variant = "primary",
+}: ButtonProps) {
   return (
     <button onClick={onClick} className={cn(buttonVariants({ variant }))}>
       {children}
@@ -228,6 +240,7 @@ export function Button({ onClick, children, variant = "primary" }: ButtonProps) 
 ### Creating New Components
 
 1. **Add to UI package**:
+
 ```bash
 cd packages/ui
 # Create component file
@@ -237,6 +250,7 @@ echo 'export { NewComponent } from "./components/new-component";' >> src/index.t
 ```
 
 2. **Build and test**:
+
 ```bash
 npm run build
 npm run lint
@@ -244,6 +258,7 @@ npm run type-check
 ```
 
 3. **Use in web app**:
+
 ```tsx
 import { NewComponent } from "@netpost/ui";
 ```
@@ -251,6 +266,7 @@ import { NewComponent } from "@netpost/ui";
 ### Adding New Types
 
 1. **Add to shared-types package**:
+
 ```bash
 cd packages/shared-types
 # Create or edit type file
@@ -260,6 +276,7 @@ echo 'export type { NewType } from "./new-types";' >> src/index.ts
 ```
 
 2. **Build and use**:
+
 ```bash
 npm run build
 # Use in other packages
@@ -269,6 +286,7 @@ import type { NewType } from "@netpost/shared-types";
 ### Updating Configurations
 
 1. **Edit config package**:
+
 ```bash
 cd packages/config
 # Edit configuration
@@ -276,6 +294,7 @@ vim src/tailwind.ts
 ```
 
 2. **Rebuild and restart**:
+
 ```bash
 npm run build
 # Restart dev server to pick up changes
@@ -309,6 +328,7 @@ npm publish
 ### Development Issues
 
 1. **Clear caches**:
+
 ```bash
 # Clear Turborepo cache
 npx turbo clean
@@ -322,6 +342,7 @@ npm install
 ```
 
 2. **Check dependency issues**:
+
 ```bash
 npm run type-check
 npm run lint
@@ -329,6 +350,7 @@ npm run build
 ```
 
 3. **Debug specific package**:
+
 ```bash
 cd packages/ui
 npm run build --verbose
@@ -384,6 +406,7 @@ footer (optional)
 ```
 
 Examples:
+
 - `feat(ui): add new Button component variants`
 - `fix(web): resolve responsive layout issue`
 - `docs(readme): update development setup guide`

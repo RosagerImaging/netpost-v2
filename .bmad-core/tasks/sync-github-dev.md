@@ -23,18 +23,21 @@ To automatically update GitHub issues during development phases, tracking progre
 ### 3. Development Phase Operations
 
 #### **When Starting Development** (`*dev-start`)
+
 - Update GitHub issue labels: Remove `ready`, add `in-progress`
 - Add comment to GitHub issue: "🚀 Development started by James (Dev Agent)"
 - Update story file Dev Agent Record with start timestamp and agent model
 - Create entry in Debug Log References section
 
 #### **When Updating Progress** (`*dev-update`)
+
 - Add progress comment to GitHub issue with completed tasks/challenges
 - Update story file Completion Notes with current status
 - Reference any relevant commits, branches, or technical decisions
 - Update Debug Log References with any debugging information
 
 #### **When Development Complete** (`*dev-complete`)
+
 - Update GitHub issue labels: Remove `in-progress`, add `review`
 - Add completion comment with summary of implementation
 - Update story file with complete Dev Agent Record:
@@ -47,6 +50,7 @@ To automatically update GitHub issues during development phases, tracking progre
 ### 4. GitHub Issue Management
 
 #### **Start Development Comment Template**
+
 ```
 🚀 **Development Started**
 
@@ -62,6 +66,7 @@ To automatically update GitHub issues during development phases, tracking progre
 ```
 
 #### **Progress Update Template**
+
 ```
 ⚙️ **Development Progress Update**
 
@@ -80,6 +85,7 @@ To automatically update GitHub issues during development phases, tracking progre
 ```
 
 #### **Development Complete Template**
+
 ```
 ✅ **Development Complete - Ready for QA**
 
@@ -104,16 +110,20 @@ To automatically update GitHub issues during development phases, tracking progre
 ### 5. Story File Updates
 
 #### **Dev Agent Record Section Updates**
+
 ```markdown
 ## Dev Agent Record
 
 ### Agent Model Used
+
 {model_name_and_version}
 
 ### Debug Log References
+
 {any_debug_logs_or_traces_generated}
 
 ### Completion Notes List
+
 - Started development: {timestamp}
 - {detailed_implementation_notes}
 - {any_technical_decisions_made}
@@ -121,20 +131,25 @@ To automatically update GitHub issues during development phases, tracking progre
 - Completed development: {timestamp}
 
 ### File List
+
 **Created:**
+
 - {new_files_created}
 
 **Modified:**
+
 - {existing_files_modified}
 
 **Key Changes:**
+
 - {summary_of_major_changes}
 ```
 
 #### **Change Log Entry**
+
 ```markdown
-| Date | Version | Description | Author |
-|------|---------|-------------|---------|
+| Date   | Version   | Description                                         | Author            |
+| ------ | --------- | --------------------------------------------------- | ----------------- |
 | {date} | {version} | Development completed - implemented {brief_summary} | James (Dev Agent) |
 ```
 
@@ -149,15 +164,18 @@ To automatically update GitHub issues during development phases, tracking progre
 ### 7. Command Variations
 
 #### **`*dev-start [story-file]`**
+
 - Parse story file and GitHub issue
 - Update issue to in-progress
 - Initialize Dev Agent Record section
 
 #### **`*dev-update [progress-notes]`**
+
 - Add progress comment to GitHub issue
 - Update Completion Notes in story file
 
 #### **`*dev-complete [summary]`**
+
 - Move issue to review status
 - Complete all Dev Agent Record sections
 - Add comprehensive completion comment
@@ -185,6 +203,7 @@ To automatically update GitHub issues during development phases, tracking progre
 ## Manual Fallback
 
 If automation fails, provide the user with:
+
 1. Exact GitHub CLI commands to run manually
 2. Story file sections that need manual updates
 3. Template comments for GitHub issue updates

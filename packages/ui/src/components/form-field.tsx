@@ -1,23 +1,24 @@
-import * as React from "react"
-import { cn } from "../lib/utils"
-import { Input } from "./input"
+import * as React from "react";
+import { cn } from "../lib/utils";
+import { Input } from "./input";
 
-export interface FormFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string
-  error?: string
-  helperText?: string
+export interface FormFieldProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  error?: string;
+  helperText?: string;
 }
 
 const FormField = React.forwardRef<HTMLInputElement, FormFieldProps>(
   ({ className, label, error, helperText, ...props }, ref) => {
-    const id = props.id || props.name
+    const id = props.id || props.name;
 
     return (
       <div className="space-y-2">
         {label && (
           <label
             htmlFor={id}
-            className="text-sm font-medium leading-none text-primary-text peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            className="text-primary-text text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
             {label}
           </label>
@@ -31,17 +32,15 @@ const FormField = React.forwardRef<HTMLInputElement, FormFieldProps>(
           id={id}
           {...props}
         />
-        {error && (
-          <p className="text-sm text-red-500">{error}</p>
-        )}
+        {error && <p className="text-sm text-red-500">{error}</p>}
         {helperText && !error && (
-          <p className="text-sm text-secondary-text/70">{helperText}</p>
+          <p className="text-secondary-text/70 text-sm">{helperText}</p>
         )}
       </div>
-    )
+    );
   }
-)
+);
 
-FormField.displayName = "FormField"
+FormField.displayName = "FormField";
 
-export { FormField }
+export { FormField };

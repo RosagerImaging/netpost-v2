@@ -1,57 +1,69 @@
-'use client'
+"use client";
 
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { useIsAuthenticated } from '../../lib/auth/auth-hooks'
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useIsAuthenticated } from "../../lib/auth/auth-hooks";
 import { Button } from "@netpost/ui";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@netpost/ui";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@netpost/ui";
 import { Input } from "@netpost/ui";
 
 export default function Home() {
-  const { isAuthenticated, loading } = useIsAuthenticated()
-  const router = useRouter()
+  const { isAuthenticated, loading } = useIsAuthenticated();
+  const router = useRouter();
 
   useEffect(() => {
     if (!loading && isAuthenticated) {
-      router.push('/dashboard')
+      router.push("/dashboard");
     }
-  }, [isAuthenticated, loading, router])
+  }, [isAuthenticated, loading, router]);
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="border-primary h-32 w-32 animate-spin rounded-full border-b-2"></div>
       </div>
-    )
+    );
   }
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-primary-50/20 to-accent-50/20">
+    <div className="from-background via-primary-50/20 to-accent-50/20 min-h-screen bg-gradient-to-br">
       <div className="container mx-auto px-4 py-16">
         {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
+        <div className="mb-16 text-center">
+          <h1 className="from-primary-600 to-accent-600 mb-6 bg-gradient-to-r bg-clip-text text-4xl font-bold text-transparent md:text-6xl">
             NetPost V2
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+          <p className="text-muted-foreground mx-auto mb-8 max-w-3xl text-xl md:text-2xl">
             AI-Native Reselling Assistant Platform
           </p>
-          <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
-            Transform your reselling workflow with intelligent automation, cross-platform management, and data-driven insights.
+          <p className="text-muted-foreground mx-auto mb-12 max-w-2xl text-lg">
+            Transform your reselling workflow with intelligent automation,
+            cross-platform management, and data-driven insights.
           </p>
 
-          <div className="flex gap-4 justify-center flex-wrap">
-            <Button size="lg" className="text-lg px-8" asChild>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Button size="lg" className="px-8 text-lg" asChild>
               <Link href="/register">Get Started</Link>
             </Button>
-            <Button variant="outline" size="lg" className="text-lg px-8" asChild>
+            <Button
+              variant="outline"
+              size="lg"
+              className="px-8 text-lg"
+              asChild
+            >
               <Link href="/login">Sign In</Link>
             </Button>
           </div>
         </div>
 
         {/* UI Components Showcase */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <div className="mb-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           <Card className="glass">
             <CardHeader>
               <CardTitle>Smart Inventory</CardTitle>
@@ -62,9 +74,15 @@ export default function Home() {
             <CardContent>
               <Input placeholder="Search your inventory..." className="mb-4" />
               <div className="flex gap-2">
-                <Button variant="secondary" size="sm">Electronics</Button>
-                <Button variant="secondary" size="sm">Clothing</Button>
-                <Button variant="secondary" size="sm">Accessories</Button>
+                <Button variant="secondary" size="sm">
+                  Electronics
+                </Button>
+                <Button variant="secondary" size="sm">
+                  Clothing
+                </Button>
+                <Button variant="secondary" size="sm">
+                  Accessories
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -103,17 +121,23 @@ export default function Home() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Total Revenue</span>
-                  <span className="font-semibold text-success">$2,847</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground text-sm">
+                    Total Revenue
+                  </span>
+                  <span className="text-success font-semibold">$2,847</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Active Listings</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground text-sm">
+                    Active Listings
+                  </span>
                   <span className="font-semibold">156</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Conversion Rate</span>
-                  <span className="font-semibold text-info">12.4%</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground text-sm">
+                    Conversion Rate
+                  </span>
+                  <span className="text-info font-semibold">12.4%</span>
                 </div>
               </div>
             </CardContent>
@@ -121,12 +145,20 @@ export default function Home() {
         </div>
 
         {/* Footer */}
-        <div className="text-center text-muted-foreground">
-          <p className="mb-4">Built with Next.js, Turborepo, and Tailwind CSS</p>
-          <div className="flex gap-4 justify-center">
-            <Button variant="ghost" size="sm">Documentation</Button>
-            <Button variant="ghost" size="sm">GitHub</Button>
-            <Button variant="ghost" size="sm">Support</Button>
+        <div className="text-muted-foreground text-center">
+          <p className="mb-4">
+            Built with Next.js, Turborepo, and Tailwind CSS
+          </p>
+          <div className="flex justify-center gap-4">
+            <Button variant="ghost" size="sm">
+              Documentation
+            </Button>
+            <Button variant="ghost" size="sm">
+              GitHub
+            </Button>
+            <Button variant="ghost" size="sm">
+              Support
+            </Button>
           </div>
         </div>
       </div>

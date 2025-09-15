@@ -1,6 +1,7 @@
 # Information Architecture (IA)
 
 ## Site Map / Screen Inventory
+
 This site map illustrates the primary screens of the application and their relationship to one another. It is based on the core screens identified in the PRD.
 
 ```mermaid
@@ -23,7 +24,7 @@ graph TD
     A --> B
 ```
 
-## Navigation Structure 
+## Navigation Structure
 
 **Primary Navigation**: After logging in, the main navigation (e.g., a persistent sidebar) will provide direct access to the application's core sections: Dashboard, Inventory, AI Assistant, Marketplace Integrations, and Settings.
 
