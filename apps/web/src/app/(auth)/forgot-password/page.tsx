@@ -5,10 +5,14 @@ import Link from 'next/link'
 import { useRedirectIfAuthenticated } from '../../../../lib/auth/auth-hooks'
 import { AuthService } from '../../../../lib/auth/auth-utils'
 import {
-  AuthCard,
-  AuthInput,
-  AuthButton,
-  AuthFormMessage,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  FormField,
+  Button,
+  FormMessage,
 } from '@netpost/ui'
 
 export default function ForgotPasswordPage() {
@@ -52,13 +56,18 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background/95 to-background/90 px-4">
-      <AuthCard
-        title="Reset your password"
-        description="Enter your email address and we'll send you a reset link"
-        glassmorphism
-      >
+      <Card className="w-full max-w-md mx-auto">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-semibold tracking-tight text-center text-primary-text">
+            Reset your password
+          </CardTitle>
+          <CardDescription className="text-center">
+            Enter your email address and we'll send you a reset link
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
         <form onSubmit={handleSubmit} className="space-y-4">
-          <AuthInput
+          <FormField
             label="Email"
             type="email"
             value={email}
@@ -70,25 +79,24 @@ export default function ForgotPasswordPage() {
           />
 
           {error && (
-            <AuthFormMessage type="error">
+            <FormMessage type="error">
               {error}
-            </AuthFormMessage>
+            </FormMessage>
           )}
 
           {success && (
-            <AuthFormMessage type="success">
+            <FormMessage type="success">
               {success}
-            </AuthFormMessage>
+            </FormMessage>
           )}
 
-          <AuthButton
+          <Button
             type="submit"
             className="w-full"
-            loading={isLoading}
-            loadingText="Sending reset link..."
+            disabled={isLoading}
           >
-            Send Reset Link
-          </AuthButton>
+            {isLoading ? "Sending reset link..." : "Send Reset Link"}
+          </Button>
         </form>
 
         <div className="text-center space-y-2">
@@ -111,7 +119,8 @@ export default function ForgotPasswordPage() {
             </Link>
           </p>
         </div>
-      </AuthCard>
+        </CardContent>
+      </Card>
     </div>
   )
 }

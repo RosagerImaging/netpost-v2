@@ -6,10 +6,14 @@ import Link from 'next/link'
 import { useRedirectIfAuthenticated } from '../../../../lib/auth/auth-hooks'
 import { AuthService } from '../../../../lib/auth/auth-utils'
 import {
-  AuthCard,
-  AuthInput,
-  AuthButton,
-  AuthFormMessage,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  FormField,
+  Button,
+  FormMessage,
 } from '@netpost/ui'
 
 export default function LoginPage() {
@@ -76,47 +80,51 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background/95 to-background/90 px-4">
-      <AuthCard
-        title="Welcome back"
-        description="Sign in to your NetPost V2 account"
-        glassmorphism
-      >
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <AuthInput
-            label="Email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-            required
-            disabled={isLoading}
-          />
+      <Card className="w-full max-w-md mx-auto">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-semibold tracking-tight text-center text-primary-text">
+            Welcome back
+          </CardTitle>
+          <CardDescription className="text-center">
+            Sign in to your NetPost V2 account
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <FormField
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              required
+              disabled={isLoading}
+            />
 
-          <AuthInput
-            label="Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-            required
-            disabled={isLoading}
-          />
+            <FormField
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              required
+              disabled={isLoading}
+            />
 
-          {error && (
-            <AuthFormMessage type="error">
-              {error}
-            </AuthFormMessage>
-          )}
+            {error && (
+              <FormMessage type="error">
+                {error}
+              </FormMessage>
+            )}
 
-          <AuthButton
-            type="submit"
-            className="w-full"
-            loading={isLoading}
-            loadingText="Signing in..."
-          >
-            Sign In
-          </AuthButton>
-        </form>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isLoading}
+            >
+              {isLoading ? "Signing in..." : "Sign In"}
+            </Button>
+          </form>
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
@@ -129,12 +137,12 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <AuthButton
-          variant="google"
-          className="w-full"
-          onClick={handleGoogleSignIn}
-          disabled={isLoading}
-        >
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={handleGoogleSignIn}
+            disabled={isLoading}
+          >
           <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24">
             <path
               fill="currentColor"
@@ -153,10 +161,10 @@ export default function LoginPage() {
               d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
             />
           </svg>
-          Continue with Google
-        </AuthButton>
+            Continue with Google
+          </Button>
 
-        <div className="text-center space-y-2">
+          <div className="text-center space-y-2">
           <p className="text-sm text-muted-foreground">
             Don&apos;t have an account?{' '}
             <Link
@@ -175,7 +183,8 @@ export default function LoginPage() {
             </Link>
           </p>
         </div>
-      </AuthCard>
+        </CardContent>
+      </Card>
     </div>
   )
 }

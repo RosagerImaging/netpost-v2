@@ -1,0 +1,29 @@
+name: Move to Ready for QA on Label
+
+on:
+  issues:
+    types: [labeled, unlabeled]
+  pull_request:
+    types: [labeled, unlabeled]
+
+jobs:
+  move_to_ready_for_qa:
+    runs-on: ubuntu-latest
+    if: github.event.label.name == 'ready-for-qa'
+
+    steps:
+      - name: Add to project
+        id: add_to_project
+        uses: actions/add-to-project@v1.0.2
+        with:
+          project-url: https://github.com/users/RosagerImaging/projects/1
+          github-token: ${{ secrets.PAT_TOKEN }}
+
+      - name: Set status to Ready for QA
+        uses: titoportas/update-project-fields@v0.1.0
+        with:
+          project-url: https://github.com/users/RosagerImaging/projects/1
+          github-token: ${{ secrets.PAT_TOKEN }}
+          item-id: ${{ steps.add_to_project.outputs.itemId }}
+          field-keys: Status
+          field-values: Ready for QA

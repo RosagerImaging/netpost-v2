@@ -6,10 +6,14 @@ import Link from 'next/link'
 import { useRedirectIfAuthenticated } from '../../../../lib/auth/auth-hooks'
 import { AuthService } from '../../../../lib/auth/auth-utils'
 import {
-  AuthCard,
-  AuthInput,
-  AuthButton,
-  AuthFormMessage,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  FormField,
+  Button,
+  FormMessage,
 } from '@netpost/ui'
 
 export default function ResetPasswordPage() {
@@ -81,47 +85,58 @@ export default function ResetPasswordPage() {
   if (!hasValidToken) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background/95 to-background/90 px-4">
-        <AuthCard
-          title="Invalid Reset Link"
-          description="This password reset link is invalid or has expired"
-          glassmorphism
-        >
-          <AuthFormMessage type="error">
-            {error || 'This password reset link is invalid or has expired.'}
-          </AuthFormMessage>
+        <Card className="w-full max-w-md mx-auto">
+          <CardHeader className="space-y-1">
+            <CardTitle className="text-2xl font-semibold tracking-tight text-center text-primary-text">
+              Invalid Reset Link
+            </CardTitle>
+            <CardDescription className="text-center">
+              This password reset link is invalid or has expired
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <FormMessage type="error">
+              {error || 'This password reset link is invalid or has expired.'}
+            </FormMessage>
 
-          <div className="text-center space-y-2">
-            <p className="text-sm text-muted-foreground">
-              <Link
-                href="/forgot-password"
-                className="font-medium text-primary hover:underline"
-              >
-                Request a new reset link
-              </Link>
-            </p>
-            <p className="text-sm text-muted-foreground">
-              <Link
-                href="/login"
-                className="font-medium text-primary hover:underline"
-              >
-                Back to sign in
-              </Link>
-            </p>
-          </div>
-        </AuthCard>
+            <div className="text-center space-y-2">
+              <p className="text-sm text-muted-foreground">
+                <Link
+                  href="/forgot-password"
+                  className="font-medium text-primary hover:underline"
+                >
+                  Request a new reset link
+                </Link>
+              </p>
+              <p className="text-sm text-muted-foreground">
+                <Link
+                  href="/login"
+                  className="font-medium text-primary hover:underline"
+                >
+                  Back to sign in
+                </Link>
+              </p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     )
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background/95 to-background/90 px-4">
-      <AuthCard
-        title="Set new password"
-        description="Enter your new password below"
-        glassmorphism
-      >
+      <Card className="w-full max-w-md mx-auto">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-semibold tracking-tight text-center text-primary-text">
+            Set new password
+          </CardTitle>
+          <CardDescription className="text-center">
+            Enter your new password below
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
         <form onSubmit={handleSubmit} className="space-y-4">
-          <AuthInput
+          <FormField
             label="New Password"
             type="password"
             value={password}
@@ -132,7 +147,7 @@ export default function ResetPasswordPage() {
             disabled={isLoading}
           />
 
-          <AuthInput
+          <FormField
             label="Confirm New Password"
             type="password"
             value={confirmPassword}
@@ -143,25 +158,24 @@ export default function ResetPasswordPage() {
           />
 
           {error && (
-            <AuthFormMessage type="error">
+            <FormMessage type="error">
               {error}
-            </AuthFormMessage>
+            </FormMessage>
           )}
 
           {success && (
-            <AuthFormMessage type="success">
+            <FormMessage type="success">
               {success}
-            </AuthFormMessage>
+            </FormMessage>
           )}
 
-          <AuthButton
+          <Button
             type="submit"
             className="w-full"
-            loading={isLoading}
-            loadingText="Updating password..."
+            disabled={isLoading}
           >
-            Update Password
-          </AuthButton>
+            {isLoading ? "Updating password..." : "Update Password"}
+          </Button>
         </form>
 
         <div className="text-center">
@@ -174,7 +188,8 @@ export default function ResetPasswordPage() {
             </Link>
           </p>
         </div>
-      </AuthCard>
+        </CardContent>
+      </Card>
     </div>
   )
 }

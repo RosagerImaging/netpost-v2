@@ -1,14 +1,14 @@
 import * as React from "react"
-import { cn } from "../../lib/utils"
-import { Input } from "../input"
+import { cn } from "../lib/utils"
+import { Input } from "./input"
 
-export interface AuthInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface FormFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string
   error?: string
   helperText?: string
 }
 
-const AuthInput = React.forwardRef<HTMLInputElement, AuthInputProps>(
+const FormField = React.forwardRef<HTMLInputElement, FormFieldProps>(
   ({ className, label, error, helperText, ...props }, ref) => {
     const id = props.id || props.name
 
@@ -17,14 +17,14 @@ const AuthInput = React.forwardRef<HTMLInputElement, AuthInputProps>(
         {label && (
           <label
             htmlFor={id}
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            className="text-sm font-medium leading-none text-primary-text peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
             {label}
           </label>
         )}
         <Input
           className={cn(
-            error && "border-destructive focus-visible:ring-destructive",
+            error && "border-red-500 focus-visible:ring-red-500",
             className
           )}
           ref={ref}
@@ -32,16 +32,16 @@ const AuthInput = React.forwardRef<HTMLInputElement, AuthInputProps>(
           {...props}
         />
         {error && (
-          <p className="text-sm text-destructive">{error}</p>
+          <p className="text-sm text-red-500">{error}</p>
         )}
         {helperText && !error && (
-          <p className="text-sm text-muted-foreground">{helperText}</p>
+          <p className="text-sm text-secondary-text/70">{helperText}</p>
         )}
       </div>
     )
   }
 )
 
-AuthInput.displayName = "AuthInput"
+FormField.displayName = "FormField"
 
-export { AuthInput }
+export { FormField }

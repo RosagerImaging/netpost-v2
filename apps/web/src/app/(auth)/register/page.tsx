@@ -6,10 +6,14 @@ import Link from 'next/link'
 import { useRedirectIfAuthenticated } from '../../../../lib/auth/auth-hooks'
 import { AuthService } from '../../../../lib/auth/auth-utils'
 import {
-  AuthCard,
-  AuthInput,
-  AuthButton,
-  AuthFormMessage,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  FormField,
+  Button,
+  FormMessage,
 } from '@netpost/ui'
 
 export default function RegisterPage() {
@@ -105,13 +109,18 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background/95 to-background/90 px-4">
-      <AuthCard
-        title="Create your account"
-        description="Get started with NetPost V2 today"
-        glassmorphism
-      >
+      <Card className="w-full max-w-md mx-auto">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-semibold tracking-tight text-center text-primary-text">
+            Create your account
+          </CardTitle>
+          <CardDescription className="text-center">
+            Get started with NetPost V2 today
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
         <form onSubmit={handleSubmit} className="space-y-4">
-          <AuthInput
+          <FormField
             label="Email"
             type="email"
             value={email}
@@ -121,7 +130,7 @@ export default function RegisterPage() {
             disabled={isLoading}
           />
 
-          <AuthInput
+          <FormField
             label="Password"
             type="password"
             value={password}
@@ -132,7 +141,7 @@ export default function RegisterPage() {
             disabled={isLoading}
           />
 
-          <AuthInput
+          <FormField
             label="Confirm Password"
             type="password"
             value={confirmPassword}
@@ -164,25 +173,24 @@ export default function RegisterPage() {
           </div>
 
           {error && (
-            <AuthFormMessage type="error">
+            <FormMessage type="error">
               {error}
-            </AuthFormMessage>
+            </FormMessage>
           )}
 
           {success && (
-            <AuthFormMessage type="success">
+            <FormMessage type="success">
               {success}
-            </AuthFormMessage>
+            </FormMessage>
           )}
 
-          <AuthButton
+          <Button
             type="submit"
             className="w-full"
-            loading={isLoading}
-            loadingText="Creating account..."
+            disabled={isLoading}
           >
-            Create Account
-          </AuthButton>
+            {isLoading ? "Creating account..." : "Create Account"}
+          </Button>
         </form>
 
         <div className="relative">
@@ -196,8 +204,8 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        <AuthButton
-          variant="google"
+        <Button
+          variant="outline"
           className="w-full"
           onClick={handleGoogleSignUp}
           disabled={isLoading}
@@ -221,7 +229,7 @@ export default function RegisterPage() {
             />
           </svg>
           Continue with Google
-        </AuthButton>
+        </Button>
 
         <div className="text-center">
           <p className="text-sm text-muted-foreground">
@@ -234,7 +242,8 @@ export default function RegisterPage() {
             </Link>
           </p>
         </div>
-      </AuthCard>
+        </CardContent>
+      </Card>
     </div>
   )
 }

@@ -1,0 +1,58 @@
+name: QA Agent Handoff
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  invoke_qa_agent:
+    runs-on: ubuntu-latest
+    if: github.event.label.name == 'ready-for-qa'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract story information
+        id: story_info
+        run: |
+          # Extract story number and title from issue
+          STORY_NUMBER=$(echo "${{ github.event.issue.title }}" | grep -o '\[Story [0-9.]*\]' | sed 's/\[Story \([0-9.]*\)\]/\1/')
+          STORY_TITLE="${{ github.event.issue.title }}"
+          ISSUE_NUMBER="${{ github.event.issue.number }}"
+          ISSUE_URL="${{ github.event.issue.html_url }}"
+
+          echo "story_number=$STORY_NUMBER" >> $GITHUB_OUTPUT
+          echo "story_title=$STORY_TITLE" >> $GITHUB_OUTPUT
+          echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+          echo "issue_url=$ISSUE_URL" >> $GITHUB_OUTPUT
+
+      - name: Trigger QA Agent via Claude Code
+        run: |
+          # Create a comment on the issue to trigger QA agent
+          gh issue comment ${{ github.event.issue.number }} --body "🤖 **QA Agent Handoff Initiated**
+
+          Story ${{ steps.story_info.outputs.story_number }} development is complete and ready for QA testing.
+
+          **QA Agent Instructions:**
+          - Review all acceptance criteria in the story
+          - Test all implemented functionality
+          - Verify authentication flows work correctly
+          - Check UI/UX implementation matches requirements
+          - Report any bugs or issues found
+          - When testing is complete, label as \`qa-complete\` or \`qa-failed\`
+
+          **Story Details:**
+          - Title: ${{ steps.story_info.outputs.story_title }}
+          - Issue: #${{ steps.story_info.outputs.issue_number }}
+          - Status: Ready for QA Testing
+
+          @qa-agent Please begin QA testing for this story."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add QA assignment label
+        run: |
+          gh issue edit ${{ github.event.issue.number }} --add-label "qa-assigned"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

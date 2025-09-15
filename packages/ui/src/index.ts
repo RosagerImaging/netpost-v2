@@ -10,18 +10,9 @@ export {
   CardContent,
 } from "./components/card";
 
-// Auth Components
-export {
-  AuthButton,
-  authButtonVariants,
-  type AuthButtonProps,
-  AuthCard,
-  type AuthCardProps,
-  AuthInput,
-  type AuthInputProps,
-  AuthFormMessage,
-  type AuthFormMessageProps,
-} from "./components/auth";
+// Form Components
+export { FormField, type FormFieldProps } from "./components/form-field";
+export { FormMessage, type FormMessageProps } from "./components/form-message";
 
 // Utils
 export { cn } from "./lib/utils";
