@@ -49,10 +49,10 @@ jobs:
 
           @qa-agent Please begin QA testing for this story."
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
 
       - name: Add QA assignment label
         run: |
           gh issue edit ${{ github.event.issue.number }} --add-label "qa-assigned"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
