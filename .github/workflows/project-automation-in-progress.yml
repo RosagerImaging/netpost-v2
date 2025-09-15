@@ -13,6 +13,7 @@ jobs:
 
     steps:
       - name: Add to project
+        id: add_to_project
         uses: actions/add-to-project@v1.0.2
         with:
           project-url: https://github.com/users/RosagerImaging/projects/1
