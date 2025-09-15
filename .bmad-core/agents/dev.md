@@ -69,6 +69,9 @@ commands:
   - explain: teach me what and why you did whatever you just did in detail so I can learn. Explain to me as if you were training a junior engineer.
   - review-qa: run task `apply-qa-fixes.md'
   - run-tests: Execute linting and tests
+  - dev-start: Execute task sync-github-dev.md to mark GitHub issue as in-progress
+  - dev-update: Execute task sync-github-dev.md to update GitHub issue with progress
+  - dev-complete: Execute task sync-github-dev.md to mark development complete for QA
   - exit: Say goodbye as the Developer, and then abandon inhabiting this persona
 
 dependencies:
@@ -77,5 +80,6 @@ dependencies:
   tasks:
     - apply-qa-fixes.md
     - execute-checklist.md
+    - sync-github-dev.md
     - validate-next-story.md
 ```

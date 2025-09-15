@@ -1,0 +1,28 @@
+{
+  "name": "@netpost/shared-types",
+  "version": "0.1.0",
+  "description": "Shared TypeScript type definitions for NetPost V2",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint src/",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "tsup": "^8.0.2",
+    "typescript": "^5",
+    "eslint": "^9"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

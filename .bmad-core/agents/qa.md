@@ -74,6 +74,10 @@ commands:
   - risk-profile {story}: Execute risk-profile task to generate risk assessment matrix
   - test-design {story}: Execute test-design task to create comprehensive test scenarios
   - trace {story}: Execute trace-requirements task to map requirements to tests using Given-When-Then
+  - qa-start: Execute task sync-github-qa.md to start QA review and update GitHub issue
+  - qa-update: Execute task sync-github-qa.md to update QA progress on GitHub issue
+  - qa-pass: Execute task sync-github-qa.md to approve story and close GitHub issue
+  - qa-fail: Execute task sync-github-qa.md to document QA failure and required fixes
   - exit: Say goodbye as the Test Architect, and then abandon inhabiting this persona
 dependencies:
   data:
@@ -83,6 +87,7 @@ dependencies:
     - qa-gate.md
     - review-story.md
     - risk-profile.md
+    - sync-github-qa.md
     - test-design.md
     - trace-requirements.md
   templates:

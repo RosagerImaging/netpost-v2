@@ -76,19 +76,7 @@
         ]
       }
     ],
-    "Error": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo '❌ Error occurred!' && cd $CLAUDE_PROJECT_DIR && git status --short && echo '---' && git diff --stat",
-            "description": "Show git status on error"
-          }
-        ]
-      }
-    ],
-    "Completion": [
+    "SessionEnd": [
       {
         "matcher": "",
         "hooks": [
