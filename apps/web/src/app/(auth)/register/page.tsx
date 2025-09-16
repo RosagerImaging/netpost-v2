@@ -75,7 +75,7 @@ export default function RegisterPage() {
           router.push("/login");
         }, 3000);
       }
-    } catch (err) {
+    } catch (_) {
       setError("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
@@ -100,7 +100,7 @@ export default function RegisterPage() {
         setError(result.error);
       }
       // OAuth redirect will be handled by Supabase
-    } catch (err) {
+    } catch (_) {
       setError("An unexpected error occurred with Google sign up.");
     } finally {
       setIsLoading(false);

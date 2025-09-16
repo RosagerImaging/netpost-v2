@@ -13,7 +13,7 @@ export class AuthService {
       }
 
       return { data };
-    } catch (error) {
+    } catch (_) {
       return { error: "An unexpected error occurred during sign in" };
     }
   }
@@ -30,7 +30,7 @@ export class AuthService {
       }
 
       return { data };
-    } catch (error) {
+    } catch (_) {
       return { error: "An unexpected error occurred during sign up" };
     }
   }
@@ -42,6 +42,11 @@ export class AuthService {
         throw new Error(this.formatAuthError(error));
       }
     } catch (error) {
+      // If it's our formatted auth error (contains specific messages), re-throw it
+      if (error instanceof Error && error.message.includes('Sign out failed')) {
+        throw error;
+      }
+      // For network errors or other unexpected errors, use generic message
       throw new Error("An unexpected error occurred during sign out");
     }
   }
@@ -60,7 +65,7 @@ export class AuthService {
       }
 
       return { data };
-    } catch (error) {
+    } catch (_) {
       return { error: "An unexpected error occurred during Google sign in" };
     }
   }
@@ -76,7 +81,7 @@ export class AuthService {
       }
 
       return { success: true };
-    } catch (error) {
+    } catch (_) {
       return { error: "An unexpected error occurred during password reset" };
     }
   }
@@ -92,7 +97,7 @@ export class AuthService {
       }
 
       return { success: true };
-    } catch (error) {
+    } catch (_) {
       return { error: "An unexpected error occurred during password update" };
     }
   }
@@ -109,7 +114,7 @@ export class AuthService {
       }
 
       return session;
-    } catch (error) {
+    } catch (_) {
       return null;
     }
   }
@@ -126,7 +131,7 @@ export class AuthService {
       }
 
       return user;
-    } catch (error) {
+    } catch (_) {
       return null;
     }
   }

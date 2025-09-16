@@ -47,7 +47,7 @@ export default function ForgotPasswordPage() {
           "If an account with that email exists, we&apos;ve sent you a password reset link. Please check your email."
         );
       }
-    } catch (err) {
+    } catch (_) {
       setError("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
@@ -62,7 +62,7 @@ export default function ForgotPasswordPage() {
             Reset your password
           </CardTitle>
           <CardDescription className="text-center">
-            Enter your email address and we'll send you a reset link
+            Enter your email address and we&apos;ll send you a reset link
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
