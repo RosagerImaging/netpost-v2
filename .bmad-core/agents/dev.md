@@ -77,8 +77,12 @@ commands:
 dependencies:
   checklists:
     - story-dod-checklist.md
+  data:
+    - technical-preferences.md
+    - ui-component-reference.md
   tasks:
     - apply-qa-fixes.md
+    - develop-with-ui-components.md
     - execute-checklist.md
     - sync-github-dev.md
     - validate-next-story.md

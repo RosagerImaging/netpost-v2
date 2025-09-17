@@ -56,8 +56,15 @@ commands:
   - document-project: execute the task document-project.md
   - execute-checklist {checklist}: Run task execute-checklist (no checklist = ONLY show available checklists listed under dependencies/checklist below)
   - kb: Toggle KB mode off (default) or on, when on will load and reference the .bmad-core/data/bmad-kb.md and converse with the user answering his questions with this informational resource
+  - orchestrate-story {story-file}: Execute complete automated workflow (SM → Dev → QA → Dev → SM) with GitHub automation at each step
+  - orchestrate-status: Show current workflow status and phase
+  - orchestrate-pause: Pause orchestrated workflow at current phase
+  - orchestrate-resume: Resume paused orchestrated workflow
+  - orchestrate-manual: Switch from orchestrated to manual agent mode
   - shard-doc {document} {destination}: run the task shard-doc against the optionally provided document to the specified destination
   - task {task}: Execute task, if not found or none specified, ONLY list available dependencies/tasks listed below
+  - ui-guide: Load and display UI component reference guide for development
+  - ui-develop {story}: Execute develop-with-ui-components task for UI implementation
   - yolo: Toggle Yolo Mode
   - exit: Exit (confirm)
 
@@ -74,6 +81,7 @@ dependencies:
     - brainstorming-techniques.md
     - elicitation-methods.md
     - technical-preferences.md
+    - ui-component-reference.md
   tasks:
     - advanced-elicitation.md
     - brownfield-create-epic.md
@@ -82,12 +90,18 @@ dependencies:
     - create-deep-research-prompt.md
     - create-doc.md
     - create-next-story.md
+    - develop-with-ui-components.md
     - document-project.md
     - execute-checklist.md
     - facilitate-brainstorming-session.md
     - generate-ai-frontend-prompt.md
+    - handoff-to-dev.md
     - index-docs.md
+    - orchestrate-story-workflow.md
     - shard-doc.md
+    - sync-github-issue.md
+    - sync-github-dev.md
+    - sync-github-qa.md
   templates:
     - architecture-tmpl.yaml
     - brownfield-architecture-tmpl.yaml

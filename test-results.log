@@ -2,32 +2,22 @@
 > netpost-v2@1.0.0 test
 > turbo test
 
-• Packages in scope: @netpost/config, @netpost/shared-types, @netpost/ui, web
-• Running test in 4 packages
+• Packages in scope: @netpost/config, @netpost/shared-types, @netpost/ui, mobile, web
+• Running test in 5 packages
 • Remote caching disabled
-@netpost/shared-types:build: cache hit, replaying logs b4661030c5cdbad7
-@netpost/shared-types:build: 
-@netpost/shared-types:build: > @netpost/shared-types@0.1.0 build
-@netpost/shared-types:build: > tsup
-@netpost/shared-types:build: 
-@netpost/shared-types:build: CLI Building entry: src/index.ts
-@netpost/shared-types:build: CLI Using tsconfig: tsconfig.json
-@netpost/shared-types:build: CLI tsup v8.5.0
-@netpost/shared-types:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/shared-types/tsup.config.ts
-@netpost/shared-types:build: CLI Target: es2020
-@netpost/shared-types:build: CLI Cleaning output folder
-@netpost/shared-types:build: CJS Build start
-@netpost/shared-types:build: ESM Build start
-@netpost/shared-types:build: CJS dist/index.cjs     792.00 B
-@netpost/shared-types:build: CJS dist/index.cjs.map 1010.00 B
-@netpost/shared-types:build: CJS ⚡️ Build success in 14ms
-@netpost/shared-types:build: ESM dist/index.js     33.00 B
-@netpost/shared-types:build: ESM dist/index.js.map 71.00 B
-@netpost/shared-types:build: ESM ⚡️ Build success in 14ms
-@netpost/shared-types:build: DTS Build start
-@netpost/shared-types:build: DTS ⚡️ Build success in 1179ms
-@netpost/shared-types:build: DTS dist/index.d.cts 8.08 KB
-@netpost/shared-types:build: DTS dist/index.d.ts  8.08 KB
+mobile:test: cache hit, replaying logs 53c9e3ca5ab1e480
+mobile:test: 
+mobile:test: > mobile@1.0.0 test
+mobile:test: > jest
+mobile:test: 
+mobile:test: PASS src/services/__tests__/sourcingService.test.ts
+mobile:test: PASS __tests__/App.test.tsx
+mobile:test: 
+mobile:test: Test Suites: 2 passed, 2 total
+mobile:test: Tests:       4 passed, 4 total
+mobile:test: Snapshots:   0 total
+mobile:test: Time:        0.843 s, estimated 1 s
+mobile:test: Ran all test suites.
 @netpost/config:build: cache hit, replaying logs 254db789b880b605
 @netpost/config:build: 
 @netpost/config:build: > @netpost/config@0.1.0 build
@@ -74,7 +64,30 @@
 @netpost/ui:build: DTS ⚡️ Build success in 1767ms
 @netpost/ui:build: DTS dist/index.d.cts 2.46 KB
 @netpost/ui:build: DTS dist/index.d.ts  2.46 KB
-web:test: cache hit, replaying logs a4805cb42da4535b
+@netpost/shared-types:build: cache hit, replaying logs b4661030c5cdbad7
+@netpost/shared-types:build: 
+@netpost/shared-types:build: > @netpost/shared-types@0.1.0 build
+@netpost/shared-types:build: > tsup
+@netpost/shared-types:build: 
+@netpost/shared-types:build: CLI Building entry: src/index.ts
+@netpost/shared-types:build: CLI Using tsconfig: tsconfig.json
+@netpost/shared-types:build: CLI tsup v8.5.0
+@netpost/shared-types:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/shared-types/tsup.config.ts
+@netpost/shared-types:build: CLI Target: es2020
+@netpost/shared-types:build: CLI Cleaning output folder
+@netpost/shared-types:build: CJS Build start
+@netpost/shared-types:build: ESM Build start
+@netpost/shared-types:build: CJS dist/index.cjs     792.00 B
+@netpost/shared-types:build: CJS dist/index.cjs.map 1010.00 B
+@netpost/shared-types:build: CJS ⚡️ Build success in 14ms
+@netpost/shared-types:build: ESM dist/index.js     33.00 B
+@netpost/shared-types:build: ESM dist/index.js.map 71.00 B
+@netpost/shared-types:build: ESM ⚡️ Build success in 14ms
+@netpost/shared-types:build: DTS Build start
+@netpost/shared-types:build: DTS ⚡️ Build success in 1179ms
+@netpost/shared-types:build: DTS dist/index.d.cts 8.08 KB
+@netpost/shared-types:build: DTS dist/index.d.ts  8.08 KB
+web:test: cache hit, replaying logs d6874faa23d77ad8
 web:test: 
 web:test: > web@0.1.0 test
 web:test: > vitest
@@ -82,16 +95,16 @@ web:test:
 web:test: 
 web:test:  RUN  v3.2.4 /home/optiks/dev/netpost-v2/apps/web
 web:test: 
-web:test:  ✓ lib/auth/__tests__/auth-integration.test.ts (10 tests) 12ms
-web:test:  ✓ lib/auth/__tests__/auth-utils.test.ts (36 tests) 17ms
+web:test:  ✓ lib/auth/__tests__/auth-utils.test.ts (36 tests) 14ms
+web:test:  ✓ lib/auth/__tests__/auth-integration.test.ts (10 tests) 17ms
 web:test: 
 web:test:  Test Files  2 passed (2)
 web:test:       Tests  46 passed (46)
-web:test:    Start at  01:17:17
-web:test:    Duration  937ms (transform 154ms, setup 113ms, collect 164ms, tests 29ms, environment 915ms, prepare 196ms)
+web:test:    Start at  06:27:59
+web:test:    Duration  1.01s (transform 150ms, setup 113ms, collect 183ms, tests 31ms, environment 1.01s, prepare 213ms)
 web:test: 
 
- Tasks:    4 successful, 4 total
-Cached:    4 cached, 4 total
-  Time:    70ms >>> FULL TURBO
+ Tasks:    5 successful, 5 total
+Cached:    5 cached, 5 total
+  Time:    93ms >>> FULL TURBO
 

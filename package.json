@@ -10,7 +10,10 @@
     "lint": "turbo lint",
     "test": "turbo test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "type-check": "turbo type-check"
+    "type-check": "turbo type-check",
+    "mobile:dev": "npm run dev --workspace=mobile",
+    "mobile:android": "npm run android --workspace=mobile",
+    "mobile:ios": "npm run ios --workspace=mobile"
   },
   "devDependencies": {
     "@turbo/gen": "^1.12.4",
