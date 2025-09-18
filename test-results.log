@@ -5,52 +5,6 @@
 • Packages in scope: @netpost/config, @netpost/shared-types, @netpost/ui, mobile, web
 • Running test in 5 packages
 • Remote caching disabled
-@netpost/shared-types:build: cache hit, replaying logs 015e07c0d36345f9
-@netpost/shared-types:build: 
-@netpost/shared-types:build: > @netpost/shared-types@0.1.0 build
-@netpost/shared-types:build: > tsup
-@netpost/shared-types:build: 
-@netpost/shared-types:build: CLI Building entry: src/index.ts
-@netpost/shared-types:build: CLI Using tsconfig: tsconfig.json
-@netpost/shared-types:build: CLI tsup v8.5.0
-@netpost/shared-types:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/shared-types/tsup.config.ts
-@netpost/shared-types:build: CLI Target: es2020
-@netpost/shared-types:build: CLI Cleaning output folder
-@netpost/shared-types:build: CJS Build start
-@netpost/shared-types:build: ESM Build start
-@netpost/shared-types:build: CJS dist/index.cjs     3.83 KB
-@netpost/shared-types:build: CJS dist/index.cjs.map 13.23 KB
-@netpost/shared-types:build: CJS ⚡️ Build success in 14ms
-@netpost/shared-types:build: ESM dist/index.js     2.33 KB
-@netpost/shared-types:build: ESM dist/index.js.map 11.48 KB
-@netpost/shared-types:build: ESM ⚡️ Build success in 14ms
-@netpost/shared-types:build: DTS Build start
-@netpost/shared-types:build: DTS ⚡️ Build success in 1500ms
-@netpost/shared-types:build: DTS dist/index.d.cts 16.28 KB
-@netpost/shared-types:build: DTS dist/index.d.ts  16.28 KB
-@netpost/ui:build: cache hit, replaying logs c01a490fc5568ee9
-@netpost/ui:build: 
-@netpost/ui:build: > @netpost/ui@0.1.0 build
-@netpost/ui:build: > tsup
-@netpost/ui:build: 
-@netpost/ui:build: CLI Building entry: src/index.ts
-@netpost/ui:build: CLI Using tsconfig: tsconfig.json
-@netpost/ui:build: CLI tsup v8.5.0
-@netpost/ui:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/ui/tsup.config.ts
-@netpost/ui:build: CLI Target: es2020
-@netpost/ui:build: CLI Cleaning output folder
-@netpost/ui:build: CJS Build start
-@netpost/ui:build: ESM Build start
-@netpost/ui:build: CJS dist/index.cjs     8.63 KB
-@netpost/ui:build: CJS dist/index.cjs.map 11.06 KB
-@netpost/ui:build: CJS ⚡️ Build success in 24ms
-@netpost/ui:build: ESM dist/index.js     6.16 KB
-@netpost/ui:build: ESM dist/index.js.map 10.46 KB
-@netpost/ui:build: ESM ⚡️ Build success in 24ms
-@netpost/ui:build: DTS Build start
-@netpost/ui:build: DTS ⚡️ Build success in 1767ms
-@netpost/ui:build: DTS dist/index.d.cts 2.46 KB
-@netpost/ui:build: DTS dist/index.d.ts  2.46 KB
 @netpost/config:build: cache hit, replaying logs 254db789b880b605
 @netpost/config:build: 
 @netpost/config:build: > @netpost/config@0.1.0 build
@@ -87,24 +41,86 @@ mobile:test: Tests:       4 passed, 4 total
 mobile:test: Snapshots:   0 total
 mobile:test: Time:        0.843 s, estimated 1 s
 mobile:test: Ran all test suites.
-web:test: cache miss, executing 30451c5349b2f000
-web:test: 
-web:test: > web@0.1.0 test
-web:test: > vitest
-web:test: 
-web:test: 
-web:test:  RUN  v3.2.4 /home/optiks/dev/netpost-v2/apps/web
-web:test: 
-web:test:  ✓ lib/auth/__tests__/auth-integration.test.ts (10 tests) 11ms
-web:test:  ✓ lib/auth/__tests__/auth-utils.test.ts (36 tests) 13ms
-web:test: 
-web:test:  Test Files  2 passed (2)
-web:test:       Tests  46 passed (46)
-web:test:    Start at  19:09:01
-web:test:    Duration  947ms (transform 131ms, setup 107ms, collect 176ms, tests 24ms, environment 862ms, prepare 178ms)
-web:test: 
+@netpost/shared-types:build: cache miss, executing c6b19e989fe78720
+@netpost/ui:build: cache hit, replaying logs c01a490fc5568ee9
+@netpost/ui:build: 
+@netpost/ui:build: > @netpost/ui@0.1.0 build
+@netpost/ui:build: > tsup
+@netpost/ui:build: 
+@netpost/ui:build: CLI Building entry: src/index.ts
+@netpost/ui:build: CLI Using tsconfig: tsconfig.json
+@netpost/ui:build: CLI tsup v8.5.0
+@netpost/ui:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/ui/tsup.config.ts
+@netpost/ui:build: CLI Target: es2020
+@netpost/ui:build: CLI Cleaning output folder
+@netpost/ui:build: CJS Build start
+@netpost/ui:build: ESM Build start
+@netpost/ui:build: CJS dist/index.cjs     8.63 KB
+@netpost/ui:build: CJS dist/index.cjs.map 11.06 KB
+@netpost/ui:build: CJS ⚡️ Build success in 24ms
+@netpost/ui:build: ESM dist/index.js     6.16 KB
+@netpost/ui:build: ESM dist/index.js.map 10.46 KB
+@netpost/ui:build: ESM ⚡️ Build success in 24ms
+@netpost/ui:build: DTS Build start
+@netpost/ui:build: DTS ⚡️ Build success in 1767ms
+@netpost/ui:build: DTS dist/index.d.cts 2.46 KB
+@netpost/ui:build: DTS dist/index.d.ts  2.46 KB
+@netpost/shared-types:build: 
+@netpost/shared-types:build: > @netpost/shared-types@0.1.0 build
+@netpost/shared-types:build: > tsup
+@netpost/shared-types:build: 
+@netpost/shared-types:build: CLI Building entry: src/index.ts
+@netpost/shared-types:build: CLI Using tsconfig: tsconfig.json
+@netpost/shared-types:build: CLI tsup v8.5.0
+@netpost/shared-types:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/shared-types/tsup.config.ts
+@netpost/shared-types:build: CLI Target: es2020
+@netpost/shared-types:build: CLI Cleaning output folder
+@netpost/shared-types:build: CJS Build start
+@netpost/shared-types:build: ESM Build start
+@netpost/shared-types:build: ✘ [ERROR] Could not resolve "../database/delisting"
+@netpost/shared-types:build: 
+@netpost/shared-types:build:     src/index.ts:105:7:
+@netpost/shared-types:build:       105 │ } from "../database/delisting";
+@netpost/shared-types:build:           ╵        ~~~~~~~~~~~~~~~~~~~~~~~
+@netpost/shared-types:build: 
+@netpost/shared-types:build: ✘ [ERROR] Could not resolve "../database/delisting"
+@netpost/shared-types:build: 
+@netpost/shared-types:build:     src/index.ts:105:7:
+@netpost/shared-types:build:       105 │ } from "../database/delisting";
+@netpost/shared-types:build:           ╵        ~~~~~~~~~~~~~~~~~~~~~~~
+@netpost/shared-types:build: 
+@netpost/shared-types:build: ESM Build failed
+@netpost/shared-types:build: Error: Build failed with 1 error:
+@netpost/shared-types:build: src/index.ts:105:7: ERROR: Could not resolve "../database/delisting"
+@netpost/shared-types:build:     at failureErrorWithLog (/home/optiks/dev/netpost-v2/node_modules/esbuild/lib/main.js:1467:15)
+@netpost/shared-types:build:     at /home/optiks/dev/netpost-v2/node_modules/esbuild/lib/main.js:926:25
+@netpost/shared-types:build:     at runOnEndCallbacks (/home/optiks/dev/netpost-v2/node_modules/esbuild/lib/main.js:1307:45)
+@netpost/shared-types:build:     at buildResponseToResult (/home/optiks/dev/netpost-v2/node_modules/esbuild/lib/main.js:924:7)
+@netpost/shared-types:build:     at /home/optiks/dev/netpost-v2/node_modules/esbuild/lib/main.js:951:16
+@netpost/shared-types:build:     at responseCallbacks.<computed> (/home/optiks/dev/netpost-v2/node_modules/esbuild/lib/main.js:603:9)
+@netpost/shared-types:build:     at handleIncomingPacket (/home/optiks/dev/netpost-v2/node_modules/esbuild/lib/main.js:658:12)
+@netpost/shared-types:build:     at Socket.readFromStdout (/home/optiks/dev/netpost-v2/node_modules/esbuild/lib/main.js:581:7)
+@netpost/shared-types:build:     at Socket.emit (node:events:518:28)
+@netpost/shared-types:build:     at addChunk (node:internal/streams/readable:561:12)
+@netpost/shared-types:build: CJS Build failed
+@netpost/shared-types:build: DTS Build start
+@netpost/shared-types:build: src/index.ts(97,8): error TS2307: Cannot find module '../database/delisting' or its corresponding type declarations.
+@netpost/shared-types:build: src/index.ts(105,8): error TS2307: Cannot find module '../database/delisting' or its corresponding type declarations.
+@netpost/shared-types:build: 
+@netpost/shared-types:build: DTS Build error
+@netpost/shared-types:build: npm error Lifecycle script `build` failed with error:
+@netpost/shared-types:build: npm error code 1
+@netpost/shared-types:build: npm error path /home/optiks/dev/netpost-v2/packages/shared-types
+@netpost/shared-types:build: npm error workspace @netpost/shared-types@0.1.0
+@netpost/shared-types:build: npm error location /home/optiks/dev/netpost-v2/packages/shared-types
+@netpost/shared-types:build: npm error command failed
+@netpost/shared-types:build: npm error command sh -c tsup
+@netpost/shared-types:build: ERROR: command finished with error: command (/home/optiks/dev/netpost-v2/packages/shared-types) /home/optiks/.nvm/versions/node/v22.18.0/bin/npm run build exited (1)
+@netpost/shared-types#build: command (/home/optiks/dev/netpost-v2/packages/shared-types) /home/optiks/.nvm/versions/node/v22.18.0/bin/npm run build exited (1)
 
- Tasks:    5 successful, 5 total
-Cached:    4 cached, 5 total
-  Time:    1.766s 
+ Tasks:    3 successful, 4 total
+Cached:    3 cached, 4 total
+  Time:    2.05s 
+Failed:    @netpost/shared-types#build
 
+ ERROR  run failed: command  exited (1)

@@ -45,6 +45,20 @@ export interface ListingCreationResult {
   };
 }
 
+// Delisting operation types
+export interface EndListingOptions {
+  reason?: string;
+  sold_to_buyer?: string;
+  cancel_reason?: 'not_available' | 'wrong_category' | 'description_issue' | 'pricing_error' | 'sold_elsewhere';
+}
+
+export interface EndListingResult {
+  success: boolean;
+  ended_at?: string;
+  external_response?: any;
+  error?: string;
+}
+
 // Authentication flow types
 export interface AuthFlow {
   authorization_url: string;
@@ -120,6 +134,10 @@ export abstract class BaseMarketplaceAdapter {
   abstract deleteListing(externalId: string): Promise<boolean>;
   abstract getListing(externalId: string): Promise<ListingRecord | null>;
   abstract getListingStatus(externalId: string): Promise<ListingStatus>;
+
+  // Delisting operations
+  abstract endListing(externalId: string, options?: EndListingOptions): Promise<EndListingResult>;
+  abstract getListingById(externalId: string): Promise<ListingRecord>;
 
   // Category and metadata operations
   abstract getCategories(): Promise<Array<{ id: string; name: string; parent_id?: string }>>;

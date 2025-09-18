@@ -627,6 +627,118 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
     }
   }
 
+  // Delisting operations
+  async endListing(externalId: string, options?: EndListingOptions): Promise<EndListingResult> {
+    try {
+      console.log(`Ending eBay listing: ${externalId}`);
+      
+      // eBay Trading API EndFixedPriceItem call
+      const requestData = {
+        ItemID: externalId,
+        EndingReason: this.mapEndingReason(options?.cancel_reason || 'not_available'),
+        ...(options?.reason && { SellerInventoryNote: options.reason })
+      };
+
+      const response = await this.makeApiRequest(
+        'trading/EndFixedPriceItem',
+        'POST',
+        requestData
+      );
+
+      if (!response.success) {
+        return {
+          success: false,
+          error: response.error || 'Failed to end eBay listing',
+        };
+      }
+
+      return {
+        success: true,
+        ended_at: new Date().toISOString(),
+        external_response: response.data,
+      };
+
+    } catch (error) {
+      console.error(`Error ending eBay listing ${externalId}:`, error);
+      
+      // Handle specific eBay errors
+      if (error.message?.includes('ItemNotFound')) {
+        throw new MarketplaceApiError(
+          'Listing not found on eBay',
+          'ebay',
+          404,
+          'LISTING_NOT_FOUND'
+        );
+      }
+      
+      if (error.message?.includes('ItemAlreadyEnded')) {
+        throw new MarketplaceApiError(
+          'Listing already ended on eBay',
+          'ebay',
+          400,
+          'LISTING_ALREADY_ENDED'
+        );
+      }
+
+      return {
+        success: false,
+        error: `eBay API error: ${error.message}`,
+      };
+    }
+  }
+
+  async getListingById(externalId: string): Promise<ListingRecord> {
+    try {
+      console.log(`Getting eBay listing: ${externalId}`);
+
+      // Use eBay Trading API GetItem call
+      const response = await this.makeApiRequest(
+        `trading/GetItem`,
+        'POST',
+        {
+          ItemID: externalId,
+          DetailLevel: 'ReturnAll',
+          IncludeItemSpecifics: true
+        }
+      );
+
+      if (!response.success || !response.data?.Item) {
+        throw new MarketplaceApiError(
+          `eBay listing not found: ${externalId}`,
+          'ebay',
+          404,
+          'LISTING_NOT_FOUND'
+        );
+      }
+
+      const ebayItem = response.data.Item;
+      
+      return this.mapEBayDataToListingRecord({
+        ...ebayItem,
+        // Add sale information if sold
+        sale_price: ebayItem.SellingStatus?.CurrentPrice?.Value,
+        sale_date: ebayItem.SellingStatus?.EndTime,
+        marketplace_data: ebayItem
+      });
+
+    } catch (error) {
+      console.error(`Error getting eBay listing ${externalId}:`, error);
+      throw error;
+    }
+  }
+
+  private mapEndingReason(cancelReason: string): string {
+    const reasonMap: Record<string, string> = {
+      'not_available': 'NotAvailable',
+      'wrong_category': 'Incorrect',
+      'description_issue': 'Incorrect', 
+      'pricing_error': 'PricingError',
+      'sold_elsewhere': 'NotAvailable'
+    };
+
+    return reasonMap[cancelReason] || 'NotAvailable';
+  }
+
   // Private helper methods
   private getClientId(): string {
     const credentials = this.credentials as OAuth2Credentials;

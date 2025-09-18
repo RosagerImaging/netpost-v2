@@ -424,16 +424,19 @@ export class CrossListingService {
         };
       }
 
+      // Import job queue (dynamic to avoid circular imports)
+      const { listingJobQueue } = await import('./listing-job-queue');
+
       // Generate unique group ID for cross-posted listings
       const crossPostGroupId = `cross_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-      // Prepare listing data for each marketplace
+      // Process each marketplace
       const listingPromises = formData.marketplaces.map(async (marketplace) => {
         const listingData = this.generateMarketplaceListingData(formData, marketplace);
         listingData.cross_post_group_id = crossPostGroupId;
 
         try {
-          // Create listing record in database (will be processed by job queue)
+          // Create listing record in database first
           const { data, error } = await supabase
             .from('listings')
             .insert([{
@@ -450,10 +453,20 @@ export class CrossListingService {
             throw error;
           }
 
+          // Enqueue job for async processing
+          const jobId = await listingJobQueue.enqueueJob(
+            user.id,
+            formData.inventory_item_id,
+            marketplace,
+            listingData,
+            5 // Default priority
+          );
+
           return {
             marketplace,
             status: 'queued' as const,
             listing_id: data.id,
+            job_id: jobId,
           };
         } catch (error) {
           console.error(`Error queuing listing for ${marketplace}:`, error);
@@ -476,6 +489,15 @@ export class CrossListingService {
           updated_at: new Date().toISOString(),
         })
         .eq('id', formData.inventory_item_id);
+
+      // Log cross-listing activity
+      await this.logCrossListingActivity(user.id, {
+        action: 'cross_listing_submitted',
+        inventory_item_id: formData.inventory_item_id,
+        cross_post_group_id: crossPostGroupId,
+        marketplaces: formData.marketplaces,
+        submitted_listings: submittedListings,
+      });
 
       return {
         success: true,
@@ -526,5 +548,32 @@ export class CrossListingService {
       final_value_fee: finalValueFee,
       total_fees: totalFees,
     };
+  }
+
+  /**
+   * Log cross-listing activity for audit trail
+   */
+  private static async logCrossListingActivity(userId: string, activity: any): Promise<void> {
+    try {
+      const activityLog = {
+        user_id: userId,
+        timestamp: new Date().toISOString(),
+        source: 'cross_listing_service',
+        ...activity,
+      };
+
+      // Store in localStorage for demo (would be database in production)
+      const activities = JSON.parse(localStorage.getItem('activity_logs') || '[]');
+      activities.push(activityLog);
+
+      // Keep only last 1000 activities
+      if (activities.length > 1000) {
+        activities.splice(0, activities.length - 1000);
+      }
+
+      localStorage.setItem('activity_logs', JSON.stringify(activities));
+    } catch (error) {
+      console.error('Failed to log cross-listing activity:', error);
+    }
   }
 }

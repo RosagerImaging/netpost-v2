@@ -615,6 +615,94 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
     }
   }
 
+  // Delisting operations
+  async endListing(externalId: string, options?: EndListingOptions): Promise<EndListingResult> {
+    try {
+      console.log(`Ending Poshmark listing: ${externalId}`);
+      
+      // Poshmark API doesn't have a direct "end listing" endpoint
+      // Instead, we mark it as "not for sale" or delete it
+      const response = await this.makeApiRequest(
+        `closets/listings/${externalId}`,
+        'DELETE'
+      );
+
+      if (!response.success) {
+        // Try alternative approach - mark as unavailable
+        const updateResponse = await this.makeApiRequest(
+          `closets/listings/${externalId}`,
+          'PUT',
+          {
+            status: 'unavailable',
+            ...(options?.reason && { notes: options.reason })
+          }
+        );
+
+        if (!updateResponse.success) {
+          return {
+            success: false,
+            error: response.error || 'Failed to end Poshmark listing',
+          };
+        }
+
+        return {
+          success: true,
+          ended_at: new Date().toISOString(),
+          external_response: updateResponse.data,
+        };
+      }
+
+      return {
+        success: true,
+        ended_at: new Date().toISOString(),
+        external_response: response.data,
+      };
+
+    } catch (error) {
+      console.error(`Error ending Poshmark listing ${externalId}:`, error);
+      
+      if (error.message?.includes('not found')) {
+        throw new MarketplaceApiError(
+          'Listing not found on Poshmark',
+          'poshmark',
+          404,
+          'LISTING_NOT_FOUND'
+        );
+      }
+
+      return {
+        success: false,
+        error: `Poshmark API error: ${error.message}`,
+      };
+    }
+  }
+
+  async getListingById(externalId: string): Promise<ListingRecord> {
+    try {
+      console.log(`Getting Poshmark listing: ${externalId}`);
+
+      const response = await this.makeApiRequest(
+        `closets/listings/${externalId}`,
+        'GET'
+      );
+
+      if (!response.success || !response.data) {
+        throw new MarketplaceApiError(
+          `Poshmark listing not found: ${externalId}`,
+          'poshmark',
+          404,
+          'LISTING_NOT_FOUND'
+        );
+      }
+
+      return this.mapPoshmarkDataToListingRecord(response.data);
+
+    } catch (error) {
+      console.error(`Error getting Poshmark listing ${externalId}:`, error);
+      throw error;
+    }
+  }
+
   // Private helper methods
   private getClientId(): string {
     const credentials = this.credentials as OAuth2Credentials;

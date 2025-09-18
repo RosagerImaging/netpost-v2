@@ -602,6 +602,84 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
     }
   }
 
+  // Delisting operations
+  async endListing(externalId: string, options?: EndListingOptions): Promise<EndListingResult> {
+    try {
+      console.log(`Ending Facebook Marketplace listing: ${externalId}`);
+      
+      // Facebook Graph API to delete the marketplace listing
+      const response = await this.makeApiRequest(
+        externalId,
+        'DELETE'
+      );
+
+      if (!response.success) {
+        return {
+          success: false,
+          error: response.error || 'Failed to end Facebook Marketplace listing',
+        };
+      }
+
+      return {
+        success: true,
+        ended_at: new Date().toISOString(),
+        external_response: response.data,
+      };
+
+    } catch (error) {
+      console.error(`Error ending Facebook Marketplace listing ${externalId}:`, error);
+      
+      if (error.message?.includes('not found') || error.message?.includes('does not exist')) {
+        throw new MarketplaceApiError(
+          'Listing not found on Facebook Marketplace',
+          'facebook_marketplace',
+          404,
+          'LISTING_NOT_FOUND'
+        );
+      }
+
+      if (error.message?.includes('cannot delete')) {
+        throw new MarketplaceApiError(
+          'Listing cannot be deleted from Facebook Marketplace',
+          'facebook_marketplace',
+          400,
+          'LISTING_CANNOT_BE_ENDED'
+        );
+      }
+
+      return {
+        success: false,
+        error: `Facebook API error: ${error.message}`,
+      };
+    }
+  }
+
+  async getListingById(externalId: string): Promise<ListingRecord> {
+    try {
+      console.log(`Getting Facebook Marketplace listing: ${externalId}`);
+
+      const response = await this.makeApiRequest(
+        `${externalId}?fields=id,name,description,price,currency,location,category,photos,permalink_url,marketplace_listing_id,status,created_time,updated_time`,
+        'GET'
+      );
+
+      if (!response.success || !response.data) {
+        throw new MarketplaceApiError(
+          `Facebook Marketplace listing not found: ${externalId}`,
+          'facebook_marketplace',
+          404,
+          'LISTING_NOT_FOUND'
+        );
+      }
+
+      return this.mapFacebookDataToListingRecord(response.data);
+
+    } catch (error) {
+      console.error(`Error getting Facebook Marketplace listing ${externalId}:`, error);
+      throw error;
+    }
+  }
+
   // Private helper methods
   private getClientId(): string {
     const credentials = this.credentials as OAuth2Credentials;

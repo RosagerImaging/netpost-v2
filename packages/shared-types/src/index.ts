@@ -67,6 +67,43 @@ export {
   InsufficientInventoryError,
 } from "../database/inventory-item";
 
+// De-listing types
+export type {
+  DelistingJobStatus,
+  DelistingTriggerType,
+  DelistingPreference,
+  UserDelistingPreferences,
+  DelistingJob,
+  SaleEvent,
+  DelistingAuditLog,
+  PendingDelistingJob,
+  CreateDelistingJobRequest,
+  CreateDelistingJobResponse,
+  UpdateDelistingPreferencesRequest,
+  UpdateDelistingPreferencesResponse,
+  ProcessSaleEventRequest,
+  ProcessSaleEventResponse,
+  ConfirmDelistingJobRequest,
+  ConfirmDelistingJobResponse,
+  BulkDelistingRequest,
+  BulkDelistingResponse,
+  DelistingStats,
+  EBayWebhookPayload,
+  PoshmarkWebhookPayload,
+  FacebookWebhookPayload,
+  PollingResult,
+  DelistingError,
+  DelistingErrorCode,
+} from "../database/delisting";
+
+// De-listing utility functions
+export {
+  DELISTING_ERROR_CODES,
+  isRetryableError,
+  getRetryDelay,
+  calculateSuccessRate,
+} from "../database/delisting";
+
 // API types
 export type {
   ApiResponse,

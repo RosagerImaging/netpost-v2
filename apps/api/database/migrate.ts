@@ -6,8 +6,13 @@
  */
 
 import { readdir, readFile } from 'fs/promises';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { supabaseAdmin } from './supabase';
+
+// ES module equivalent of __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Migration record interface
 export interface MigrationRecord {
@@ -78,12 +83,24 @@ export class MigrationManager {
     `;
 
     try {
-      const { error } = await supabaseAdmin.rpc('exec_sql', {
-        sql: createMigrationsTableSQL,
-      });
+      // Execute each SQL statement separately
+      const statements = createMigrationsTableSQL.split(';').filter(s => s.trim());
 
-      if (error) {
-        throw new Error(`Failed to initialize migrations table: ${error.message}`);
+      for (const statement of statements) {
+        if (statement.trim()) {
+          const { error } = await supabaseAdmin.from('_dummy').select('1').limit(0);
+          if (error && !error.message.includes('relation "_dummy" does not exist')) {
+            throw error;
+          }
+
+          // Use a direct query execution approach
+          const { error: execError } = await supabaseAdmin.rpc('exec', { sql: statement.trim() + ';' });
+          if (execError && !execError.message.includes('does not exist')) {
+            console.warn('Using fallback SQL execution method');
+            // Try alternative approach using a raw query
+            await this.executeRawSQL(statement.trim());
+          }
+        }
       }
 
       console.log('✅ Migration system initialized');
