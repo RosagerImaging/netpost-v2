@@ -82,8 +82,11 @@ export default function DashboardPage() {
               <p className="text-muted-foreground mb-4 text-sm">
                 Keep track of your items and their status
               </p>
-              <Button className="w-full" disabled>
-                Coming Soon
+              <Button
+                className="w-full"
+                onClick={() => window.location.href = '/inventory'}
+              >
+                View Inventory
               </Button>
             </div>
 

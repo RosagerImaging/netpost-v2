@@ -34,6 +34,39 @@ export type {
   CrossPostingResult,
 } from "./listing";
 
+// Database types
+export type {
+  InventoryItemRecord,
+  InventoryItemEnhanced,
+  InventoryItemStatus,
+  InventoryItemCondition,
+  SizeType,
+  PhotoMetadata,
+  VideoMetadata,
+  DocumentMetadata,
+  CreateInventoryItemInput,
+  UpdateInventoryItemInput,
+  InventoryItemFilters,
+  InventoryItemSortOptions,
+  BulkUpdateInventoryItemsInput,
+  BulkDeleteInventoryItemsInput,
+  InventoryAnalytics,
+} from "../database/inventory-item";
+
+// Database utility functions
+export {
+  getConditionDisplayName,
+  getStatusDisplayName,
+  calculateROI,
+  calculateProfitMargin,
+  isReadyForListing,
+  getDaysInInventory,
+  InventoryItemError,
+  InventoryItemNotFoundError,
+  InventoryItemValidationError,
+  InsufficientInventoryError,
+} from "../database/inventory-item";
+
 // API types
 export type {
   ApiResponse,

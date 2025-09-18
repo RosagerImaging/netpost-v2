@@ -5,7 +5,7 @@
 • Packages in scope: @netpost/config, @netpost/shared-types, @netpost/ui, mobile, web
 • Running test in 5 packages
 • Remote caching disabled
-@netpost/shared-types:build: cache hit, replaying logs ebf3813e5bd4de76
+@netpost/shared-types:build: cache hit, replaying logs 015e07c0d36345f9
 @netpost/shared-types:build: 
 @netpost/shared-types:build: > @netpost/shared-types@0.1.0 build
 @netpost/shared-types:build: > tsup
@@ -18,16 +18,16 @@
 @netpost/shared-types:build: CLI Cleaning output folder
 @netpost/shared-types:build: CJS Build start
 @netpost/shared-types:build: ESM Build start
-@netpost/shared-types:build: ESM dist/index.js     33.00 B
-@netpost/shared-types:build: ESM dist/index.js.map 71.00 B
-@netpost/shared-types:build: ESM ⚡️ Build success in 9ms
-@netpost/shared-types:build: CJS dist/index.cjs     792.00 B
-@netpost/shared-types:build: CJS dist/index.cjs.map 1010.00 B
-@netpost/shared-types:build: CJS ⚡️ Build success in 10ms
+@netpost/shared-types:build: CJS dist/index.cjs     3.83 KB
+@netpost/shared-types:build: CJS dist/index.cjs.map 13.23 KB
+@netpost/shared-types:build: CJS ⚡️ Build success in 14ms
+@netpost/shared-types:build: ESM dist/index.js     2.33 KB
+@netpost/shared-types:build: ESM dist/index.js.map 11.48 KB
+@netpost/shared-types:build: ESM ⚡️ Build success in 14ms
 @netpost/shared-types:build: DTS Build start
-@netpost/shared-types:build: DTS ⚡️ Build success in 1288ms
-@netpost/shared-types:build: DTS dist/index.d.cts 8.08 KB
-@netpost/shared-types:build: DTS dist/index.d.ts  8.08 KB
+@netpost/shared-types:build: DTS ⚡️ Build success in 1500ms
+@netpost/shared-types:build: DTS dist/index.d.cts 16.28 KB
+@netpost/shared-types:build: DTS dist/index.d.ts  16.28 KB
 @netpost/ui:build: cache hit, replaying logs c01a490fc5568ee9
 @netpost/ui:build: 
 @netpost/ui:build: > @netpost/ui@0.1.0 build
@@ -87,7 +87,7 @@ mobile:test: Tests:       4 passed, 4 total
 mobile:test: Snapshots:   0 total
 mobile:test: Time:        0.843 s, estimated 1 s
 mobile:test: Ran all test suites.
-web:test: cache hit, replaying logs a98396910d0db8bb
+web:test: cache miss, executing 30451c5349b2f000
 web:test: 
 web:test: > web@0.1.0 test
 web:test: > vitest
@@ -96,15 +96,15 @@ web:test:
 web:test:  RUN  v3.2.4 /home/optiks/dev/netpost-v2/apps/web
 web:test: 
 web:test:  ✓ lib/auth/__tests__/auth-integration.test.ts (10 tests) 11ms
-web:test:  ✓ lib/auth/__tests__/auth-utils.test.ts (36 tests) 14ms
+web:test:  ✓ lib/auth/__tests__/auth-utils.test.ts (36 tests) 13ms
 web:test: 
 web:test:  Test Files  2 passed (2)
 web:test:       Tests  46 passed (46)
-web:test:    Start at  13:38:34
-web:test:    Duration  894ms (transform 121ms, setup 101ms, collect 151ms, tests 25ms, environment 905ms, prepare 161ms)
+web:test:    Start at  19:09:01
+web:test:    Duration  947ms (transform 131ms, setup 107ms, collect 176ms, tests 24ms, environment 862ms, prepare 178ms)
 web:test: 
 
  Tasks:    5 successful, 5 total
-Cached:    5 cached, 5 total
-  Time:    93ms >>> FULL TURBO
+Cached:    4 cached, 5 total
+  Time:    1.766s 
 
