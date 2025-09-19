@@ -1,0 +1,684 @@
+
+> netpost-v2@1.0.0 test
+> turbo test
+
+• Packages in scope: @netpost/config, @netpost/shared-types, @netpost/ui, mobile, web
+• Running test in 5 packages
+• Remote caching disabled
+@netpost/shared-types:build: cache hit, replaying logs dfc5b32dfef1b853
+@netpost/shared-types:build: 
+@netpost/shared-types:build: > @netpost/shared-types@0.1.0 build
+@netpost/shared-types:build: > tsup
+@netpost/shared-types:build: 
+@netpost/shared-types:build: CLI Building entry: src/index.ts
+@netpost/shared-types:build: CLI Using tsconfig: tsconfig.json
+@netpost/shared-types:build: CLI tsup v8.5.0
+@netpost/shared-types:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/shared-types/tsup.config.ts
+@netpost/shared-types:build: CLI Target: es2020
+@netpost/shared-types:build: CLI Cleaning output folder
+@netpost/shared-types:build: CJS Build start
+@netpost/shared-types:build: ESM Build start
+@netpost/shared-types:build: ESM dist/index.js     3.79 KB
+@netpost/shared-types:build: ESM dist/index.js.map 23.44 KB
+@netpost/shared-types:build: ESM ⚡️ Build success in 47ms
+@netpost/shared-types:build: CJS dist/index.cjs     5.47 KB
+@netpost/shared-types:build: CJS dist/index.cjs.map 26.08 KB
+@netpost/shared-types:build: CJS ⚡️ Build success in 49ms
+@netpost/shared-types:build: DTS Build start
+@netpost/shared-types:build: DTS ⚡️ Build success in 3432ms
+@netpost/shared-types:build: DTS dist/index.d.cts 26.59 KB
+@netpost/shared-types:build: DTS dist/index.d.ts  26.59 KB
+@netpost/config:build: cache hit, replaying logs 7ac1324e4b94c159
+@netpost/config:build: 
+@netpost/config:build: > @netpost/config@0.1.0 build
+@netpost/config:build: > tsup
+@netpost/config:build: 
+@netpost/config:build: CLI Building entry: src/index.ts
+@netpost/config:build: CLI Using tsconfig: tsconfig.json
+@netpost/config:build: CLI tsup v8.5.0
+@netpost/config:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/config/tsup.config.ts
+@netpost/config:build: CLI Target: es2020
+@netpost/config:build: CLI Cleaning output folder
+@netpost/config:build: CJS Build start
+@netpost/config:build: ESM Build start
+@netpost/config:build: ESM dist/index.js     4.84 KB
+@netpost/config:build: ESM dist/index.js.map 8.14 KB
+@netpost/config:build: ESM ⚡️ Build success in 23ms
+@netpost/config:build: CJS dist/index.cjs     6.05 KB
+@netpost/config:build: CJS dist/index.cjs.map 8.50 KB
+@netpost/config:build: CJS ⚡️ Build success in 24ms
+@netpost/config:build: DTS Build start
+@netpost/config:build: DTS ⚡️ Build success in 3342ms
+@netpost/config:build: DTS dist/index.d.cts 2.86 KB
+@netpost/config:build: DTS dist/index.d.ts  2.86 KB
+@netpost/ui:build: cache hit, replaying logs 2116731fd6136235
+@netpost/ui:build: 
+@netpost/ui:build: > @netpost/ui@0.1.0 build
+@netpost/ui:build: > tsup
+@netpost/ui:build: 
+@netpost/ui:build: CLI Building entry: src/index.ts
+@netpost/ui:build: CLI Using tsconfig: tsconfig.json
+@netpost/ui:build: CLI tsup v8.5.0
+@netpost/ui:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/ui/tsup.config.ts
+@netpost/ui:build: CLI Target: es2020
+@netpost/ui:build: CLI Cleaning output folder
+@netpost/ui:build: CJS Build start
+@netpost/ui:build: ESM Build start
+@netpost/ui:build: ESM dist/index.js     24.33 KB
+@netpost/ui:build: ESM dist/index.js.map 40.62 KB
+@netpost/ui:build: ESM ⚡️ Build success in 23ms
+@netpost/ui:build: CJS dist/index.cjs     29.17 KB
+@netpost/ui:build: CJS dist/index.cjs.map 41.83 KB
+@netpost/ui:build: CJS ⚡️ Build success in 23ms
+@netpost/ui:build: DTS Build start
+@netpost/ui:build: DTS ⚡️ Build success in 2758ms
+@netpost/ui:build: DTS dist/index.d.cts 7.99 KB
+@netpost/ui:build: DTS dist/index.d.ts  7.99 KB
+mobile:test: cache hit, replaying logs 8ea41eb4bac71499
+mobile:test: 
+mobile:test: > mobile@1.0.0 test
+mobile:test: > jest
+mobile:test: 
+mobile:test: PASS src/services/__tests__/sourcingService.test.ts
+mobile:test: PASS __tests__/App.test.tsx
+mobile:test: 
+mobile:test: Test Suites: 2 passed, 2 total
+mobile:test: Tests:       4 passed, 4 total
+mobile:test: Snapshots:   0 total
+mobile:test: Time:        1.553 s
+mobile:test: Ran all test suites.
+web:test: cache miss, executing d8c453ae0fbf087e
+web:test: 
+web:test: > web@0.1.0 test
+web:test: > vitest
+web:test: 
+web:test: 
+web:test:  RUN  v3.2.4 /home/optiks/dev/netpost-v2/apps/web
+web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should send success notification when all marketplaces complete
+web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:116:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should send partial failure notification
+web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:162:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should send complete failure notification with urgent priority
+web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:228:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should send confirmation required notification
+web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:293:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test:  ✓ src/lib/subscription/__tests__/integration.test.ts (12 tests) 9ms
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should handle notification preferences not found
+web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:305:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should handle notification delivery failures gracefully
+web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:355:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendJobCompletionNotification > should send notification for completed job
+web:test: Error sending job completion notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendJobCompletionNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:409:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:422:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendJobCompletionNotification > should handle job not found
+web:test: Error sending job completion notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendJobCompletionNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:409:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:434:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > Webhook Notifications > should send webhook notification successfully
+web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:476:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > Webhook Notifications > should handle webhook failures
+web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:526:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test:  ✓ lib/auth/__tests__/auth-integration.test.ts (10 tests) 17ms
+web:test:  ❯ src/lib/services/__tests__/notification-service.test.ts (10 tests | 9 failed) 46ms
+web:test:    × NotificationService > sendDelistingNotification > should send success notification when all marketplaces complete 19ms
+web:test:      → expected false to be true // Object.is equality
+web:test:    × NotificationService > sendDelistingNotification > should send partial failure notification 5ms
+web:test:      → expected false to be true // Object.is equality
+web:test:    × NotificationService > sendDelistingNotification > should send complete failure notification with urgent priority 2ms
+web:test:      → expected false to be true // Object.is equality
+web:test:    × NotificationService > sendDelistingNotification > should send confirmation required notification 2ms
+web:test:      → expected false to be true // Object.is equality
+web:test:    × NotificationService > sendDelistingNotification > should handle notification preferences not found 2ms
+web:test:      → expected false to be true // Object.is equality
+web:test:    ✓ NotificationService > sendDelistingNotification > should handle notification delivery failures gracefully 2ms
+web:test:    × NotificationService > sendJobCompletionNotification > should send notification for completed job 1ms
+web:test:      → expected false to be true // Object.is equality
+web:test:    × NotificationService > sendJobCompletionNotification > should handle job not found 5ms
+web:test:      → expected 'Cannot destructure property \'data\' …' to contain 'Delisting job not found'
+web:test:    × NotificationService > Webhook Notifications > should send webhook notification successfully 3ms
+web:test:      → expected false to be true // Object.is equality
+web:test:    × NotificationService > Webhook Notifications > should handle webhook failures 3ms
+web:test:      → expected 'Cannot destructure property \'data\' …' to contain 'webhook'
+web:test:  ✓ lib/auth/__tests__/auth-utils.test.ts (36 tests) 23ms
+web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Welcome Email > should send welcome email with beta code
+web:test: 📧 Sending welcome email for beta subscription to John Doe (test@example.com)
+web:test: 
+web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Welcome Email > should handle email sending failure gracefully
+web:test: 📧 Sending welcome email for beta subscription to John Doe (test@example.com)
+web:test: 
+web:test: stderr | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Welcome Email > should handle email sending failure gracefully
+web:test: Failed to send welcome email: Error: Email service unavailable
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/subscription/__tests__/email-integration.test.ts:58:9
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:155:11
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:26
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1897:20
+web:test:     at new Promise (<anonymous>)
+web:test:     at runWithTimeout (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1863:10)
+web:test:     at runTest (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1574:12)
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
+web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
+web:test: 
+web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Usage Warning Email > should send usage warning with correct percentage
+web:test: 📧 Sending usage warning for inventory_items: 85/100 to Jane Smith (user@example.com)
+web:test: 
+web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Usage Warning Email > should calculate usage percentage correctly
+web:test: 📧 Sending usage warning for api_calls: 750/1000 to Test User (user@example.com)
+web:test: 
+web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Payment Failed Email > should send payment failed notification with amount
+web:test: 📧 Sending payment failed notification for $29.99 to John Customer (customer@example.com)
+web:test: 
+web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Subscription Change Emails > should send upgrade confirmation
+web:test: 📧 Sending subscription upgrade notification to Upgrading User (user@example.com)
+web:test: 
+web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Subscription Change Emails > should send cancellation confirmation
+web:test: 📧 Sending subscription canceled notification to Canceling User (user@example.com)
+web:test: 
+web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Beta Feedback Email > should send beta feedback request
+web:test: 📧 Sending beta feedback request to Beta Tester (beta@example.com)
+web:test: 
+web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Environment Variable Handling > should use environment variables in email context
+web:test: 📧 Sending welcome email for beta subscription to Test User (test@example.com)
+web:test: 
+web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Error Handling > should handle network errors
+web:test: 📧 Sending welcome email for beta subscription to Test User (test@example.com)
+web:test: 
+web:test: stderr | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Error Handling > should handle network errors
+web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Error Handling > should handle email service configuration errors
+web:test: Failed to send welcome email: Error: Network timeout
+web:test: 📧 Sending payment failed notification for $19.99 to Test User (test@example.com)
+web:test: 
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/subscription/__tests__/email-integration.test.ts:270:9
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:155:11
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:26
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1897:20
+web:test:     at new Promise (<anonymous>)
+web:test:     at runWithTimeout (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1863:10)
+web:test:     at runTest (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1574:12)
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
+web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
+web:test: 
+web:test: stderr | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Error Handling > should handle email service configuration errors
+web:test: Failed to send payment failed email: Error: Invalid API key
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/subscription/__tests__/email-integration.test.ts:285:9
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:155:11
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:26
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1897:20
+web:test:     at new Promise (<anonymous>)
+web:test:     at runWithTimeout (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1863:10)
+web:test:     at runTest (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1574:12)
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
+web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
+web:test: 
+web:test:  ✓ src/lib/subscription/__tests__/email-integration.test.ts (11 tests) 29ms
+web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should successfully execute a delisting job with one marketplace
+web:test: Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+web:test: 
+web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should handle job not found error
+web:test: Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+web:test: 
+web:test: stdout | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should handle job not found error
+web:test: Executing delisting job: nonexistent-job
+web:test: 
+web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should handle job not found error
+web:test: Error executing delisting job nonexistent-job: Error: Delisting job not found: nonexistent-job
+web:test:     at DelistingEngine.executeDelistingJob [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/delisting/delisting-engine.ts:61:15[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/delisting/__tests__/delisting-engine.test.ts:136:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should handle job requiring user confirmation
+web:test: Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+web:test: 
+web:test: stdout | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should handle job requiring user confirmation
+web:test: Executing delisting job: job-123
+web:test: 
+web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should handle job requiring user confirmation
+web:test: Error executing delisting job job-123: Error: Delisting job not found: job-123
+web:test:     at DelistingEngine.executeDelistingJob [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/delisting/delisting-engine.ts:61:15[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/delisting/__tests__/delisting-engine.test.ts:157:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should handle scheduled future job
+web:test: Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+web:test: 
+web:test: stdout | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should handle scheduled future job
+web:test: Executing delisting job: job-123
+web:test: 
+web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should handle scheduled future job
+web:test: Error executing delisting job job-123: Error: Delisting job not found: job-123
+web:test:     at DelistingEngine.executeDelistingJob [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/delisting/delisting-engine.ts:61:15[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/delisting/__tests__/delisting-engine.test.ts:177:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should handle no active listings scenario
+web:test: Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+web:test: 
+web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > retryFailedDelistings > should retry failed delisting jobs
+web:test: Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+web:test: 
+web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > retryFailedDelistings > should handle no failed jobs to retry
+web:test: Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+web:test: 
+web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > processPendingJobs > should process multiple pending jobs concurrently
+web:test: Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+web:test: 
+web:test: stdout | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > processPendingJobs > should process multiple pending jobs concurrently
+web:test: Processing pending delisting jobs
+web:test: 
+web:test: stdout | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > processPendingJobs > should process multiple pending jobs concurrently
+web:test: Found 3 pending delisting jobs
+web:test: 
+web:test: stdout | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > processPendingJobs > should process multiple pending jobs concurrently
+web:test: Pending jobs processing complete: 3 processed, 0 failed
+web:test: 
+web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > processPendingJobs > should handle job processing failures gracefully
+web:test: Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+web:test: 
+web:test: stdout | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > processPendingJobs > should handle job processing failures gracefully
+web:test: Processing pending delisting jobs
+web:test: 
+web:test: stdout | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > processPendingJobs > should handle job processing failures gracefully
+web:test: Found 2 pending delisting jobs
+web:test: 
+web:test: stdout | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > processPendingJobs > should handle job processing failures gracefully
+web:test: Pending jobs processing complete: 1 processed, 1 failed
+web:test: 
+web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > processPendingJobs > should handle no pending jobs
+web:test: Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+web:test: 
+web:test: stdout | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > processPendingJobs > should handle no pending jobs
+web:test: Processing pending delisting jobs
+web:test: 
+web:test: stdout | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > processPendingJobs > should handle no pending jobs
+web:test: No pending delisting jobs found
+web:test: 
+web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > Error Handling > should handle marketplace adapter creation failure
+web:test: Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+web:test: 
+web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > Audit Logging > should log successful delisting operations
+web:test: Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+web:test: 
+web:test:  ❯ src/lib/delisting/__tests__/delisting-engine.test.ts (12 tests | 7 failed) 1956ms
+web:test:    × DelistingEngine > executeDelistingJob > should successfully execute a delisting job with one marketplace 21ms
+web:test:      → mockSupabase.from(...).select(...).mockResolvedValue is not a function
+web:test:    ✓ DelistingEngine > executeDelistingJob > should handle job not found error  1247ms
+web:test:    × DelistingEngine > executeDelistingJob > should handle job requiring user confirmation 288ms
+web:test:      → expected 'Delisting job not found: job-123' to contain 'requires user confirmation'
+web:test:    × DelistingEngine > executeDelistingJob > should handle scheduled future job 202ms
+web:test:      → expected 'Delisting job not found: job-123' to contain 'scheduled for future'
+web:test:    × DelistingEngine > executeDelistingJob > should handle no active listings scenario 3ms
+web:test:      → mockSupabase.from(...).select(...).mockResolvedValue is not a function
+web:test:    × DelistingEngine > retryFailedDelistings > should retry failed delisting jobs 87ms
+web:test:      → expected 0 to be greater than 0
+web:test:    ✓ DelistingEngine > retryFailedDelistings > should handle no failed jobs to retry 95ms
+web:test:    ✓ DelistingEngine > processPendingJobs > should process multiple pending jobs concurrently 3ms
+web:test:    ✓ DelistingEngine > processPendingJobs > should handle job processing failures gracefully 3ms
+web:test:    ✓ DelistingEngine > processPendingJobs > should handle no pending jobs 2ms
+web:test:    × DelistingEngine > Error Handling > should handle marketplace adapter creation failure 2ms
+web:test:      → mockSupabase.from(...).select(...).mockResolvedValue is not a function
+web:test:    × DelistingEngine > Audit Logging > should log successful delisting operations 2ms
+web:test:      → mockSupabase.from(...).select(...).mockResolvedValue is not a function
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯
+web:test: 
+web:test:  FAIL  src/lib/subscription/__tests__/feature-gates.test.ts [ src/lib/subscription/__tests__/feature-gates.test.ts ]
+web:test: Error: Missing required Stripe environment variable: STRIPE_SECRET_KEY
+web:test:  ❯ src/lib/subscription/stripe-service.ts:19:11
+web:test:      17| for (const [key, value] of Object.entries(requiredEnvVars)) {
+web:test:      18|   if (!value) {
+web:test:      19|     throw new Error(`Missing required Stripe environment variable: ${k…
+web:test:        |           ^
+web:test:      20|   }
+web:test:      21| }
+web:test:  ❯ src/lib/subscription/feature-gates.ts:9:1
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/18]⎯
+web:test: 
+web:test:  FAIL  src/lib/subscription/__tests__/subscription-service.test.ts [ src/lib/subscription/__tests__/subscription-service.test.ts ]
+web:test: Error: Missing required Stripe environment variable: STRIPE_SECRET_KEY
+web:test:  ❯ src/lib/subscription/stripe-service.ts:19:11
+web:test:      17| for (const [key, value] of Object.entries(requiredEnvVars)) {
+web:test:      18|   if (!value) {
+web:test:      19|     throw new Error(`Missing required Stripe environment variable: ${k…
+web:test:        |           ^
+web:test:      20|   }
+web:test:      21| }
+web:test:  ❯ src/lib/subscription/subscription-service.ts:9:1
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/18]⎯
+web:test: 
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯ Failed Tests 16 ⎯⎯⎯⎯⎯⎯⎯
+web:test: 
+web:test:  FAIL  src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should successfully execute a delisting job with one marketplace
+web:test: TypeError: mockSupabase.from(...).select(...).mockResolvedValue is not a function
+web:test:  ❯ src/lib/delisting/__tests__/delisting-engine.test.ts:117:46
+web:test:     115| 
+web:test:     116|       // Mock listings query response
+web:test:     117|       mockSupabase.from('listings').select().mockResolvedValue({
+web:test:        |                                              ^
+web:test:     118|         data: mockListings,
+web:test:     119|         error: null,
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/18]⎯
+web:test: 
+web:test:  FAIL  src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should handle job requiring user confirmation
+web:test: AssertionError: expected 'Delisting job not found: job-123' to contain 'requires user confirmation'
+web:test: 
+web:test: Expected: [32m"requires user confirmation"[39m
+web:test: Received: [31m"Delisting job not found: job-123"[39m
+web:test: 
+web:test:  ❯ src/lib/delisting/__tests__/delisting-engine.test.ts:160:28
+web:test:     158| 
+web:test:     159|       expect(result.success).toBe(false);
+web:test:     160|       expect(result.error).toContain('requires user confirmation');
+web:test:        |                            ^
+web:test:     161|     });
+web:test:     162| 
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/18]⎯
+web:test: 
+web:test:  FAIL  src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should handle scheduled future job
+web:test: AssertionError: expected 'Delisting job not found: job-123' to contain 'scheduled for future'
+web:test: 
+web:test: Expected: [32m"scheduled for future"[39m
+web:test: Received: [31m"Delisting job not found: job-123"[39m
+web:test: 
+web:test:  ❯ src/lib/delisting/__tests__/delisting-engine.test.ts:180:28
+web:test:     178| 
+web:test:     179|       expect(result.success).toBe(false);
+web:test:     180|       expect(result.error).toContain('scheduled for future');
+web:test:        |                            ^
+web:test:     181|     });
+web:test:     182| 
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/18]⎯
+web:test: 
+web:test:  FAIL  src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should handle no active listings scenario
+web:test: TypeError: mockSupabase.from(...).select(...).mockResolvedValue is not a function
+web:test:  ❯ src/lib/delisting/__tests__/delisting-engine.test.ts:219:46
+web:test:     217| 
+web:test:     218|       // Mock empty listings response
+web:test:     219|       mockSupabase.from('listings').select().mockResolvedValue({
+web:test:        |                                              ^
+web:test:     220|         data: [],
+web:test:     221|         error: null,
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/18]⎯
+web:test: 
+web:test:  FAIL  src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > retryFailedDelistings > should retry failed delisting jobs
+web:test: AssertionError: expected 0 to be greater than 0
+web:test:  ❯ src/lib/delisting/__tests__/delisting-engine.test.ts:279:35
+web:test:     277| 
+web:test:     278|       expect(result.success).toBe(true);
+web:test:     279|       expect(result.jobs_retried).toBeGreaterThan(0);
+web:test:        |                                   ^
+web:test:     280|     });
+web:test:     281| 
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/18]⎯
+web:test: 
+web:test:  FAIL  src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > Error Handling > should handle marketplace adapter creation failure
+web:test: TypeError: mockSupabase.from(...).select(...).mockResolvedValue is not a function
+web:test:  ❯ src/lib/delisting/__tests__/delisting-engine.test.ts:415:46
+web:test:     413|       });
+web:test:     414| 
+web:test:     415|       mockSupabase.from('listings').select().mockResolvedValue({
+web:test:        |                                              ^
+web:test:     416|         data: [mockListing],
+web:test:     417|         error: null,
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/18]⎯
+web:test: 
+web:test:  FAIL  src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > Audit Logging > should log successful delisting operations
+web:test: TypeError: mockSupabase.from(...).select(...).mockResolvedValue is not a function
+web:test:  ❯ src/lib/delisting/__tests__/delisting-engine.test.ts:498:46
+web:test:     496|       });
+web:test:     497| 
+web:test:     498|       mockSupabase.from('listings').select().mockResolvedValue({
+web:test:        |                                              ^
+web:test:     499|         data: [mockListing],
+web:test:     500|         error: null,
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/18]⎯
+web:test: 
+web:test:  FAIL  src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should send success notification when all marketplaces complete
+web:test: AssertionError: expected false to be true // Object.is equality
+web:test: 
+web:test: [32m- Expected[39m
+web:test: [31m+ Received[39m
+web:test: 
+web:test: [32m- true[39m
+web:test: [31m+ false[39m
+web:test: 
+web:test:  ❯ src/lib/services/__tests__/notification-service.test.ts:118:30
+web:test:     116|       const result = await notificationService.sendDelistingNotificati…
+web:test:     117| 
+web:test:     118|       expect(result.success).toBe(true);
+web:test:        |                              ^
+web:test:     119|       expect(result.errors).toHaveLength(0);
+web:test:     120|       expect(mockSupabase.from).toHaveBeenCalledWith('notifications');
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/18]⎯
+web:test: 
+web:test:  FAIL  src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should send partial failure notification
+web:test: AssertionError: expected false to be true // Object.is equality
+web:test: 
+web:test: [32m- Expected[39m
+web:test: [31m+ Received[39m
+web:test: 
+web:test: [32m- true[39m
+web:test: [31m+ false[39m
+web:test: 
+web:test:  ❯ src/lib/services/__tests__/notification-service.test.ts:164:30
+web:test:     162|       const result = await notificationService.sendDelistingNotificati…
+web:test:     163| 
+web:test:     164|       expect(result.success).toBe(true);
+web:test:        |                              ^
+web:test:     165|       // Should only send email notification since app notification is…
+web:test:     166|     });
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/18]⎯
+web:test: 
+web:test:  FAIL  src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should send complete failure notification with urgent priority
+web:test: AssertionError: expected false to be true // Object.is equality
+web:test: 
+web:test: [32m- Expected[39m
+web:test: [31m+ Received[39m
+web:test: 
+web:test: [32m- true[39m
+web:test: [31m+ false[39m
+web:test: 
+web:test:  ❯ src/lib/services/__tests__/notification-service.test.ts:230:30
+web:test:     228|       const result = await notificationService.sendDelistingNotificati…
+web:test:     229| 
+web:test:     230|       expect(result.success).toBe(true);
+web:test:        |                              ^
+web:test:     231|       expect(global.fetch).toHaveBeenCalledWith('https://example.com/w…
+web:test:     232|         method: 'POST',
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/18]⎯
+web:test: 
+web:test:  FAIL  src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should send confirmation required notification
+web:test: AssertionError: expected false to be true // Object.is equality
+web:test: 
+web:test: [32m- Expected[39m
+web:test: [31m+ Received[39m
+web:test: 
+web:test: [32m- true[39m
+web:test: [31m+ false[39m
+web:test: 
+web:test:  ❯ src/lib/services/__tests__/notification-service.test.ts:295:30
+web:test:     293|       const result = await notificationService.sendDelistingNotificati…
+web:test:     294| 
+web:test:     295|       expect(result.success).toBe(true);
+web:test:        |                              ^
+web:test:     296|     });
+web:test:     297| 
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/18]⎯
+web:test: 
+web:test:  FAIL  src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should handle notification preferences not found
+web:test: AssertionError: expected false to be true // Object.is equality
+web:test: 
+web:test: [32m- Expected[39m
+web:test: [31m+ Received[39m
+web:test: 
+web:test: [32m- true[39m
+web:test: [31m+ false[39m
+web:test: 
+web:test:  ❯ src/lib/services/__tests__/notification-service.test.ts:307:30
+web:test:     305|       const result = await notificationService.sendDelistingNotificati…
+web:test:     306| 
+web:test:     307|       expect(result.success).toBe(true);
+web:test:        |                              ^
+web:test:     308|       expect(result.errors).toHaveLength(0);
+web:test:     309|     });
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/18]⎯
+web:test: 
+web:test:  FAIL  src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendJobCompletionNotification > should send notification for completed job
+web:test: AssertionError: expected false to be true // Object.is equality
+web:test: 
+web:test: [32m- Expected[39m
+web:test: [31m+ Received[39m
+web:test: 
+web:test: [32m- true[39m
+web:test: [31m+ false[39m
+web:test: 
+web:test:  ❯ src/lib/services/__tests__/notification-service.test.ts:424:30
+web:test:     422|       const result = await notificationService.sendJobCompletionNotifi…
+web:test:     423| 
+web:test:     424|       expect(result.success).toBe(true);
+web:test:        |                              ^
+web:test:     425|     });
+web:test:     426| 
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/18]⎯
+web:test: 
+web:test:  FAIL  src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendJobCompletionNotification > should handle job not found
+web:test: AssertionError: expected 'Cannot destructure property \'data\' …' to contain 'Delisting job not found'
+web:test: 
+web:test: Expected: [32m"Delisting job not found"[39m
+web:test: Received: [31m"Cannot destructure property 'data' of '(intermediate value)' as it is undefined."[39m
+web:test: 
+web:test:  ❯ src/lib/services/__tests__/notification-service.test.ts:437:32
+web:test:     435| 
+web:test:     436|       expect(result.success).toBe(false);
+web:test:     437|       expect(result.errors[0]).toContain('Delisting job not found');
+web:test:        |                                ^
+web:test:     438|     });
+web:test:     439|   });
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/18]⎯
+web:test: 
+web:test:  FAIL  src/lib/services/__tests__/notification-service.test.ts > NotificationService > Webhook Notifications > should send webhook notification successfully
+web:test: AssertionError: expected false to be true // Object.is equality
+web:test: 
+web:test: [32m- Expected[39m
+web:test: [31m+ Received[39m
+web:test: 
+web:test: [32m- true[39m
+web:test: [31m+ false[39m
+web:test: 
+web:test:  ❯ src/lib/services/__tests__/notification-service.test.ts:478:30
+web:test:     476|       const result = await notificationService.sendDelistingNotificati…
+web:test:     477| 
+web:test:     478|       expect(result.success).toBe(true);
+web:test:        |                              ^
+web:test:     479|       expect(global.fetch).toHaveBeenCalledWith(
+web:test:     480|         'https://example.com/webhook',
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/18]⎯
+web:test: 
+web:test:  FAIL  src/lib/services/__tests__/notification-service.test.ts > NotificationService > Webhook Notifications > should handle webhook failures
+web:test: AssertionError: expected 'Cannot destructure property \'data\' …' to contain 'webhook'
+web:test: 
+web:test: Expected: [32m"webhook"[39m
+web:test: Received: [31m"Cannot destructure property 'data' of '(intermediate value)' as it is undefined."[39m
+web:test: 
+web:test:  ❯ src/lib/services/__tests__/notification-service.test.ts:529:32
+web:test:     527| 
+web:test:     528|       expect(result.success).toBe(false);
+web:test:     529|       expect(result.errors[0]).toContain('webhook');
+web:test:        |                                ^
+web:test:     530|     });
+web:test:     531|   });
+web:test: 
+web:test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/18]⎯
+web:test: 
+web:test: 
+web:test:  Test Files  4 failed | 4 passed (8)
+web:test:       Tests  16 failed | 75 passed (91)
+web:test:    Start at  13:32:43
+web:test:    Duration  3.95s (transform 1000ms, setup 818ms, collect 1.58s, tests 2.08s, environment 7.59s, prepare 1.50s)
+web:test: 
+web:test: npm error Lifecycle script `test` failed with error:
+web:test: npm error code 1
+web:test: npm error path /home/optiks/dev/netpost-v2/apps/web
+web:test: npm error workspace web@0.1.0
+web:test: npm error location /home/optiks/dev/netpost-v2/apps/web
+web:test: npm error command failed
+web:test: npm error command sh -c vitest
+web:test: ERROR: command finished with error: command (/home/optiks/dev/netpost-v2/apps/web) /home/optiks/.nvm/versions/node/v22.18.0/bin/npm run test exited (1)
+web#test: command (/home/optiks/dev/netpost-v2/apps/web) /home/optiks/.nvm/versions/node/v22.18.0/bin/npm run test exited (1)
+
+ Tasks:    4 successful, 5 total
+Cached:    4 cached, 5 total
+  Time:    4.827s 
+Failed:    web#test
+
+ ERROR  run failed: command  exited (1)
