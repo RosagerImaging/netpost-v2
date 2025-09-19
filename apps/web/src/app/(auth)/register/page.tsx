@@ -128,6 +128,7 @@ export default function RegisterPage() {
               placeholder="Enter your email"
               required
               disabled={isLoading}
+              data-testid="email"
             />
 
             <FormField
@@ -139,6 +140,7 @@ export default function RegisterPage() {
               helperText="Must be at least 6 characters long"
               required
               disabled={isLoading}
+              data-testid="password"
             />
 
             <FormField
@@ -149,6 +151,7 @@ export default function RegisterPage() {
               placeholder="Confirm your password"
               required
               disabled={isLoading}
+              data-testid="confirm-password"
             />
 
             <div className="flex items-center space-x-2">
@@ -176,7 +179,7 @@ export default function RegisterPage() {
 
             {success && <FormMessage type="success">{success}</FormMessage>}
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full" disabled={isLoading} data-testid="signup-button">
               {isLoading ? "Creating account..." : "Create Account"}
             </Button>
           </form>

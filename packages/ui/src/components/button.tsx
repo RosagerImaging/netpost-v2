@@ -38,12 +38,33 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, onKeyDown, onClick, ...props }, ref) => {
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+      // Handle space and enter key presses for accessibility
+      if (event.key === " " || event.key === "Enter") {
+        // Prevent default space behavior (scrolling) for buttons
+        if (event.key === " ") {
+          event.preventDefault();
+        }
+
+        // If there's an onClick handler, call it
+        if (onClick && !props.disabled) {
+          onClick(event as any); // Cast since KeyboardEvent and MouseEvent are compatible for our use
+        }
+      }
+
+      // Call the original onKeyDown if provided
+      onKeyDown?.(event);
+    };
+
     const Comp = asChild ? Slot : "button";
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
+        onKeyDown={asChild ? onKeyDown : handleKeyDown}
+        onClick={onClick}
+        tabIndex={props.disabled ? -1 : 0}
         {...props}
       />
     );

@@ -5,7 +5,18 @@
  * Date: 2025-09-18
  */
 
-import { MarketplaceType } from './marketplace-connection';
+/**
+ * Marketplace types supported by the platform
+ */
+export type MarketplaceType =
+  | 'ebay'
+  | 'poshmark'
+  | 'facebook_marketplace'
+  | 'mercari'
+  | 'depop'
+  | 'vinted'
+  | 'grailed'
+  | 'etsy';
 
 /**
  * Enum types from database

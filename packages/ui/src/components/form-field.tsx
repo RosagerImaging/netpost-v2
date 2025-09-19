@@ -10,8 +10,11 @@ export interface FormFieldProps
 }
 
 const FormField = React.forwardRef<HTMLInputElement, FormFieldProps>(
-  ({ className, label, error, helperText, ...props }, ref) => {
-    const id = props.id || props.name;
+  ({ className, label, error, helperText, required, ...props }, ref) => {
+    const id = props.id || props.name || `field-${React.useId()}`;
+    const errorId = error ? `${id}-error` : undefined;
+    const helperTextId = helperText ? `${id}-helper` : undefined;
+    const describedBy = [errorId, helperTextId].filter(Boolean).join(" ") || undefined;
 
     return (
       <div className="space-y-2">
@@ -21,6 +24,11 @@ const FormField = React.forwardRef<HTMLInputElement, FormFieldProps>(
             className="text-primary-text text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
             {label}
+            {required && (
+              <span className="text-red-500 ml-1" aria-label="required">
+                *
+              </span>
+            )}
           </label>
         )}
         <Input
@@ -30,11 +38,20 @@ const FormField = React.forwardRef<HTMLInputElement, FormFieldProps>(
           )}
           ref={ref}
           id={id}
+          aria-invalid={error ? "true" : "false"}
+          aria-describedby={describedBy}
+          aria-required={required}
           {...props}
         />
-        {error && <p className="text-sm text-red-500">{error}</p>}
+        {error && (
+          <p id={errorId} role="alert" className="text-sm text-red-500">
+            {error}
+          </p>
+        )}
         {helperText && !error && (
-          <p className="text-secondary-text/70 text-sm">{helperText}</p>
+          <p id={helperTextId} className="text-secondary-text/70 text-sm">
+            {helperText}
+          </p>
         )}
       </div>
     );

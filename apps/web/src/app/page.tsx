@@ -48,7 +48,7 @@ export default function Home() {
           </p>
 
           <div className="flex flex-wrap justify-center gap-4">
-            <Button size="lg" className="px-8 text-lg" asChild>
+            <Button size="lg" className="px-8 text-lg" asChild data-testid="get-started-button">
               <Link href="/register">Get Started</Link>
             </Button>
             <Button

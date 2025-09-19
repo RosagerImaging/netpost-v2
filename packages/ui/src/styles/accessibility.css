@@ -1,0 +1,191 @@
+/* Screen Reader Only Classes */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Skip Navigation Links */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #00BFFF;
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+  font-weight: 500;
+  transition: top 0.3s;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Enhanced Focus Indicators */
+.focus-visible {
+  outline: 2px solid #00BFFF !important;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 191, 255, 0.2);
+}
+
+/* High Contrast Support */
+@media (prefers-contrast: high) {
+  .focus-visible {
+    outline-width: 3px;
+    outline-color: currentColor;
+  }
+
+  .skip-link {
+    background: currentColor;
+    color: CanvasText;
+    border: 2px solid;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus Management for Modal/Dialog */
+.focus-trap {
+  /* Container for focus trapping */
+}
+
+.focus-trap [tabindex="-1"] {
+  /* Elements that should not receive focus */
+  outline: none;
+}
+
+/* Visual Focus Indicators for Different Components */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[role="tab"]:focus-visible,
+[role="menuitem"]:focus-visible {
+  outline: 2px solid #00BFFF;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 191, 255, 0.2);
+}
+
+/* Error States with High Visibility */
+[aria-invalid="true"] {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 1px #ef4444;
+}
+
+[aria-invalid="true"]:focus {
+  outline-color: #ef4444;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2);
+}
+
+/* Loading States */
+[aria-busy="true"] {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+/* Hidden Content */
+[aria-hidden="true"] {
+  display: none !important;
+}
+
+/* Required Field Indicators */
+[aria-required="true"] + label::after,
+[required] + label::after {
+  content: " *";
+  color: #ef4444;
+}
+
+/* Live Region Styles */
+[aria-live] {
+  /* Ensure live regions are positioned for screen readers */
+}
+
+.sr-only[aria-live] {
+  /* Screen reader only live regions */
+}
+
+/* Interactive Element States */
+[aria-expanded="true"] {
+  /* Expanded state styling */
+}
+
+[aria-expanded="false"] {
+  /* Collapsed state styling */
+}
+
+[aria-selected="true"] {
+  /* Selected state styling */
+  background-color: rgba(0, 191, 255, 0.1);
+}
+
+[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Landmark Improvements */
+main:focus {
+  outline: none;
+}
+
+/* Color Contrast Improvements */
+.text-contrast-high {
+  color: #ffffff;
+  background-color: #000000;
+}
+
+.text-contrast-low {
+  color: #666666;
+}
+
+/* Ensure sufficient contrast for all interactive elements */
+.btn-primary {
+  background-color: #0066cc;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background-color: #0052a3;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: #ffffff;
+}
+
+.btn-secondary:hover {
+  background-color: #545b62;
+}

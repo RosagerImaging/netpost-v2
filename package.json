@@ -16,14 +16,21 @@
     "mobile:ios": "npm run ios --workspace=mobile"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@playwright/test": "^1.55.0",
     "@turbo/gen": "^1.12.4",
     "@types/node": "^20",
+    "@types/supertest": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "^8.43.0",
     "@typescript-eslint/parser": "^8.43.0",
+    "artillery": "^2.0.25",
     "eslint": "^9.35.0",
     "eslint-config-prettier": "^10.1.8",
+    "jest-environment-node": "^30.1.2",
+    "playwright": "^1.55.0",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.6.14",
+    "supertest": "^7.1.4",
     "turbo": "^1.12.4"
   },
   "packageManager": "npm@10.2.4",
@@ -33,5 +40,12 @@
   ],
   "engines": {
     "node": ">=18.17.0"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-select": "^2.2.6",
+    "@radix-ui/react-separator": "^1.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-toast": "^1.2.15"
   }
 }
