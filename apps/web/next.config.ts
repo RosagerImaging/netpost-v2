@@ -2,11 +2,13 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   experimental: {
-    // Disable static exports for error pages that are causing issues
-    missingSuspenseWithCSRBailout: false,
+    // Enable optimized package imports
+    optimizePackageImports: ["@radix-ui/react-select", "@radix-ui/react-dialog", "@radix-ui/react-checkbox", "@radix-ui/react-label"],
   },
-  // Skip static generation for problematic routes
-  generateStaticParams: false,
+  transpilePackages: ["@netpost/ui", "@netpost/shared-types"],
+  images: {
+    domains: [], // Add your image domains here
+  },
 };
 
 export default nextConfig;
