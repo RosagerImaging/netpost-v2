@@ -151,21 +151,6 @@ export function withSubscriptionProtection(
     }
   };
 }
-
-/**
- * Middleware for React components (HOC pattern)
- */
-export function withSubscriptionAccess<P extends object>(
-  Component: React.ComponentType<P>,
-  options: SubscriptionMiddlewareOptions = {}
-) {
-  return function SubscriptionProtectedComponent(props: P) {
-    // This would integrate with your auth context
-    // For now, returning a placeholder
-    return <Component {...props} />;
-  };
-}
-
 /**
  * Subscription check decorator for API handlers
  */
