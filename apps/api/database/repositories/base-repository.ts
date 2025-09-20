@@ -19,7 +19,7 @@ import {
   DatabaseError,
   DEFAULT_PAGINATION_LIMIT,
   MAX_PAGINATION_LIMIT,
-} from '@/packages/shared-types/database';
+} from '@netpost/shared-types/database';
 
 /**
  * Base repository class with common database operations

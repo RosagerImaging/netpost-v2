@@ -92,4 +92,4 @@ export type {
   PaginationOptions,
   SortOptions,
   FilterOptions,
-} from '@/packages/shared-types/database';
+} from '@netpost/shared-types/database';

@@ -17,7 +17,7 @@ import {
   hasActiveSubscription,
   calculateProfileCompletion,
   isBusinessProfile,
-} from '@/packages/shared-types/database';
+} from '@netpost/shared-types/database';
 
 export class UserRepository extends BaseRepository<
   UserProfileRecord,

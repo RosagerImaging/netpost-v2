@@ -89,7 +89,7 @@ ui-preview/                 # Turborepo monorepo root
 - **`next.config.js`**: Next.js configuration
 - **`tailwind.config.js`**: Tailwind CSS configuration with custom colors and fonts
 - **`eslint.config.js`**: ESLint configuration extending shared config
-- **`tsconfig.json`**: TypeScript configuration
+- **``**: TypeScript configuration
 
 ### Component Structure
 

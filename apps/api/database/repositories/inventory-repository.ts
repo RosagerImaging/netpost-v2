@@ -20,7 +20,7 @@ import {
   isReadyForListing,
   getDaysInInventory,
   calculateROI,
-} from '@/packages/shared-types/database';
+} from '@netpost/shared-types/database';
 
 export class InventoryRepository extends BaseRepository<
   InventoryItemRecord,

@@ -236,7 +236,7 @@ import type {
   InventoryItemRecord,
   CreateInventoryItemInput,
   InventoryItemStatus,
-} from '@/packages/shared-types/database';
+} from '@netpost/shared-types/database';
 
 // Type-safe repository operations
 const item: InventoryItemRecord = await inventoryRepository.findById(itemId);

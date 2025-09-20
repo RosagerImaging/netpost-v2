@@ -6,7 +6,7 @@
  */
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { Database } from '@/packages/shared-types/database';
+import type { Database } from '@netpost/shared-types';
 
 // Environment variable validation
 const requiredEnvVars = {
