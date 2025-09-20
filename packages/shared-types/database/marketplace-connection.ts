@@ -523,7 +523,7 @@ export class RateLimitExceededError extends MarketplaceConnectionError {
   }
 }
 
-export class MarketplaceApiError extends MarketplaceConnectionError {
+export class ConnectionMarketplaceApiError extends MarketplaceConnectionError {
   constructor(marketplace: MarketplaceType, apiError: string) {
     super(`${marketplace} API error: ${apiError}`, 'MARKETPLACE_API_ERROR');
   }

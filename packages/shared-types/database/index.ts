@@ -5,7 +5,45 @@
  * Auto-generated types from Supabase schema with business logic extensions
  */
 
-// Core database types
+// Import types that will be used in the Database interface
+import type {
+  UserProfileRecord,
+  UserProfilePublic,
+  CreateUserProfileInput,
+  UpdateUserProfileInput,
+} from './user';
+
+import type {
+  InventoryItemRecord,
+  InventoryItemEnhanced,
+  CreateInventoryItemInput,
+  UpdateInventoryItemInput,
+  InventoryItemStatus,
+  InventoryItemCondition,
+  SizeType,
+} from './inventory-item';
+
+import type {
+  ListingRecord,
+  ActiveListingView,
+  CreateListingInput,
+  UpdateListingInput,
+  ListingStatus,
+  MarketplaceType,
+  ListingFormat,
+  ShippingMethod,
+} from './listing';
+
+import type {
+  MarketplaceConnectionRecord,
+  MarketplaceConnectionSafe,
+  CreateMarketplaceConnectionInput,
+  UpdateMarketplaceConnectionInput,
+  ConnectionStatus,
+  AuthMethod,
+} from './marketplace-connection';
+
+// Re-export all types from individual modules
 export * from './user';
 export * from './inventory-item';
 export * from './listing';
@@ -47,7 +85,6 @@ export type {
   UpdateMarketplaceConnectionInput,
   ConnectionStatus,
   AuthMethod,
-  MarketplaceCredentials,
 } from './marketplace-connection';
 
 // Database schema type (generated from Supabase)
@@ -386,7 +423,6 @@ export const DEFAULT_PAGINATION_LIMIT = 25;
 export const MAX_PAGINATION_LIMIT = 100;
 
 export const DEFAULT_USER_PROFILE: Partial<CreateUserProfileInput> = {
-  subscription_tier: 'free',
   preferred_currency: 'USD',
   preferred_timezone: 'America/New_York',
   email_notifications: true,
@@ -427,5 +463,4 @@ export const DEFAULT_MARKETPLACE_CONNECTION: Partial<CreateMarketplaceConnection
   default_handling_time: 1,
   default_payment_methods: [],
   webhook_events: [],
-  connection_source: 'manual',
 };

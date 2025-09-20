@@ -169,7 +169,7 @@ export function isBusinessProfile(profile: UserProfileRecord): boolean {
 export function hasActiveSubscription(profile: UserProfileRecord): boolean {
   return profile.subscription_status === 'active' ||
          (profile.subscription_status === 'trial' &&
-          profile.trial_ends_at &&
+          profile.trial_ends_at !== null &&
           new Date(profile.trial_ends_at) > new Date());
 }
 

@@ -68,11 +68,11 @@ export interface MarketplaceAttributes {
 
   // Poshmark specific
   size_chart?: string;
-  brand_id?: string;
+  poshmark_brand_id?: string;
   style_tags?: string[];
 
   // Mercari specific
-  brand_id?: string;
+  mercari_brand_id?: string;
   condition_id?: string;
   shipping_payer?: string;
 
@@ -394,7 +394,7 @@ export function getMarketplaceDisplayName(marketplace: MarketplaceType): string 
   return displayNames[marketplace];
 }
 
-export function getStatusDisplayName(status: ListingStatus): string {
+export function getListingStatusDisplayName(status: ListingStatus): string {
   const displayNames: Record<ListingStatus, string> = {
     draft: 'Draft',
     pending: 'Pending',
@@ -466,7 +466,7 @@ export function calculateListingROI(listing: ListingRecord, itemCost: number): n
   return ((listing.sale_price - totalCosts) / totalCosts) * 100;
 }
 
-export function calculateProfitMargin(listing: ListingRecord): number | null {
+export function calculateListingProfitMargin(listing: ListingRecord): number | null {
   if (!listing.sale_price || !listing.net_profit) return null;
   return (listing.net_profit / listing.sale_price) * 100;
 }
@@ -514,7 +514,7 @@ export class ListingValidationError extends ListingError {
   }
 }
 
-export class MarketplaceApiError extends ListingError {
+export class ListingMarketplaceApiError extends ListingError {
   constructor(marketplace: MarketplaceType, message: string) {
     super(`${getMarketplaceDisplayName(marketplace)} API error: ${message}`, 'MARKETPLACE_API_ERROR');
   }

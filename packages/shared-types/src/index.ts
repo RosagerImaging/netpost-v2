@@ -56,9 +56,9 @@ export type {
 // Database utility functions
 export {
   getConditionDisplayName,
-  getStatusDisplayName,
+  getInventoryStatusDisplayName,
   calculateROI,
-  calculateProfitMargin,
+  calculateInventoryProfitMargin,
   isReadyForListing,
   getDaysInInventory,
   InventoryItemError,
@@ -123,3 +123,6 @@ export type {
   HealthCheck,
   ServiceHealth,
 } from "./api";
+
+// Database schema type
+export type { Database } from "../database/index";

@@ -307,7 +307,7 @@ export function getConditionDisplayName(condition: InventoryItemCondition): stri
   return displayNames[condition];
 }
 
-export function getStatusDisplayName(status: InventoryItemStatus): string {
+export function getInventoryStatusDisplayName(status: InventoryItemStatus): string {
   const displayNames: Record<InventoryItemStatus, string> = {
     draft: 'Draft',
     available: 'Available',
@@ -327,7 +327,7 @@ export function calculateROI(salePrice: number, purchasePrice: number): number {
   return ((salePrice - purchasePrice) / purchasePrice) * 100;
 }
 
-export function calculateProfitMargin(salePrice: number, purchasePrice: number): number {
+export function calculateInventoryProfitMargin(salePrice: number, purchasePrice: number): number {
   if (salePrice <= 0) return 0;
   return ((salePrice - purchasePrice) / salePrice) * 100;
 }
