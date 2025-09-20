@@ -92,16 +92,17 @@ export type {
   PoshmarkWebhookPayload,
   FacebookWebhookPayload,
   PollingResult,
-  DelistingError,
+  IDelistingError,
   DelistingErrorCode,
 } from "./database/delisting";
 
-// De-listing utility functions
+// De-listing utility functions and classes
 export {
   DELISTING_ERROR_CODES,
   isRetryableError,
   getRetryDelay,
   calculateSuccessRate,
+  DelistingError,
 } from "./database/delisting";
 
 // API types

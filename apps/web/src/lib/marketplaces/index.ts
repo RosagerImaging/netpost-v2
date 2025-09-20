@@ -29,6 +29,9 @@ export {
   validateMarketplaceRequirements,
 } from './adapter-registry';
 
+// Alias for backward compatibility
+export { createMarketplaceAdapter as createAdapter } from './adapter-registry';
+
 // Error types
 export {
   MarketplaceApiError,

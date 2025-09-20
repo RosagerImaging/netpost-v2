@@ -416,7 +416,7 @@ export interface PollingResult<T = any> {
 /**
  * Error types specific to delisting operations
  */
-export interface DelistingError {
+export interface IDelistingError {
   code: string;
   message: string;
   marketplace: MarketplaceType;
@@ -424,6 +424,34 @@ export interface DelistingError {
   external_id?: string;
   retry_after?: number;
   permanent?: boolean;
+}
+
+export class DelistingError extends Error implements IDelistingError {
+  public code: string;
+  public marketplace: MarketplaceType;
+  public listing_id?: string;
+  public external_id?: string;
+  public retry_after?: number;
+  public permanent?: boolean;
+
+  constructor(params: {
+    code: string;
+    message: string;
+    marketplace: MarketplaceType;
+    listing_id?: string;
+    external_id?: string;
+    retry_after?: number;
+    permanent?: boolean;
+  }) {
+    super(params.message);
+    this.name = 'DelistingError';
+    this.code = params.code;
+    this.marketplace = params.marketplace;
+    this.listing_id = params.listing_id;
+    this.external_id = params.external_id;
+    this.retry_after = params.retry_after;
+    this.permanent = params.permanent;
+  }
 }
 
 // Common error codes
