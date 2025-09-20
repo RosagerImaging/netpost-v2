@@ -132,7 +132,7 @@ export function ApiKeyForm({ marketplace, onSuccess, onError }: ApiKeyFormProps)
   };
 
   const getFieldInstructions = () => {
-    const instructions: Record<MarketplaceType, Record<string, string>> = {
+    const instructions: Partial<Record<MarketplaceType, Record<string, string>>> = {
       ebay: {
         client_id: 'Your eBay Application ID (Client ID) from the Developer Dashboard',
         client_secret: 'Your eBay Application Secret (Client Secret) from the Developer Dashboard',
@@ -145,11 +145,11 @@ export function ApiKeyForm({ marketplace, onSuccess, onError }: ApiKeyFormProps)
       etsy: {
         api_key: 'Your Etsy API Key from the Developer Console',
       },
-      // Add more marketplace-specific instructions
+      // Add more marketplace-specific instructions as needed
     };
 
     return instructions[marketplace] || {};
-  };
+  };;
 
   const fieldInstructions = getFieldInstructions();
 
