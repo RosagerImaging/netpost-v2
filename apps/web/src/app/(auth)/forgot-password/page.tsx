@@ -47,7 +47,8 @@ export default function ForgotPasswordPage() {
           "If an account with that email exists, we&apos;ve sent you a password reset link. Please check your email."
         );
       }
-    } catch (_) {
+    } catch (error) {
+      console.error('Password reset error:', error);
       setError("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);

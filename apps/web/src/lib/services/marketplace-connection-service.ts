@@ -12,6 +12,7 @@ import {
   type MarketplaceApiError,
   type AuthenticationError,
 } from '../marketplaces';
+import type { MarketplaceType } from '@netpost/shared-types';
 import type {
   MarketplaceConnectionRecord,
   MarketplaceConnectionSafe,
@@ -23,7 +24,6 @@ import type {
   ApiKeyCredentials,
   HealthCheckResult,
   ConnectionFilters,
-  MarketplaceType,
   ConnectionStatus,
 } from '@netpost/shared-types/database/marketplace-connection';
 
@@ -212,7 +212,6 @@ export class MarketplaceConnectionService {
       const connectionInput: CreateMarketplaceConnectionInput = {
         marketplace_type: marketplace,
         auth_method: 'oauth2',
-        connection_status: 'connecting',
         callback_url: callbackUrl,
       };
 
@@ -221,6 +220,7 @@ export class MarketplaceConnectionService {
         .insert([{
           ...connectionInput,
           user_id: user.id,
+          connection_status: 'connecting',
         }])
         .select()
         .single();
@@ -373,7 +373,6 @@ export class MarketplaceConnectionService {
       const connectionInput: CreateMarketplaceConnectionInput = {
         marketplace_type: marketplace,
         auth_method: 'api_key',
-        connection_status: 'connecting',
         marketplace_metadata: metadata || {},
       };
 
@@ -382,6 +381,7 @@ export class MarketplaceConnectionService {
         .insert([{
           ...connectionInput,
           user_id: user.id,
+          connection_status: 'connecting',
         }])
         .select()
         .single();
@@ -406,7 +406,11 @@ export class MarketplaceConnectionService {
           })
           .eq('id', connection.id);
 
-        return healthCheck;
+        return {
+          success: false,
+          error: healthCheck.error || 'Health check failed',
+          code: healthCheck.code || 'HEALTH_CHECK_ERROR',
+        };
       }
 
       // Update connection status to active
@@ -466,9 +470,9 @@ export class MarketplaceConnectionService {
         ? 'expired'
         : 'error';
 
-      const updateData: Partial<UpdateMarketplaceConnectionInput> = {
+      const updateData: any = {
         connection_status: status,
-        status_message: healthResult.error_message || null,
+        status_message: healthResult.error_message || undefined,
         last_connection_check: new Date().toISOString(),
         average_response_time_ms: healthResult.response_time_ms,
       };

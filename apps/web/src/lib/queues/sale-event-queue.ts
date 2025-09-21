@@ -8,11 +8,6 @@
 import { createClient } from '@/lib/supabase/server';
 import {
   SaleEvent,
-  DelistingJob,
-  ProcessSaleEventResponse,
-  DelistingAuditLog,
-  DELISTING_ERROR_CODES,
-  getRetryDelay,
 } from '@netpost/shared-types';
 
 interface QueueConfig {
@@ -177,9 +172,10 @@ async function processSaleEvent(saleEventId: string): Promise<{
 
   } catch (error) {
     console.error(`Error processing sale event ${saleEventId}:`, error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
     return {
       success: false,
-      error: error.message,
+      error: errorMessage,
       retryable: true,
     };
   }
@@ -214,9 +210,10 @@ async function verifySaleEvent(saleEvent: SaleEvent): Promise<{
     return { success: true };
 
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
     return {
       success: false,
-      error: `Verification failed: ${error.message}`,
+      error: `Verification failed: ${errorMessage}`,
       retryable: true,
     };
   }
@@ -324,6 +321,7 @@ export async function processSaleEventQueue(): Promise<ProcessingStats> {
 
   } catch (error) {
     console.error('Error processing sale event queue:', error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
     return {
       processed: 0,
       failed: 0,
@@ -332,7 +330,7 @@ export async function processSaleEventQueue(): Promise<ProcessingStats> {
       errors: [
         {
           event_id: 'queue_error',
-          error: error.message,
+          error: errorMessage,
           timestamp: new Date().toISOString(),
         },
       ],
@@ -377,10 +375,11 @@ export async function cleanupProcessedEvents(olderThanDays: number = 30): Promis
     };
 
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
     return {
       success: false,
       deletedCount: 0,
-      error: error.message,
+      error: errorMessage,
     };
   }
 }
@@ -513,6 +512,7 @@ export async function retryFailedEvents(maxRetries: number = 10): Promise<Proces
 
   } catch (error) {
     console.error('Error retrying failed events:', error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
     return {
       processed: 0,
       failed: 0,
@@ -521,7 +521,7 @@ export async function retryFailedEvents(maxRetries: number = 10): Promise<Proces
       errors: [
         {
           event_id: 'retry_error',
-          error: error.message,
+          error: errorMessage,
           timestamp: new Date().toISOString(),
         },
       ],

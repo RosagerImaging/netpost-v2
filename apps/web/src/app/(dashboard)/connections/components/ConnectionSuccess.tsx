@@ -142,7 +142,7 @@ export function ConnectionSuccess({ connection, onStartOver, onClose }: Connecti
             <div>
               <p className="font-medium">Monitor Performance</p>
               <p className="text-blue-600">
-                Track your listings' performance and sales across all connected marketplaces
+                Track your listings&apos; performance and sales across all connected marketplaces
               </p>
             </div>
           </div>

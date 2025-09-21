@@ -75,7 +75,8 @@ export default function ResetPasswordPage() {
           router.push("/login");
         }, 2000);
       }
-    } catch (_) {
+    } catch (error) {
+      console.error('Password reset error:', error);
       setError("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);

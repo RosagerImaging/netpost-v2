@@ -143,7 +143,7 @@ export class CrossListingService {
       console.error('Error fetching inventory items:', error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : 'Unknown error'
       };
     }
   }
@@ -179,7 +179,7 @@ export class CrossListingService {
       console.error('Error fetching marketplace connections:', error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : 'Unknown error'
       };
     }
   }
@@ -198,14 +198,14 @@ export class CrossListingService {
         title: inventoryItem.title,
         description: inventoryItem.description || '',
         listing_price: inventoryItem.target_price || 0,
-        original_price: inventoryItem.original_price,
+        original_price: inventoryItem.purchase_price || inventoryItem.estimated_value || 0,
         currency: 'USD',
         quantity_available: inventoryItem.quantity,
-        condition_description: inventoryItem.condition_notes,
-        photo_urls: inventoryItem.photos || [],
+        condition_description: inventoryItem.condition_notes || undefined,
+        photo_urls: inventoryItem.photos?.map(photo => photo.url) || [],
         tags: inventoryItem.tags || [],
       },
-      marketplace_customizations: {},
+      marketplace_customizations: {} as Record<MarketplaceType, Partial<CreateListingInput>>,
       pricing_strategy: 'fixed',
       auto_relist: false,
     };
@@ -251,7 +251,7 @@ export class CrossListingService {
       isValid: true,
       errors: [],
       warnings: [],
-      marketplaceErrors: {},
+      marketplaceErrors: {} as Record<MarketplaceType, string[]>,
     };
 
     // Basic validation
@@ -398,7 +398,7 @@ export class CrossListingService {
       console.error('Error generating cross-listing preview:', error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : 'Unknown error'
       };
     }
   }
@@ -412,7 +412,7 @@ export class CrossListingService {
     try {
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       if (authError || !user) {
-        return { success: false, error: 'User not authenticated' };
+        return { success: false, error: 'User not authenticated', submitted_listings: [] };
       }
 
       // Validate form data
@@ -421,6 +421,7 @@ export class CrossListingService {
         return {
           success: false,
           error: `Validation failed: ${validation.errors.join(', ')}`,
+          submitted_listings: []
         };
       }
 
@@ -485,7 +486,6 @@ export class CrossListingService {
         .from('inventory_items')
         .update({
           status: 'listed',
-          times_listed: supabase.raw('times_listed + 1'),
           updated_at: new Date().toISOString(),
         })
         .eq('id', formData.inventory_item_id);
@@ -509,6 +509,7 @@ export class CrossListingService {
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
+        submitted_listings: []
       };
     }
   }

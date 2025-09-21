@@ -12,7 +12,7 @@ import {
   bulkUpdateInventoryItems,
   subscribeToInventoryChanges,
   type InventoryQueryParams,
-} from '../../../../../lib/supabase/inventory';
+} from '../../../../../lib/supabase-inventory';
 import type {
   InventoryItemRecord,
   CreateInventoryItemInput,

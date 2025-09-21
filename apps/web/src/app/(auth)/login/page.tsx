@@ -53,7 +53,8 @@ export default function LoginPage() {
         // Redirect will be handled by auth state change
         router.push("/dashboard");
       }
-    } catch (_) {
+    } catch (error) {
+      console.error('Login error:', error);
       setError("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
@@ -71,7 +72,8 @@ export default function LoginPage() {
         setError(result.error);
       }
       // OAuth redirect will be handled by Supabase
-    } catch (_) {
+    } catch (error) {
+      console.error('Google sign in error:', error);
       setError("An unexpected error occurred with Google sign in.");
     } finally {
       setIsLoading(false);

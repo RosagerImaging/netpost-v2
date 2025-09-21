@@ -571,7 +571,7 @@ export default function ListingsPage() {
                             <td className="px-6 py-4 whitespace-nowrap">
                               <p className="font-medium">{job.listing_data.title}</p>
                               <p className="text-sm text-gray-500">
-                                {formatCurrency(job.listing_data.listing_price)}
+                                {formatCurrency(job.listing_data.listing_price || 0)}
                               </p>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">

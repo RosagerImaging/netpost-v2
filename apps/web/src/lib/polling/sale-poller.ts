@@ -85,6 +85,23 @@ async function saveSaleEventFromPolling(
   const supabase = createClient();
 
   try {
+    // Skip processing for custom marketplaces as they don't have standardized polling
+    if (marketplace === 'custom') {
+      return {
+        success: false,
+        error: 'Custom marketplaces do not support automated sale detection via polling',
+      };
+    }
+
+    // Skip processing for marketplaces not supported by delisting system
+    const unsupportedMarketplaces = ['amazon', 'shopify', 'tradesy', 'the_realreal', 'vestiaire_collective'];
+    if (unsupportedMarketplaces.includes(marketplace)) {
+      return {
+        success: false,
+        error: `Marketplace '${marketplace}' does not currently support polling-based sale detection`,
+      };
+    }
+
     // Extract sale information from marketplace-specific data
     let saleEventRequest: ProcessSaleEventRequest;
 
@@ -138,9 +155,9 @@ async function saveSaleEventFromPolling(
         break;
 
       default:
-        // Generic handling for unknown marketplaces
+        // Generic handling for other supported marketplaces (ebay, poshmark, facebook_marketplace, vinted, grailed)
         saleEventRequest = {
-          marketplace_type: marketplace,
+          marketplace_type: marketplace as 'ebay' | 'poshmark' | 'facebook_marketplace' | 'vinted' | 'grailed',
           event_type: 'item_sold',
           external_event_id: `${listingData.id || listingData.listing_id}_polling`,
           external_listing_id: (listingData.id || listingData.listing_id)?.toString(),
@@ -250,7 +267,7 @@ async function pollUserListings(
   userId: string,
   marketplace: MarketplaceType
 ): Promise<{
-  success: bool;
+  success: boolean;
   salesFound: number;
   error?: string;
 }> {
@@ -259,13 +276,14 @@ async function pollUserListings(
   try {
     console.log(`Polling ${marketplace} listings for user ${userId}`);
 
-    // Get user's marketplace connection
+    // Get user's marketplace connection with credentials
     const { data: connection } = await supabase
-      .from('marketplace_connections_safe')
+      .from('marketplace_connections')
       .select('*')
       .eq('user_id', userId)
       .eq('marketplace_type', marketplace)
       .eq('status', 'active')
+      .is('deleted_at', null)
       .single();
 
     if (!connection) {
@@ -295,8 +313,19 @@ async function pollUserListings(
 
     console.log(`Found ${listings.length} active listings to poll`);
 
+    // Extract credentials from connection
+    const credentials = {
+      access_token: connection.access_token,
+      refresh_token: connection.refresh_token,
+      api_key: connection.api_key,
+      api_secret: connection.api_secret,
+      client_id: connection.client_id,
+      client_secret: connection.client_secret,
+      token_type: connection.token_type || 'Bearer',
+    };
+
     // Create marketplace adapter
-    const adapter = await createAdapter(connection);
+    const adapter = await createAdapter(connection, credentials);
     if (!adapter) {
       return {
         success: false,
@@ -318,7 +347,7 @@ async function pollUserListings(
           const marketplaceListing = await adapter.getListingById(listing.external_listing_id);
 
           // Check if listing is sold
-          if (marketplaceListing.status === 'sold' || marketplaceListing.marketplace_data?.status === 'sold') {
+          if (marketplaceListing.status === 'sold') {
             console.log(`Found sold listing: ${listing.external_listing_id}`);
 
             // Update our listing status first
@@ -335,7 +364,7 @@ async function pollUserListings(
             // Create sale event
             const saleEventResult = await saveSaleEventFromPolling(
               marketplace,
-              marketplaceListing.marketplace_data,
+              marketplaceListing,
               userId,
               listing.inventory_item_id,
               listing.id
@@ -370,7 +399,7 @@ async function pollUserListings(
     return {
       success: false,
       salesFound: 0,
-      error: error.message,
+      error: error instanceof Error ? error.message : 'Unknown error occurred',
     };
   }
 }
@@ -399,10 +428,11 @@ async function pollMarketplace(marketplace: MarketplaceType): Promise<{
   try {
     // Get all users with active connections to this marketplace
     const { data: connections } = await supabase
-      .from('marketplace_connections_safe')
+      .from('marketplace_connections')
       .select('user_id')
       .eq('marketplace_type', marketplace)
-      .eq('status', 'active');
+      .eq('status', 'active')
+      .is('deleted_at', null);
 
     if (!connections || connections.length === 0) {
       return {
@@ -450,7 +480,7 @@ async function pollMarketplace(marketplace: MarketplaceType): Promise<{
       success: false,
       usersPolled: 0,
       totalSalesFound: 0,
-      error: error.message,
+      error: error instanceof Error ? error.message : 'Unknown error occurred',
     };
   }
 }
@@ -460,12 +490,12 @@ async function pollMarketplace(marketplace: MarketplaceType): Promise<{
  */
 export async function pollAllMarketplaces(): Promise<{
   success: boolean;
-  results: Record<MarketplaceType, any>;
+  results: Partial<Record<MarketplaceType, any>>;
   totalSalesFound: number;
 }> {
   console.log('Starting marketplace polling cycle');
 
-  const results: Record<MarketplaceType, any> = {};
+  const results: Partial<Record<MarketplaceType, any>> = {};
   let totalSalesFound = 0;
 
   // Poll each marketplace that has polling enabled
@@ -494,15 +524,15 @@ export async function pollAllMarketplaces(): Promise<{
  */
 export async function getPollingStatus(): Promise<{
   enabled_marketplaces: MarketplaceType[];
-  last_poll_results: Record<MarketplaceType, any>;
-  next_poll_times: Record<MarketplaceType, string>;
+  last_poll_results: Partial<Record<MarketplaceType, any>>;
+  next_poll_times: Partial<Record<MarketplaceType, string>>;
 }> {
   const enabledMarketplaces = Object.entries(POLLING_CONFIGS)
     .filter(([_, config]) => config.enabled)
     .map(([marketplace]) => marketplace as MarketplaceType);
 
   // Calculate next poll times based on intervals
-  const nextPollTimes: Record<MarketplaceType, string> = {};
+  const nextPollTimes: Partial<Record<MarketplaceType, string>> = {};
   const now = new Date();
 
   for (const marketplace of enabledMarketplaces) {
@@ -512,7 +542,7 @@ export async function getPollingStatus(): Promise<{
   }
 
   // TODO: Get last poll results from a polling status table
-  const lastPollResults: Record<MarketplaceType, any> = {};
+  const lastPollResults: Partial<Record<MarketplaceType, any>> = {};
 
   return {
     enabled_marketplaces: enabledMarketplaces,

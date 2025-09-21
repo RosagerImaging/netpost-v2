@@ -13,7 +13,8 @@ export class AuthService {
       }
 
       return { data };
-    } catch (_) {
+    } catch (error) {
+      console.error('Sign in error:', error);
       return { error: "An unexpected error occurred during sign in" };
     }
   }
@@ -30,7 +31,8 @@ export class AuthService {
       }
 
       return { data };
-    } catch (_) {
+    } catch (error) {
+      console.error('Sign up error:', error);
       return { error: "An unexpected error occurred during sign up" };
     }
   }
@@ -65,7 +67,8 @@ export class AuthService {
       }
 
       return { data };
-    } catch (_) {
+    } catch (error) {
+      console.error('Google sign in error:', error);
       return { error: "An unexpected error occurred during Google sign in" };
     }
   }
@@ -81,7 +84,8 @@ export class AuthService {
       }
 
       return { success: true };
-    } catch (_) {
+    } catch (error) {
+      console.error('Password reset error:', error);
       return { error: "An unexpected error occurred during password reset" };
     }
   }
@@ -97,7 +101,8 @@ export class AuthService {
       }
 
       return { success: true };
-    } catch (_) {
+    } catch (error) {
+      console.error('Password update error:', error);
       return { error: "An unexpected error occurred during password update" };
     }
   }
@@ -114,7 +119,8 @@ export class AuthService {
       }
 
       return session;
-    } catch (_) {
+    } catch (error) {
+      console.error('Get session error:', error);
       return null;
     }
   }
@@ -131,7 +137,8 @@ export class AuthService {
       }
 
       return user;
-    } catch (_) {
+    } catch (error) {
+      console.error('Get user error:', error);
       return null;
     }
   }

@@ -3,7 +3,7 @@
  * Handles email, in-app, and SMS notifications for delisting events
  */
 import { createClient } from '@/lib/supabase/client';
-import { DelistingJob, DelistingJobStatus, MarketplaceType } from '@/lib/types/delisting';
+import { DelistingJob, DelistingJobStatus, MarketplaceType } from '@netpost/shared-types';
 
 export interface NotificationPreferences {
   notification_email: boolean;
@@ -104,9 +104,10 @@ export class NotificationService {
 
     } catch (error) {
       console.error('Error sending delisting notification:', error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
       return {
         success: false,
-        errors: [error.message],
+        errors: [errorMessage],
       };
     }
   }
@@ -450,9 +451,10 @@ export class NotificationService {
 
     } catch (error) {
       console.error('Error sending job completion notification:', error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
       return {
         success: false,
-        errors: [error.message],
+        errors: [errorMessage],
       };
     }
   }
@@ -496,9 +498,10 @@ export class NotificationService {
 
     } catch (error) {
       console.error('Error sending confirmation notification:', error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
       return {
         success: false,
-        errors: [error.message],
+        errors: [errorMessage],
       };
     }
   }

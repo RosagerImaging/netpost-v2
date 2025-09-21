@@ -6,10 +6,24 @@
 import { supabase } from '@/lib/supabase/client';
 import { BaseMarketplaceAdapter } from '../marketplaces/base-adapter';
 import type {
-  MarketplaceType,
-  CreateListingInput,
   ListingCreationResult
 } from '../marketplaces/base-adapter';
+import type { MarketplaceType } from '@netpost/shared-types';
+
+// Define CreateListingInput locally since it's not exported from shared-types
+export interface CreateListingInput {
+  inventory_item_id: string;
+  marketplace_type: MarketplaceType;
+  title: string;
+  description: string;
+  listing_price: number;
+  original_price?: number;
+  currency?: string;
+  quantity_available?: number;
+  condition_description?: string;
+  photo_urls?: string[];
+  tags?: string[];
+}
 
 export interface ListingJob {
   id: string;
@@ -367,7 +381,7 @@ export class ListingJobQueue {
 
       // Create adapter instance
       const { createAdapter } = await import('../marketplaces');
-      return createAdapter(connection);
+      return createAdapter(connection, connection.credentials);
     } catch (error) {
       console.error('Error getting marketplace adapter:', error);
       return null;
