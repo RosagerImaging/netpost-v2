@@ -12,7 +12,7 @@ import { ConnectionSetup } from './components/ConnectionSetup';
 import { ConnectionCard } from './components/ConnectionCard';
 import { ConnectionStats } from './components/ConnectionStats';
 import { useMarketplaceConnections, useConnectionStatistics } from '@/lib/hooks/useMarketplaceConnections';
-import type { MarketplaceType, ConnectionStatus } from '@netpost/shared-types/database/marketplace-connection';
+import type { MarketplaceType, ConnectionStatus } from '@netpost/shared-types';
 
 const statusFilters: { value: ConnectionStatus | 'all'; label: string; color: string }[] = [
   { value: 'all', label: 'All Connections', color: 'gray' },

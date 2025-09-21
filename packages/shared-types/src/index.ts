@@ -34,6 +34,10 @@ export type {
   CrossPostingResult,
 } from "./listing";
 
+// Database types - import from database folder
+export type { MarketplaceType } from "../database/listing";
+export type { ConnectionStatus } from "../database/marketplace-connection";
+
 // Database types
 export type {
   InventoryItemRecord,
