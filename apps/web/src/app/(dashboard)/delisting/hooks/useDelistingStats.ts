@@ -88,7 +88,7 @@ export function useDelistingStats(): UseDelistingStatsResult {
       // Find most active marketplace
       const marketplaceCounts: Record<string, number> = {}
       jobStats.forEach(job => {
-        job.marketplaces_targeted?.forEach(marketplace => {
+        job.marketplaces_targeted?.forEach((marketplace: string) => {
           marketplaceCounts[marketplace] = (marketplaceCounts[marketplace] || 0) + 1
         })
       })

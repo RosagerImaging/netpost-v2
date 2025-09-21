@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
   try {
     // Get the raw body and signature
     const body = await request.text();
-    const signature = headers().get('stripe-signature');
+    const signature = (await headers()).get('stripe-signature');
 
     if (!signature) {
       console.error('❌ Missing Stripe signature header');
@@ -114,7 +114,7 @@ async function handleSubscriptionCreated(event: Stripe.Event) {
       tier,
       stripeSubscriptionId: subscription.id,
       stripeCustomerId: subscription.customer as string,
-      status: subscription.status,
+      status: subscription.status as any,
       currentPeriodStart: new Date(subscription.current_period_start * 1000),
       currentPeriodEnd: new Date(subscription.current_period_end * 1000),
       trialStart: subscription.trial_start ? new Date(subscription.trial_start * 1000) : null,
@@ -140,7 +140,7 @@ async function handleSubscriptionUpdated(event: Stripe.Event) {
 
     await SubscriptionService.updateSubscriptionFromStripe({
       stripeSubscriptionId: subscription.id,
-      status: subscription.status,
+      status: subscription.status as any,
       tier: tier || undefined,
       currentPeriodStart: new Date(subscription.current_period_start * 1000),
       currentPeriodEnd: new Date(subscription.current_period_end * 1000),

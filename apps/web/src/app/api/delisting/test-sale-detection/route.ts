@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Test sale detection error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
   }
 }
 
@@ -124,7 +124,7 @@ export async function GET() {
 
   } catch (error) {
     console.error('Error getting sale detection status:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
   }
 }
 
@@ -179,6 +179,6 @@ async function createTestSaleEvent(params: any) {
     };
 
   } catch (error) {
-    throw new Error(`Failed to create test sale event: ${error.message}`);
+    throw new Error(`Failed to create test sale event: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }

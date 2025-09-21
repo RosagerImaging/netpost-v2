@@ -14,13 +14,13 @@ import {
   CurrencyDollarIcon,
   MapPinIcon,
   ScaleIcon,
-  RulerIcon,
+  ArrowsRightLeftIcon,
   PhotoIcon,
   DocumentIcon,
   VideoCameraIcon,
 } from "@heroicons/react/24/outline";
 import {
-  getStatusDisplayName,
+  getInventoryStatusDisplayName,
   getConditionDisplayName,
   getDaysInInventory,
   isReadyForListing,
@@ -108,7 +108,7 @@ export function ItemDetail({ item, isOpen, onClose, onEdit, onDelete }: ItemDeta
                     </Dialog.Title>
                     <div className="flex items-center space-x-4">
                       <span className={`rounded-full px-3 py-1 text-sm ${getStatusColor(item.status)}`}>
-                        {getStatusDisplayName(item.status)}
+                        {getInventoryStatusDisplayName(item.status)}
                       </span>
                       <span className={`rounded-full px-3 py-1 text-sm ${getConditionColor(item.condition)}`}>
                         {getConditionDisplayName(item.condition)}

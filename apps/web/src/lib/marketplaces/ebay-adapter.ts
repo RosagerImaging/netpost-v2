@@ -10,6 +10,8 @@ import {
   type AuthFlow,
   type ListingCreationResult,
   type RateLimit,
+  type EndListingOptions,
+  type EndListingResult,
   MarketplaceApiError,
   AuthenticationError,
 } from './base-adapter';
@@ -94,7 +96,7 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
   }
 
   protected getDefaultApiBaseUrl(): string {
-    const isProduction = this.connection.marketplace_metadata?.environment === 'production';
+    const isProduction = (this.connection.marketplace_metadata as any)?.environment === 'production';
     return isProduction ? this.EBAY_API_BASE : this.EBAY_SANDBOX_API_BASE;
   }
 
@@ -307,7 +309,10 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
         fees,
       };
     } catch (error) {
-      this.log('error', 'eBay listing creation failed', { error: error.message, listing });
+      this.log('error', 'eBay listing creation failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        listing
+      });
       throw error;
     }
   }
@@ -349,7 +354,11 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
         marketplace_data: ebayData,
       };
     } catch (error) {
-      this.log('error', 'eBay listing update failed', { error: error.message, externalId, updates });
+      this.log('error', 'eBay listing update failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        externalId,
+        updates
+      });
       throw error;
     }
   }
@@ -374,7 +383,10 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
         return false;
       }
     } catch (error) {
-      this.log('error', 'eBay listing deletion error', { error: error.message, externalId });
+      this.log('error', 'eBay listing deletion error', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        externalId
+      });
       throw error;
     }
   }
@@ -403,7 +415,10 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
 
       return this.mapEBayDataToListingRecord(response.data);
     } catch (error) {
-      this.log('error', 'Error fetching eBay listing', { error: error.message, externalId });
+      this.log('error', 'Error fetching eBay listing', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        externalId
+      });
       throw error;
     }
   }
@@ -435,7 +450,9 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
 
       return this.mapEBayCategories(response.data.rootCategoryNode);
     } catch (error) {
-      this.log('error', 'Error fetching eBay categories', { error: error.message });
+      this.log('error', 'Error fetching eBay categories', {
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
       throw error;
     }
   }
@@ -473,7 +490,9 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
         cost: policy.shippingOptions?.[0]?.shippingCost?.value || 0,
       })) || [];
     } catch (error) {
-      this.log('error', 'Error fetching shipping policies', { error: error.message });
+      this.log('error', 'Error fetching shipping policies', {
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
       throw error;
     }
   }
@@ -501,7 +520,9 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
         days: policy.returnPeriod?.value || 30,
       })) || [];
     } catch (error) {
-      this.log('error', 'Error fetching return policies', { error: error.message });
+      this.log('error', 'Error fetching return policies', {
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
       throw error;
     }
   }
@@ -540,7 +561,10 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
       const data = await response.json();
       return data.pictureUrl || data.imageUrl;
     } catch (error) {
-      this.log('error', 'eBay photo upload failed', { error: error.message, photoUrl });
+      this.log('error', 'eBay photo upload failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        photoUrl
+      });
       throw error;
     }
   }
@@ -587,7 +611,10 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
         this.mapEBayDataToListingRecord(item)
       ) || [];
     } catch (error) {
-      this.log('error', 'eBay search failed', { error: error.message, query });
+      this.log('error', 'eBay search failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        query
+      });
       throw error;
     }
   }
@@ -617,7 +644,10 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
         offers: 0,
       };
     } catch (error) {
-      this.log('error', 'Error fetching analytics', { error: error.message, externalId });
+      this.log('error', 'Error fetching analytics', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        externalId
+      });
       return {
         views: 0,
         watchers: 0,
@@ -662,7 +692,7 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
       console.error(`Error ending eBay listing ${externalId}:`, error);
       
       // Handle specific eBay errors
-      if (error.message?.includes('ItemNotFound')) {
+      if (error instanceof Error && error.message?.includes('ItemNotFound')) {
         throw new MarketplaceApiError(
           'Listing not found on eBay',
           'ebay',
@@ -671,7 +701,7 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
         );
       }
       
-      if (error.message?.includes('ItemAlreadyEnded')) {
+      if (error instanceof Error && error.message?.includes('ItemAlreadyEnded')) {
         throw new MarketplaceApiError(
           'Listing already ended on eBay',
           'ebay',
@@ -682,7 +712,7 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
 
       return {
         success: false,
-        error: `eBay API error: ${error.message}`,
+        error: `eBay API error: ${error instanceof Error ? error.message : 'Unknown error'}`,
       };
     }
   }
@@ -881,7 +911,7 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
       currency: ebayData.pricingSummary?.price?.currency || 'USD',
       status: this.mapEBayStatusToListingStatus(ebayData.status),
       // ... map other fields as needed
-    } as ListingRecord;
+    } as unknown as ListingRecord;
   }
 
   private mapEBayCategories(categoryNode: any): Array<{ id: string; name: string; parent_id?: string }> {

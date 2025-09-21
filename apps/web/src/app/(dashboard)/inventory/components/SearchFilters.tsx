@@ -11,7 +11,7 @@ import {
 import {
   type InventoryItemStatus,
   type InventoryItemCondition,
-  getStatusDisplayName,
+  getInventoryStatusDisplayName,
   getConditionDisplayName,
 } from "@netpost/shared-types";
 
@@ -198,7 +198,7 @@ export function SearchFilters({
                       }}
                       className="text-primary focus:ring-primary rounded border-gray-300"
                     />
-                    <span className="text-sm">{getStatusDisplayName(status)}</span>
+                    <span className="text-sm">{getInventoryStatusDisplayName(status)}</span>
                   </label>
                 ))}
               </div>

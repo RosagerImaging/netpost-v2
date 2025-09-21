@@ -9,9 +9,9 @@ import { MarketplaceConnectionService } from '../services/marketplace-connection
 import type {
   MarketplaceConnectionSafe,
   ConnectionFilters,
-  MarketplaceType,
   ApiKeyCredentials,
 } from '@netpost/shared-types/database/marketplace-connection';
+import type { MarketplaceType } from '@netpost/shared-types';
 
 // Query keys
 export const marketplaceConnectionKeys = {

@@ -6,7 +6,7 @@ import { ItemDetail } from "./ItemDetail";
 import { DeleteConfirmDialog, UndoToast } from "./DeleteConfirmDialog";
 import { useItemActions } from "../hooks/useItemActions";
 import {
-  getStatusDisplayName,
+  getInventoryStatusDisplayName,
   getConditionDisplayName,
   getDaysInInventory,
   type InventoryItemRecord
@@ -105,7 +105,7 @@ export function InventoryItem({ item, viewMode }: InventoryItemProps) {
                   <p className="text-muted-foreground mt-1 text-sm">{item.brand}</p>
                   <div className="mt-2 flex items-center space-x-4 text-xs">
                     <span className={`rounded-full px-2 py-1 ${statusColor}`}>
-                      {getStatusDisplayName(item.status)}
+                      {getInventoryStatusDisplayName(item.status)}
                     </span>
                     <span className={`rounded-full px-2 py-1 ${conditionColor}`}>
                       {getConditionDisplayName(item.condition)}
@@ -206,7 +206,7 @@ export function InventoryItem({ item, viewMode }: InventoryItemProps) {
           {/* Status Badge */}
           <div className="absolute left-2 top-2">
             <span className={`text-xs rounded-full px-2 py-1 ${statusColor}`}>
-              {getStatusDisplayName(item.status)}
+              {getInventoryStatusDisplayName(item.status)}
             </span>
           </div>
 

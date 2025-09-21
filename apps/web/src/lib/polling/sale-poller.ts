@@ -13,8 +13,8 @@ import {
   ProcessSaleEventRequest,
   ProcessSaleEventResponse,
   PollingResult,
-  ListingRecord,
 } from '@netpost/shared-types';
+import type { ListingRecord } from '@netpost/shared-types/database/listing';
 import crypto from 'crypto';
 
 interface PollingConfig {

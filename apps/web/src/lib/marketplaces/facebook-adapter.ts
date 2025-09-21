@@ -10,6 +10,8 @@ import {
   type AuthFlow,
   type ListingCreationResult,
   type RateLimit,
+  type EndListingOptions,
+  type EndListingResult,
   MarketplaceApiError,
   AuthenticationError,
 } from './base-adapter';
@@ -297,7 +299,10 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
         },
       };
     } catch (error) {
-      this.log('error', 'Facebook Marketplace listing creation failed', { error: error.message, listing });
+      this.log('error', 'Facebook Marketplace listing creation failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        listing
+      });
       throw error;
     }
   }
@@ -339,7 +344,7 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
         marketplace_data: facebookData,
       };
     } catch (error) {
-      this.log('error', 'Facebook Marketplace listing update failed', { error: error.message, externalId, updates });
+      this.log('error', 'Facebook Marketplace listing update failed', { error: error instanceof Error ? error.message : 'Unknown error', externalId, updates });
       throw error;
     }
   }
@@ -364,7 +369,7 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
         return false;
       }
     } catch (error) {
-      this.log('error', 'Facebook Marketplace listing deletion error', { error: error.message, externalId });
+      this.log('error', 'Facebook Marketplace listing deletion error', { error: error instanceof Error ? error.message : 'Unknown error', externalId });
       throw error;
     }
   }
@@ -393,7 +398,7 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
 
       return this.mapFacebookDataToListingRecord(response.data);
     } catch (error) {
-      this.log('error', 'Error fetching Facebook Marketplace listing', { error: error.message, externalId });
+      this.log('error', 'Error fetching Facebook Marketplace listing', { error: error instanceof Error ? error.message : 'Unknown error', externalId });
       throw error;
     }
   }
@@ -509,7 +514,7 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
       const data = await response.json();
       return data.id; // Facebook returns photo ID
     } catch (error) {
-      this.log('error', 'Facebook photo upload failed', { error: error.message, photoUrl });
+      this.log('error', 'Facebook photo upload failed', { error: error instanceof Error ? error.message : 'Unknown error', photoUrl });
       throw error;
     }
   }
@@ -524,7 +529,7 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
       const response = await this.makeApiRequest(`${photoId}`, 'DELETE');
       return response.success;
     } catch (error) {
-      this.log('error', 'Photo deletion failed', { error: error.message, photoId });
+      this.log('error', 'Photo deletion failed', { error: error instanceof Error ? error.message : 'Unknown error', photoId });
       return false;
     }
   }
@@ -561,7 +566,7 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
         this.mapFacebookDataToListingRecord(item)
       ) || [];
     } catch (error) {
-      this.log('error', 'Facebook Marketplace search failed', { error: error.message, query });
+      this.log('error', 'Facebook Marketplace search failed', { error: error instanceof Error ? error.message : 'Unknown error', query });
       throw error;
     }
   }
@@ -597,7 +602,7 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
 
       return { views: 0, watchers: 0, questions: 0 };
     } catch (error) {
-      this.log('error', 'Error fetching analytics', { error: error.message, externalId });
+      this.log('error', 'Error fetching analytics', { error: error instanceof Error ? error.message : 'Unknown error', externalId });
       return { views: 0, watchers: 0, questions: 0 };
     }
   }
@@ -629,7 +634,7 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
     } catch (error) {
       console.error(`Error ending Facebook Marketplace listing ${externalId}:`, error);
       
-      if (error.message?.includes('not found') || error.message?.includes('does not exist')) {
+      if (error instanceof Error && (error.message?.includes('not found') || error.message?.includes('does not exist'))) {
         throw new MarketplaceApiError(
           'Listing not found on Facebook Marketplace',
           'facebook_marketplace',
@@ -638,7 +643,7 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
         );
       }
 
-      if (error.message?.includes('cannot delete')) {
+      if (error instanceof Error && error.message?.includes('cannot delete')) {
         throw new MarketplaceApiError(
           'Listing cannot be deleted from Facebook Marketplace',
           'facebook_marketplace',
@@ -649,7 +654,7 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
 
       return {
         success: false,
-        error: `Facebook API error: ${error.message}`,
+        error: `Facebook API error: ${error instanceof Error ? error.message : 'Unknown error'}`,
       };
     }
   }
@@ -826,7 +831,7 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
       created_at: facebookData.created_time || new Date().toISOString(),
       updated_at: facebookData.updated_time || new Date().toISOString(),
       // ... map other fields as needed
-    } as ListingRecord;
+    } as unknown as ListingRecord;
   }
 
   private getFacebookMarketplaceCategories(): Array<{ id: string; name: string; parent_id?: string }> {

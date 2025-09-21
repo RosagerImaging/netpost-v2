@@ -10,9 +10,9 @@ export interface DelistingJob {
   id: string;
   user_id: string;
   inventory_item_id: string;
-  trigger_type: 'sale_detected' | 'manual' | 'scheduled' | 'expired';
+  trigger_type: 'automatic' | 'manual' | 'scheduled';
   status: 'pending' | 'processing' | 'completed' | 'partially_failed' | 'failed' | 'cancelled';
-  sold_on_marketplace?: string;
+  sold_on_marketplace: string;
   sale_price?: number;
   sale_date?: string;
   marketplaces_targeted: string[];
@@ -31,9 +31,16 @@ export interface DelistingJob {
   updated_at: string;
 
   // Joined data
-  item_title?: string;
+  item_title: string;
+  item_id: string;
   item_brand?: string;
   item_category?: string;
+  results?: {
+    marketplace: string;
+    status: 'success' | 'failed' | 'skipped';
+    message?: string;
+    delisted_at?: string;
+  }[];
 }
 
 interface UseDelistingJobsReturn {
@@ -88,16 +95,21 @@ export function useDelistingJobs(): UseDelistingJobsReturn {
       // Transform data to include item details
       const transformedJobs: DelistingJob[] = (jobsData || []).map(job => ({
         ...job,
-        item_title: job.inventory_items?.title,
+        item_title: job.inventory_items?.title || 'Unknown Item',
+        item_id: job.inventory_item_id,
         item_brand: job.inventory_items?.brand,
         item_category: job.inventory_items?.category,
+        sold_on_marketplace: job.sold_on_marketplace || 'unknown',
+        trigger_type: job.trigger_type === 'sale_detected' ? 'automatic' :
+                     job.trigger_type === 'expired' ? 'automatic' :
+                     job.trigger_type as 'automatic' | 'manual' | 'scheduled',
       }));
 
       setJobs(transformedJobs);
 
     } catch (err) {
       console.error('Error fetching delisting jobs:', err);
-      setError(err.message || 'Failed to fetch delisting jobs');
+      setError(err instanceof Error ? err.message : 'Failed to fetch delisting jobs');
     } finally {
       setLoading(false);
     }
@@ -138,7 +150,7 @@ export function useDelistingJobs(): UseDelistingJobsReturn {
 
     } catch (err) {
       console.error('Error retrying job:', err);
-      setError(err.message || 'Failed to retry job');
+      setError(err instanceof Error ? err.message : 'Failed to retry job');
     }
   }, [supabase, fetchJobs]);
 
@@ -178,7 +190,7 @@ export function useDelistingJobs(): UseDelistingJobsReturn {
 
     } catch (err) {
       console.error('Error cancelling job:', err);
-      setError(err.message || 'Failed to cancel job');
+      setError(err instanceof Error ? err.message : 'Failed to cancel job');
     }
   }, [supabase, fetchJobs]);
 
@@ -216,7 +228,7 @@ export function useDelistingJobs(): UseDelistingJobsReturn {
 
     } catch (err) {
       console.error('Error confirming job:', err);
-      setError(err.message || 'Failed to confirm job');
+      setError(err instanceof Error ? err.message : 'Failed to confirm job');
     }
   }, [supabase, fetchJobs]);
 

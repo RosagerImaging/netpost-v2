@@ -15,13 +15,14 @@ import {
   CheckCircle,
   XCircle,
   AlertCircle,
-  Pause
+  Pause,
+  Image
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import { listingJobQueue, type ListingJob, type JobStats } from '@/lib/services/listing-job-queue';
-import type { ListingRecord, ListingStatus, MarketplaceType } from '@/lib/marketplaces/base-adapter';
+import type { Listing, ListingStatus, MarketplaceType } from '@netpost/shared-types';
 
-interface ListingWithJob extends ListingRecord {
+interface ListingWithJob extends Listing {
   job?: ListingJob;
 }
 
@@ -179,7 +180,7 @@ export default function ListingsPage() {
     if (statusFilter !== 'all' && listing.status !== statusFilter) {
       return false;
     }
-    if (marketplaceFilter !== 'all' && listing.marketplace_type !== marketplaceFilter) {
+    if (marketplaceFilter !== 'all' && listing.platform !== marketplaceFilter) {
       return false;
     }
     return true;
@@ -451,43 +452,37 @@ export default function ListingsPage() {
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
                         {filteredListings.map((listing) => (
-                          <tr key={`${listing.id}-${listing.marketplace_type}`}>
+                          <tr key={`${listing.id}-${listing.platform}`}>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center space-x-3">
-                                {listing.inventory_items?.photos?.[0] && (
-                                  <img
-                                    src={listing.inventory_items.photos[0]}
-                                    alt={listing.title}
-                                    className="h-10 w-10 rounded-md object-cover"
-                                  />
-                                )}
+                                <div className="h-10 w-10 rounded-md bg-gray-200 flex items-center justify-center">
+                                  <Image className="h-5 w-5 text-gray-400" />
+                                </div>
                                 <div>
                                   <p className="font-medium">{listing.title}</p>
-                                  {listing.external_listing_id && (
-                                    <p className="text-sm text-gray-500">
-                                      ID: {listing.external_listing_id}
-                                    </p>
-                                  )}
+                                  <p className="text-sm text-gray-500">
+                                    {listing.platform}
+                                  </p>
                                 </div>
                               </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center space-x-2">
                                 <span className="text-lg">
-                                  {marketplaceLogos[listing.marketplace_type]}
+                                  {marketplaceLogos[listing.platform as keyof typeof marketplaceLogos] || '🏪'}
                                 </span>
                                 <span className="capitalize">
-                                  {listing.marketplace_type.replace('_', ' ')}
+                                  {listing.platform.replace('_', ' ')}
                                 </span>
                               </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              {formatCurrency(listing.listing_price, listing.currency)}
+                              {formatCurrency(listing.price, listing.currency)}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center space-x-2">
-                                {statusIcons[listing.status]}
-                                <span className={`px-2 py-1 rounded-full text-xs ${statusColors[listing.status]}`}>
+                                {statusIcons[listing.status as keyof typeof statusIcons] || <Clock className="h-4 w-4 text-gray-500" />}
+                                <span className={`px-2 py-1 rounded-full text-xs ${statusColors[listing.status as keyof typeof statusColors] || 'bg-gray-100 text-gray-800'}`}>
                                   {listing.status}
                                 </span>
                               </div>
@@ -495,24 +490,14 @@ export default function ListingsPage() {
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center space-x-1">
                                 <Eye className="h-4 w-4 text-gray-400" />
-                                <span>{listing.view_count || 0}</span>
+                                <span>{listing.views || 0}</span>
                               </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {formatDate(listing.created_at)}
+                              {formatDate(listing.createdAt)}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                               <div className="flex items-center space-x-2">
-                                {listing.external_url && (
-                                  <a
-                                    href={listing.external_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-blue-600 hover:text-blue-900 flex items-center"
-                                  >
-                                    <ExternalLink className="h-4 w-4" />
-                                  </a>
-                                )}
                                 {listing.job && listing.job.status === 'failed' && (
                                   <button
                                     onClick={() => handleRetryJob(listing.job!.id)}
@@ -592,7 +577,7 @@ export default function ListingsPage() {
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center space-x-2">
                                 <span className="text-lg">
-                                  {marketplaceLogos[job.marketplace_type]}
+                                  {marketplaceLogos[job.marketplace_type as keyof typeof marketplaceLogos] || '🏪'}
                                 </span>
                                 <span className="capitalize">
                                   {job.marketplace_type.replace('_', ' ')}

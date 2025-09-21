@@ -10,6 +10,8 @@ import {
   type AuthFlow,
   type ListingCreationResult,
   type RateLimit,
+  type EndListingOptions,
+  type EndListingResult,
   MarketplaceApiError,
   AuthenticationError,
 } from './base-adapter';
@@ -298,7 +300,7 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
         },
       };
     } catch (error) {
-      this.log('error', 'Poshmark listing creation failed', { error: error.message, listing });
+      this.log('error', 'Poshmark listing creation failed', { error: error instanceof Error ? error.message : 'Unknown error', listing });
       throw error;
     }
   }
@@ -335,7 +337,7 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
         marketplace_data: poshmarkResponse,
       };
     } catch (error) {
-      this.log('error', 'Poshmark listing update failed', { error: error.message, externalId, updates });
+      this.log('error', 'Poshmark listing update failed', { error: error instanceof Error ? error.message : 'Unknown error', externalId, updates });
       throw error;
     }
   }
@@ -360,7 +362,7 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
         return false;
       }
     } catch (error) {
-      this.log('error', 'Poshmark listing deletion error', { error: error.message, externalId });
+      this.log('error', 'Poshmark listing deletion error', { error: error instanceof Error ? error.message : 'Unknown error', externalId });
       throw error;
     }
   }
@@ -387,7 +389,7 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
 
       return this.mapPoshmarkDataToListingRecord(response.data);
     } catch (error) {
-      this.log('error', 'Error fetching Poshmark listing', { error: error.message, externalId });
+      this.log('error', 'Error fetching Poshmark listing', { error: error instanceof Error ? error.message : 'Unknown error', externalId });
       throw error;
     }
   }
@@ -419,7 +421,9 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
 
       return this.mapPoshmarkCategories(response.data.categories);
     } catch (error) {
-      this.log('error', 'Error fetching Poshmark categories', { error: error.message });
+      this.log('error', 'Error fetching Poshmark categories', {
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
       throw error;
     }
   }
@@ -443,7 +447,7 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
 
       return null;
     } catch (error) {
-      this.log('warn', 'Category suggestion failed', { error: error.message, title });
+      this.log('warn', 'Category suggestion failed', { error: error instanceof Error ? error.message : 'Unknown error', title });
       return null;
     }
   }
@@ -519,7 +523,7 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
       const data = await response.json();
       return data.photo_url;
     } catch (error) {
-      this.log('error', 'Poshmark photo upload failed', { error: error.message, photoUrl });
+      this.log('error', 'Poshmark photo upload failed', { error: error instanceof Error ? error.message : 'Unknown error', photoUrl });
       throw error;
     }
   }
@@ -534,7 +538,7 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
       const response = await this.makeApiRequest(`photos/${photoId}`, 'DELETE');
       return response.success;
     } catch (error) {
-      this.log('error', 'Photo deletion failed', { error: error.message, photoId });
+      this.log('error', 'Photo deletion failed', { error: error instanceof Error ? error.message : 'Unknown error', photoId });
       return false;
     }
   }
@@ -551,7 +555,7 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
       });
       return response.success;
     } catch (error) {
-      this.log('error', 'Photo reordering failed', { error: error.message, photoIds });
+      this.log('error', 'Photo reordering failed', { error: error instanceof Error ? error.message : 'Unknown error', photoIds });
       return false;
     }
   }
@@ -579,7 +583,7 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
         this.mapPoshmarkDataToListingRecord(item)
       ) || [];
     } catch (error) {
-      this.log('error', 'Poshmark search failed', { error: error.message, query });
+      this.log('error', 'Poshmark search failed', { error: error instanceof Error ? error.message : 'Unknown error', query });
       throw error;
     }
   }
@@ -610,7 +614,7 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
 
       return { views: 0, watchers: 0, questions: 0, offers: 0 };
     } catch (error) {
-      this.log('error', 'Error fetching analytics', { error: error.message, externalId });
+      this.log('error', 'Error fetching analytics', { error: error instanceof Error ? error.message : 'Unknown error', externalId });
       return { views: 0, watchers: 0, questions: 0, offers: 0 };
     }
   }
@@ -661,7 +665,7 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
     } catch (error) {
       console.error(`Error ending Poshmark listing ${externalId}:`, error);
       
-      if (error.message?.includes('not found')) {
+      if (error instanceof Error && error.message?.includes('not found')) {
         throw new MarketplaceApiError(
           'Listing not found on Poshmark',
           'poshmark',
@@ -672,7 +676,7 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
 
       return {
         success: false,
-        error: `Poshmark API error: ${error.message}`,
+        error: `Poshmark API error: ${error instanceof Error ? error.message : 'Unknown error'}`,
       };
     }
   }
@@ -862,7 +866,7 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
       created_at: poshmarkData.created_at || new Date().toISOString(),
       updated_at: poshmarkData.updated_at || new Date().toISOString(),
       // ... map other fields as needed
-    } as ListingRecord;
+    } as unknown as ListingRecord;
   }
 
   private mapPoshmarkCategories(categories: PoshmarkCategory[]): Array<{ id: string; name: string; parent_id?: string }> {

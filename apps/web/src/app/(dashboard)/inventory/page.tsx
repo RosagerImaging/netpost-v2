@@ -106,9 +106,13 @@ export default function InventoryPage() {
 
   return (
     <DashboardLayout
-      user={user ? {
-        ...user,
-        subscription: subscriptionData
+      user={user && user.email ? {
+        email: user.email,
+        name: user.user_metadata?.full_name || user.user_metadata?.name,
+        subscription: subscriptionData ? {
+          tier: subscriptionData.tier,
+          status: 'active' // Default to active, should be provided by subscription data
+        } : undefined
       } : undefined}
     >
       <div className="p-6 space-y-6">

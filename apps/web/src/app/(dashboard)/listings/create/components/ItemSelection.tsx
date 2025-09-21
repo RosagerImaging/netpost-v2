@@ -149,7 +149,7 @@ export function ItemSelection({ onItemSelect, selectedItem }: ItemSelectionProps
                     <div className="flex-shrink-0">
                       {item.photos && item.photos.length > 0 ? (
                         <img
-                          src={item.photos[0]}
+                          src={item.photos[0].url}
                           alt={item.title}
                           className="h-16 w-16 rounded-lg object-cover"
                         />
@@ -180,9 +180,9 @@ export function ItemSelection({ onItemSelect, selectedItem }: ItemSelectionProps
                           <div className="text-sm font-medium text-gray-900">
                             {formatPrice(item.target_price)}
                           </div>
-                          {item.original_price && item.original_price !== item.target_price && (
+                          {item.purchase_price && item.purchase_price !== item.target_price && (
                             <div className="text-sm text-gray-500 line-through">
-                              {formatPrice(item.original_price)}
+                              {formatPrice(item.purchase_price)}
                             </div>
                           )}
                         </div>

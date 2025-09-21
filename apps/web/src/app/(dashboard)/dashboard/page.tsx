@@ -31,6 +31,8 @@ export default function DashboardPage() {
     currentItems: 0,
   };
 
+  const userName = user?.email?.split('@')[0] || '';
+
   const mockStats = {
     totalItems: 0,
     totalValue: 0,
@@ -40,8 +42,9 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout
-      user={user ? {
-        ...user,
+      user={user?.email ? {
+        email: user.email,
+        name: user.user_metadata?.name,
         subscription: subscriptionData
       } : undefined}
     >
@@ -49,7 +52,7 @@ export default function DashboardPage() {
         {/* Welcome Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-primary-text mb-2">
-            Welcome back{user?.email ? `, ${user.email.split('@')[0]}` : ''}!
+            Welcome back{userName ? `, ${userName}` : ''}!
           </h1>
           <p className="text-secondary-text">
             Here's what's happening with your reselling business today.

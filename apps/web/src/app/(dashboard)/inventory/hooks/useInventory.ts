@@ -43,6 +43,7 @@ export function useInventory(params: InventoryQueryParams = {}) {
         ...params,
         cursor: pageParam,
       }),
+    initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     enabled: !!user,
     staleTime: 1000 * 60 * 5, // 5 minutes

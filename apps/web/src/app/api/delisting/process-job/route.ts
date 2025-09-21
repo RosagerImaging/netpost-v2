@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
     console.error('Error processing delisting job:', error);
     return NextResponse.json({
       error: 'Internal server error',
-      details: error.message,
+      details: error instanceof Error ? error.message : 'Unknown error',
     }, { status: 500 });
   }
 }
@@ -79,16 +79,13 @@ export async function GET(request: NextRequest) {
     const delistingEngine = new DelistingEngine();
     const result = await delistingEngine.processPendingJobs();
 
-    return NextResponse.json({
-      success: true,
-      ...result,
-    });
+    return NextResponse.json(result);
 
   } catch (error) {
     console.error('Error processing pending jobs:', error);
     return NextResponse.json({
       error: 'Internal server error',
-      details: error.message,
+      details: error instanceof Error ? error.message : 'Unknown error',
     }, { status: 500 });
   }
 }

@@ -128,12 +128,13 @@ class DelistingEngine {
             : result.value.error;
 
           delistingResults.push({
-            marketplace: listing.marketplace_type as MarketplaceType,
+            marketplace: listing.marketplace_type as any,
             success: false,
             error: {
+              name: 'DelistingError',
               code: DELISTING_ERROR_CODES.INTERNAL_ERROR,
               message: error?.message || 'Unknown error',
-              marketplace: listing.marketplace_type as MarketplaceType,
+              marketplace: listing.marketplace_type as any,
               listing_id: listing.id,
               external_id: listing.external_listing_id,
             },
@@ -187,7 +188,7 @@ class DelistingEngine {
           .update({
             error_log: {
               execution_error: {
-                error: error.message,
+                error: error instanceof Error ? error.message : 'Unknown error',
                 timestamp: new Date().toISOString(),
               },
             },
@@ -204,7 +205,7 @@ class DelistingEngine {
         total_completed: 0,
         total_failed: 0,
         results: [],
-        error: error.message,
+        error: error instanceof Error ? error.message : 'Unknown error',
       };
     }
   }
@@ -235,19 +236,19 @@ class DelistingEngine {
         throw new DelistingError({
           code: DELISTING_ERROR_CODES.INVALID_TOKEN,
           message: `No active connection for ${marketplace}`,
-          marketplace,
+          marketplace: marketplace as any,
           listing_id: listing.id,
           external_id: listing.external_listing_id,
         });
       }
 
       // Create marketplace adapter
-      const adapter = await createAdapter(connection);
+      const adapter = await createAdapter(connection, marketplace as any);
       if (!adapter) {
         throw new DelistingError({
           code: DELISTING_ERROR_CODES.INTERNAL_ERROR,
           message: `Failed to create adapter for ${marketplace}`,
-          marketplace,
+          marketplace: marketplace as any,
           listing_id: listing.id,
           external_id: listing.external_listing_id,
         });
@@ -318,21 +319,22 @@ class DelistingEngine {
         {
           listing_id: listing.id,
           external_listing_id: listing.external_listing_id,
-          error_code: error.code || DELISTING_ERROR_CODES.UNKNOWN_ERROR,
-          error_message: error.message,
+          error_code: (error as any)?.code || DELISTING_ERROR_CODES.UNKNOWN_ERROR,
+          error_message: error instanceof Error ? error.message : 'Unknown error',
           duration_ms: duration,
         },
-        error.message,
-        error.code
+        error instanceof Error ? error.message : 'Unknown error',
+        (error as any)?.code
       );
 
       return {
         marketplace,
         success: false,
         error: error instanceof DelistingError ? error : {
+          name: 'DelistingError',
           code: DELISTING_ERROR_CODES.INTERNAL_ERROR,
-          message: error.message,
-          marketplace,
+          message: error instanceof Error ? error.message : 'Unknown error',
+          marketplace: marketplace as any,
           listing_id: listing.id,
           external_id: listing.external_listing_id,
         },
@@ -379,9 +381,10 @@ class DelistingEngine {
     }
 
     return {
+      name: 'DelistingError',
       code,
       message,
-      marketplace,
+      marketplace: marketplace as any,
       listing_id: listing.id,
       external_id: listing.external_listing_id,
       retry_after: retryAfter,
@@ -553,7 +556,7 @@ class DelistingEngine {
 
         } catch (error) {
           console.error(`Error retrying job ${job.id}:`, error);
-          errors.push(`Job ${job.id}: ${error.message}`);
+          errors.push(`Job ${job.id}: ${error instanceof Error ? error.message : 'Unknown error'}`);
         }
       }
 
@@ -568,7 +571,7 @@ class DelistingEngine {
       return {
         success: false,
         jobs_retried: 0,
-        errors: [error.message],
+        errors: [error instanceof Error ? error.message : 'Unknown error'],
       };
     }
   }
@@ -638,7 +641,7 @@ class DelistingEngine {
             }
           } catch (error) {
             jobsFailed++;
-            errors.push(`Job ${job.id}: ${error.message}`);
+            errors.push(`Job ${job.id}: ${error instanceof Error ? error.message : 'Unknown error'}`);
           }
         });
 
@@ -665,7 +668,7 @@ class DelistingEngine {
         success: false,
         jobs_processed: 0,
         jobs_failed: 0,
-        errors: [error.message],
+        errors: [error instanceof Error ? error.message : 'Unknown error'],
       };
     }
   }

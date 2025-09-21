@@ -20,7 +20,8 @@ import {
   User,
   Bot,
   Calendar,
-  ExternalLink
+  ExternalLink,
+  Settings
 } from 'lucide-react';
 
 import { createClient } from '@/lib/supabase/client';

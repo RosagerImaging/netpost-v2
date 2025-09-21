@@ -50,7 +50,7 @@ export function InventoryGrid({
         <h3 className="mb-2 font-semibold">Error loading inventory</h3>
         <p className="mb-4 text-sm">{error.message}</p>
         <button
-          onClick={refetch}
+          onClick={() => refetch()}
           className="bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded px-4 py-2 text-sm"
         >
           Try Again
@@ -96,7 +96,7 @@ export function InventoryGrid({
       {hasMore && (
         <div className="flex justify-center py-6">
           <button
-            onClick={loadMore}
+            onClick={() => loadMore()}
             disabled={loading}
             className="bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-50 rounded-lg px-6 py-2 text-sm transition-colors"
           >

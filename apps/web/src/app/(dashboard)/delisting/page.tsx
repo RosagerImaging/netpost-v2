@@ -78,11 +78,11 @@ export default function DelistingDashboard() {
   };
 
   const getStatusBadge = (status: string) => {
-    const variants = {
-      completed: 'success',
+    const variants: Record<string, 'default' | 'outline' | 'destructive' | 'secondary'> = {
+      completed: 'default',
       processing: 'secondary',
       failed: 'destructive',
-      partially_failed: 'warning',
+      partially_failed: 'outline',
       pending: 'outline',
       cancelled: 'secondary',
     };
@@ -97,9 +97,10 @@ export default function DelistingDashboard() {
     };
 
     const Icon = icons[status as keyof typeof icons] || Clock;
+    const variant = variants[status] || 'outline';
 
     return (
-      <Badge variant={variants[status as keyof typeof variants] || 'outline'} className="flex items-center gap-1">
+      <Badge variant={variant} className="flex items-center gap-1">
         <Icon className={`h-3 w-3 ${status === 'processing' ? 'animate-spin' : ''}`} />
         {status.replace('_', ' ')}
       </Badge>

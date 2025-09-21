@@ -209,7 +209,7 @@ export function ManualDelistingPanel({ onJobCreated }: ManualDelistingPanelProps
 
     } catch (error) {
       console.error('Error executing manual delisting:', error);
-      setError(error.message || 'Failed to create delisting jobs');
+      setError(error instanceof Error ? error.message : 'Failed to create delisting jobs');
     } finally {
       setDelistingInProgress(false);
     }
