@@ -52,12 +52,39 @@ import type {
   BetaInvitationStatus,
 } from './beta-invitation';
 
+import type {
+  SubscriptionTierRecord,
+  CreateSubscriptionTierInput,
+  UpdateSubscriptionTierInput,
+  UserSubscriptionRecord,
+  CreateUserSubscriptionInput,
+  UpdateUserSubscriptionInput,
+  SubscriptionPaymentRecord,
+  CreateSubscriptionPaymentInput,
+  SubscriptionLimitsRecord,
+  CreateSubscriptionLimitsInput,
+  UpdateSubscriptionLimitsInput,
+  SubscriptionHistoryRecord,
+  CreateSubscriptionHistoryInput,
+  UsageMetricRecord,
+  CreateUsageMetricInput,
+  UpdateUsageMetricInput,
+  SubscriptionTier,
+  SubscriptionStatus,
+  BillingCycle,
+  SubscriptionEventType,
+  TriggeredBy,
+  MetricType,
+} from './subscription';
+
 // Re-export all types from individual modules
 export * from './user';
 export * from './inventory-item';
 export * from './listing';
 export * from './marketplace-connection';
 export * from './beta-invitation';
+export * from './subscription';
+export * from './supabase';
 
 // Re-export specific types for convenience
 export type {
@@ -106,6 +133,31 @@ export type {
   BetaInvitationStatus,
 } from './beta-invitation';
 
+export type {
+  SubscriptionTierRecord,
+  CreateSubscriptionTierInput,
+  UpdateSubscriptionTierInput,
+  UserSubscriptionRecord,
+  CreateUserSubscriptionInput,
+  UpdateUserSubscriptionInput,
+  SubscriptionPaymentRecord,
+  CreateSubscriptionPaymentInput,
+  SubscriptionLimitsRecord,
+  CreateSubscriptionLimitsInput,
+  UpdateSubscriptionLimitsInput,
+  SubscriptionHistoryRecord,
+  CreateSubscriptionHistoryInput,
+  UsageMetricRecord,
+  CreateUsageMetricInput,
+  UpdateUsageMetricInput,
+  SubscriptionTier,
+  SubscriptionStatus,
+  BillingCycle,
+  SubscriptionEventType,
+  TriggeredBy,
+  MetricType,
+} from './subscription';
+
 // Database schema type (generated from Supabase)
 export interface Database {
   public: {
@@ -134,6 +186,36 @@ export interface Database {
         Row: BetaInvitationRecord;
         Insert: CreateBetaInvitationInput & { id?: string };
         Update: UpdateBetaInvitationInput;
+      };
+      subscription_tiers: {
+        Row: SubscriptionTierRecord;
+        Insert: CreateSubscriptionTierInput;
+        Update: UpdateSubscriptionTierInput;
+      };
+      user_subscriptions: {
+        Row: UserSubscriptionRecord;
+        Insert: CreateUserSubscriptionInput;
+        Update: UpdateUserSubscriptionInput;
+      };
+      subscription_payments: {
+        Row: SubscriptionPaymentRecord;
+        Insert: CreateSubscriptionPaymentInput;
+        Update: Partial<CreateSubscriptionPaymentInput>;
+      };
+      subscription_limits: {
+        Row: SubscriptionLimitsRecord;
+        Insert: CreateSubscriptionLimitsInput;
+        Update: UpdateSubscriptionLimitsInput;
+      };
+      subscription_history: {
+        Row: SubscriptionHistoryRecord;
+        Insert: CreateSubscriptionHistoryInput;
+        Update: Partial<CreateSubscriptionHistoryInput>;
+      };
+      usage_metrics: {
+        Row: UsageMetricRecord;
+        Insert: CreateUsageMetricInput;
+        Update: UpdateUsageMetricInput;
       };
       schema_migrations: {
         Row: {
@@ -267,6 +349,16 @@ export interface Database {
         Returns: boolean;
       };
 
+      // Subscription functions
+      increment_usage: {
+        Args: {
+          subscription_id: string;
+          field_name: string;
+          increment_value: number;
+        };
+        Returns: void;
+      };
+
       // System functions
       analyze_database_performance: {
         Args: Record<PropertyKey, never>;
@@ -309,6 +401,12 @@ export interface Database {
       connection_status: ConnectionStatus;
       auth_method: AuthMethod;
       beta_invitation_status: BetaInvitationStatus;
+      subscription_tier: SubscriptionTier;
+      subscription_status: SubscriptionStatus;
+      billing_cycle: BillingCycle;
+      subscription_event_type: SubscriptionEventType;
+      triggered_by: TriggeredBy;
+      metric_type: MetricType;
     };
   };
 }
