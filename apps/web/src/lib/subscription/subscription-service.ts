@@ -103,8 +103,8 @@ export class SubscriptionService {
   static async createSubscription(params: CreateSubscriptionParams): Promise<UserSubscription> {
     try {
       // Get tier ID
-      const { data: tierData, error: tierError } = await supabaseAdmin
-        .from('subscription_tiers')
+      const { data: tierData, error: tierError } = await (supabaseAdmin
+        .from('subscription_tiers') as any)
         .select('id')
         .eq('tier_name', params.tier)
         .single();
@@ -118,7 +118,7 @@ export class SubscriptionService {
         .from('user_subscriptions')
         .insert({
           user_id: params.userId,
-          tier_id: tierData.id,
+          tier_id: (tierData as any).id,
           stripe_subscription_id: params.stripeSubscriptionId,
           stripe_customer_id: params.stripeCustomerId,
           status: params.status,
@@ -129,7 +129,7 @@ export class SubscriptionService {
           is_beta_user: params.isBetaUser || false,
           beta_invitation_code: params.betaInvitationCode,
           billing_cycle: params.billingCycle || 'monthly',
-        })
+        } as any)
         .select(`
           *,
           subscription_tiers!inner(tier_name)
@@ -141,14 +141,14 @@ export class SubscriptionService {
       }
 
       // Create initial subscription limits
-      await this.initializeSubscriptionLimits(subscriptionData.id);
+      await this.initializeSubscriptionLimits((subscriptionData as any).id);
 
       // Record subscription creation in history
       await this.recordSubscriptionHistory({
         userId: params.userId,
-        subscriptionId: subscriptionData.id,
+        subscriptionId: (subscriptionData as any).id,
         eventType: 'created',
-        toTierId: tierData.id,
+        toTierId: (tierData as any).id,
         reason: `Subscription created with tier: ${params.tier}`,
         triggeredBy: 'system',
       });
@@ -213,12 +213,12 @@ export class SubscriptionService {
           throw new Error(`Subscription tier not found: ${params.tier}`);
         }
 
-        updateData.tier_id = tierData.id;
+        updateData.tier_id = (tierData as any).id;
       }
 
-      const { error } = await supabaseAdmin
-        .from('user_subscriptions')
-        .update(updateData)
+      const { error } = await (supabaseAdmin
+        .from('user_subscriptions') as any)
+        .update(updateData as any)
         .eq('stripe_subscription_id', params.stripeSubscriptionId);
 
       if (error) {
@@ -317,7 +317,7 @@ export class SubscriptionService {
         listings_created: 'monthly_listings_created',
       }[limitType];
 
-      const { error } = await supabaseAdmin.rpc('increment_usage', {
+      const { error } = await (supabaseAdmin as any).rpc('increment_usage', {
         subscription_id: subscription.id,
         field_name: updateField,
         increment_value: increment,
@@ -349,7 +349,7 @@ export class SubscriptionService {
           paid_at: params.paidAt.toISOString(),
           success: params.success,
           failure_reason: params.failureReason,
-        });
+        } as any);
 
       if (error) {
         throw new Error(`Failed to record payment: ${error.message}`);

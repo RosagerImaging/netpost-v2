@@ -22,7 +22,7 @@ for (const [key, value] of Object.entries(requiredEnvVars)) {
 
 // Initialize Stripe client
 export const stripe = new Stripe(requiredEnvVars.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-06-20',
+  apiVersion: '2025-02-24.acacia',
   typescript: true,
 });
 
@@ -195,10 +195,10 @@ export class StripeService {
     metadata = {},
   }: CreateCustomerParams): Promise<Stripe.Customer> {
     try {
-      // Try to find existing customer by user ID in metadata
+      // Try to find existing customer by email
       const existingCustomers = await stripe.customers.list({
         limit: 1,
-        metadata: { userId },
+        email: email,
       });
 
       if (existingCustomers.data.length > 0) {

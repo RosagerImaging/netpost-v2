@@ -128,5 +128,20 @@ export type {
   ServiceHealth,
 } from "./api";
 
+// Beta invitation types
+export type {
+  BetaInvitationRecord,
+  BetaInvitationEnhanced,
+  BetaInvitationPublic,
+  CreateBetaInvitationInput,
+  UpdateBetaInvitationInput,
+  BetaInvitationStatus,
+  BetaInvitationUsage,
+  CreateBetaInvitationUsageInput,
+  BetaInvitationValidationResult,
+  BetaInvitationStats,
+  BetaInvitationQueryOptions,
+} from "../database/beta-invitation";
+
 // Database schema type
 export type { Database } from "../database/index";

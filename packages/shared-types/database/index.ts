@@ -43,11 +43,21 @@ import type {
   AuthMethod,
 } from './marketplace-connection';
 
+import type {
+  BetaInvitationRecord,
+  BetaInvitationEnhanced,
+  BetaInvitationPublic,
+  CreateBetaInvitationInput,
+  UpdateBetaInvitationInput,
+  BetaInvitationStatus,
+} from './beta-invitation';
+
 // Re-export all types from individual modules
 export * from './user';
 export * from './inventory-item';
 export * from './listing';
 export * from './marketplace-connection';
+export * from './beta-invitation';
 
 // Re-export specific types for convenience
 export type {
@@ -87,6 +97,15 @@ export type {
   AuthMethod,
 } from './marketplace-connection';
 
+export type {
+  BetaInvitationRecord,
+  BetaInvitationEnhanced,
+  BetaInvitationPublic,
+  CreateBetaInvitationInput,
+  UpdateBetaInvitationInput,
+  BetaInvitationStatus,
+} from './beta-invitation';
+
 // Database schema type (generated from Supabase)
 export interface Database {
   public: {
@@ -110,6 +129,11 @@ export interface Database {
         Row: MarketplaceConnectionRecord;
         Insert: CreateMarketplaceConnectionInput & { id?: string; user_id: string };
         Update: UpdateMarketplaceConnectionInput;
+      };
+      beta_invitations: {
+        Row: BetaInvitationRecord;
+        Insert: CreateBetaInvitationInput & { id?: string };
+        Update: UpdateBetaInvitationInput;
       };
       schema_migrations: {
         Row: {
@@ -155,6 +179,12 @@ export interface Database {
       };
       marketplace_connections_safe: {
         Row: MarketplaceConnectionSafe;
+      };
+      beta_invitations_enhanced: {
+        Row: BetaInvitationEnhanced;
+      };
+      beta_invitations_public: {
+        Row: BetaInvitationPublic;
       };
     };
     Functions: {
@@ -278,6 +308,7 @@ export interface Database {
       shipping_method: ShippingMethod;
       connection_status: ConnectionStatus;
       auth_method: AuthMethod;
+      beta_invitation_status: BetaInvitationStatus;
     };
   };
 }
