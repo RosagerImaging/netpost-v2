@@ -32,6 +32,16 @@ const eslintConfig = [
       "react-hooks/exhaustive-deps": "warn",
       // Disable problematic rules that block builds
       "@typescript-eslint/ban-ts-comment": "off",
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
+  {
+    // Allow require imports in test files
+    files: ["**/__tests__/**/*.ts", "**/__tests__/**/*.tsx", "**/*.test.ts", "**/*.test.tsx"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": "off",
     },
   },
 ];

@@ -7,26 +7,7 @@
 
 import Stripe from 'stripe';
 
-// Environment variable validation
-const requiredEnvVars = {
-  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
-  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-  STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
-};
-
-for (const [key, value] of Object.entries(requiredEnvVars)) {
-  if (!value) {
-    throw new Error(`Missing required Stripe environment variable: ${key}`);
-  }
-}
-
-// Initialize Stripe client
-export const stripe = new Stripe(requiredEnvVars.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-02-24.acacia',
-  typescript: true,
-});
-
-// Stripe Price IDs from environment
+// Stripe Price IDs from environment - lazy loaded
 export const STRIPE_PRICES = {
   beta: process.env.STRIPE_BETA_PRICE_ID || '',
   trial: process.env.STRIPE_TRIAL_PRICE_ID || '',
@@ -157,314 +138,277 @@ export interface UpdateSubscriptionParams {
  * Stripe Service Class
  * Provides methods for managing customers, subscriptions, and billing
  */
-export class StripeService {
-  /**
-   * Create a new Stripe customer
-   */
-  static async createCustomer({
-    userId,
-    email,
-    name,
-    metadata = {},
-  }: CreateCustomerParams): Promise<Stripe.Customer> {
-    try {
-      const customer = await stripe.customers.create({
-        email,
-        name,
-        metadata: {
-          userId,
-          ...metadata,
-        },
-      });
+class StripeService {
+  private static _stripe: Stripe | null = null;
 
-      console.log(`✅ Created Stripe customer: ${customer.id} for user: ${userId}`);
-      return customer;
-    } catch (error) {
-      console.error('❌ Failed to create Stripe customer:', error);
-      throw new Error(`Failed to create customer: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  private static getStripe(): Stripe {
+    if (!this._stripe) {
+      // Environment variable validation - only when actually needed
+      const requiredEnvVars = {
+        STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+        STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+      };
+
+      for (const [key, value] of Object.entries(requiredEnvVars)) {
+        if (!value) {
+          throw new Error(`Missing required Stripe environment variable: ${key}`);
+        }
+      }
+
+      this._stripe = new Stripe(requiredEnvVars.STRIPE_SECRET_KEY!, {
+        apiVersion: '2025-02-24.acacia',
+        typescript: true,
+      });
     }
+    return this._stripe;
   }
 
   /**
-   * Get or create a Stripe customer for a user
+   * Create a new Stripe customer
    */
-  static async getOrCreateCustomer({
-    userId,
-    email,
-    name,
-    metadata = {},
-  }: CreateCustomerParams): Promise<Stripe.Customer> {
-    try {
-      // Try to find existing customer by email
-      const existingCustomers = await stripe.customers.list({
-        limit: 1,
-        email: email,
-      });
+  static async createCustomer(params: {
+    email: string;
+    name?: string;
+    metadata?: Record<string, string>;
+  }): Promise<Stripe.Customer> {
+    const stripe = this.getStripe();
+    const customer = await stripe.customers.create({
+      email: params.email,
+      name: params.name,
+      metadata: params.metadata,
+    });
 
-      if (existingCustomers.data.length > 0) {
-        console.log(`✅ Found existing Stripe customer: ${existingCustomers.data[0].id}`);
-        return existingCustomers.data[0];
-      }
+    console.log(`✅ Created Stripe customer: ${customer.id} (${params.email})`);
+    return customer;
+  }
 
-      // Create new customer if not found
-      return await this.createCustomer({ userId, email, name, metadata });
-    } catch (error) {
-      console.error('❌ Failed to get or create Stripe customer:', error);
-      throw new Error(`Failed to get or create customer: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  /**
+   * Get or create a Stripe customer
+   */
+  static async getOrCreateCustomer(params: {
+    email: string;
+    name?: string;
+    metadata?: Record<string, string>;
+  }): Promise<Stripe.Customer> {
+    const stripe = this.getStripe();
+    // First, try to find existing customer by email
+    const existingCustomers = await stripe.customers.list({
+      email: params.email,
+      limit: 1,
+    });
+
+    if (existingCustomers.data.length > 0) {
+      const customer = existingCustomers.data[0];
+      console.log(`📋 Found existing Stripe customer: ${customer.id} (${params.email})`);
+      return customer;
     }
+
+    // Create new customer if not found
+    return this.createCustomer(params);
   }
 
   /**
    * Create a new subscription
    */
-  static async createSubscription({
-    customerId,
-    priceId,
-    metadata = {},
-    trialPeriodDays,
-  }: CreateSubscriptionParams): Promise<Stripe.Subscription> {
-    try {
-      const subscriptionParams: Stripe.SubscriptionCreateParams = {
-        customer: customerId,
-        items: [{ price: priceId }],
-        metadata,
-        payment_behavior: 'default_incomplete',
-        payment_settings: { save_default_payment_method: 'on_subscription' },
-        expand: ['latest_invoice.payment_intent'],
-      };
+  static async createSubscription(params: {
+    customerId: string;
+    priceId: string;
+    trialDays?: number;
+    metadata?: Record<string, string>;
+  }): Promise<Stripe.Subscription> {
+    const stripe = this.getStripe();
+    const subscription = await stripe.subscriptions.create({
+      customer: params.customerId,
+      items: [{ price: params.priceId }],
+      trial_period_days: params.trialDays,
+      metadata: params.metadata,
+    });
 
-      if (trialPeriodDays && trialPeriodDays > 0) {
-        subscriptionParams.trial_period_days = trialPeriodDays;
-      }
-
-      const subscription = await stripe.subscriptions.create(subscriptionParams);
-
-      console.log(`✅ Created Stripe subscription: ${subscription.id} for customer: ${customerId}`);
-      return subscription;
-    } catch (error) {
-      console.error('❌ Failed to create Stripe subscription:', error);
-      throw new Error(`Failed to create subscription: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
+    console.log(`✅ Created subscription: ${subscription.id} for customer: ${params.customerId}`);
+    return subscription;
   }
 
   /**
    * Update an existing subscription
    */
-  static async updateSubscription({
-    subscriptionId,
-    priceId,
-    metadata,
-    cancelAtPeriodEnd,
-  }: UpdateSubscriptionParams): Promise<Stripe.Subscription> {
-    try {
-      const updateParams: Stripe.SubscriptionUpdateParams = {};
+  static async updateSubscription(params: {
+    subscriptionId: string;
+    priceId?: string;
+    trialEnd?: number;
+    metadata?: Record<string, string>;
+  }): Promise<Stripe.Subscription> {
+    const stripe = this.getStripe();
+    const updateData: Stripe.SubscriptionUpdateParams = {};
 
-      if (priceId) {
-        // Get current subscription to modify items
-        const currentSubscription = await stripe.subscriptions.retrieve(subscriptionId);
-        updateParams.items = [
-          {
-            id: currentSubscription.items.data[0].id,
-            price: priceId,
-          },
-        ];
-        updateParams.proration_behavior = 'create_prorations';
-      }
-
-      if (metadata) {
-        updateParams.metadata = metadata;
-      }
-
-      if (cancelAtPeriodEnd !== undefined) {
-        updateParams.cancel_at_period_end = cancelAtPeriodEnd;
-      }
-
-      const subscription = await stripe.subscriptions.update(subscriptionId, updateParams);
-
-      console.log(`✅ Updated Stripe subscription: ${subscription.id}`);
-      return subscription;
-    } catch (error) {
-      console.error('❌ Failed to update Stripe subscription:', error);
-      throw new Error(`Failed to update subscription: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    if (params.priceId) {
+      // Get current subscription to update the price
+      const currentSub = await stripe.subscriptions.retrieve(params.subscriptionId);
+      updateData.items = [
+        {
+          id: currentSub.items.data[0].id,
+          price: params.priceId,
+        },
+      ];
     }
+
+    if (params.trialEnd) {
+      updateData.trial_end = params.trialEnd;
+    }
+
+    if (params.metadata) {
+      updateData.metadata = params.metadata;
+    }
+
+    const subscription = await stripe.subscriptions.update(
+      params.subscriptionId,
+      updateData
+    );
+
+    console.log(`✅ Updated subscription: ${params.subscriptionId}`);
+    return subscription;
   }
 
   /**
    * Cancel a subscription
    */
-  static async cancelSubscription(subscriptionId: string, immediately = false): Promise<Stripe.Subscription> {
-    try {
-      let subscription: Stripe.Subscription;
+  static async cancelSubscription(
+    subscriptionId: string,
+    cancelAtPeriodEnd = true
+  ): Promise<Stripe.Subscription> {
+    const stripe = this.getStripe();
+    const subscription = await stripe.subscriptions.update(subscriptionId, {
+      cancel_at_period_end: cancelAtPeriodEnd,
+    });
 
-      if (immediately) {
-        subscription = await stripe.subscriptions.cancel(subscriptionId);
-      } else {
-        subscription = await stripe.subscriptions.update(subscriptionId, {
-          cancel_at_period_end: true,
-        });
-      }
-
-      console.log(`✅ ${immediately ? 'Canceled' : 'Scheduled cancellation for'} subscription: ${subscription.id}`);
-      return subscription;
-    } catch (error) {
-      console.error('❌ Failed to cancel Stripe subscription:', error);
-      throw new Error(`Failed to cancel subscription: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
+    console.log(`🗑️ Cancelled subscription: ${subscriptionId} (at period end: ${cancelAtPeriodEnd})`);
+    return subscription;
   }
 
   /**
-   * Reactivate a canceled subscription
+   * Reactivate a subscription
    */
   static async reactivateSubscription(subscriptionId: string): Promise<Stripe.Subscription> {
-    try {
-      const subscription = await stripe.subscriptions.update(subscriptionId, {
-        cancel_at_period_end: false,
-      });
+    const stripe = this.getStripe();
+    const subscription = await stripe.subscriptions.update(subscriptionId, {
+      cancel_at_period_end: false,
+    });
 
-      console.log(`✅ Reactivated subscription: ${subscription.id}`);
-      return subscription;
-    } catch (error) {
-      console.error('❌ Failed to reactivate Stripe subscription:', error);
-      throw new Error(`Failed to reactivate subscription: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
+    console.log(`🔄 Reactivated subscription: ${subscriptionId}`);
+    return subscription;
   }
 
   /**
-   * Get subscription details
+   * Get subscription by ID
    */
   static async getSubscription(subscriptionId: string): Promise<Stripe.Subscription | null> {
     try {
-      const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
-        expand: ['latest_invoice', 'customer'],
-      });
-
+      const stripe = this.getStripe();
+      const subscription = await stripe.subscriptions.retrieve(subscriptionId);
       return subscription;
     } catch (error) {
-      if (error instanceof Stripe.errors.StripeError && error.code === 'resource_missing') {
-        return null;
-      }
-      console.error('❌ Failed to get Stripe subscription:', error);
-      throw new Error(`Failed to get subscription: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      console.error(`❌ Failed to get subscription ${subscriptionId}:`, error);
+      return null;
     }
   }
 
   /**
-   * Get customer details
+   * Get customer by ID
    */
   static async getCustomer(customerId: string): Promise<Stripe.Customer | null> {
     try {
+      const stripe = this.getStripe();
       const customer = await stripe.customers.retrieve(customerId);
-
-      if (customer.deleted) {
-        return null;
-      }
-
       return customer as Stripe.Customer;
     } catch (error) {
-      if (error instanceof Stripe.errors.StripeError && error.code === 'resource_missing') {
-        return null;
-      }
-      console.error('❌ Failed to get Stripe customer:', error);
-      throw new Error(`Failed to get customer: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      console.error(`❌ Failed to get customer ${customerId}:`, error);
+      return null;
     }
   }
 
   /**
-   * Create a billing portal session
+   * Create billing portal session
    */
-  static async createBillingPortalSession(
-    customerId: string,
-    returnUrl: string
-  ): Promise<Stripe.BillingPortal.Session> {
-    try {
-      const session = await stripe.billingPortal.sessions.create({
-        customer: customerId,
-        return_url: returnUrl,
-      });
-
-      console.log(`✅ Created billing portal session for customer: ${customerId}`);
-      return session;
-    } catch (error) {
-      console.error('❌ Failed to create billing portal session:', error);
-      throw new Error(`Failed to create billing portal session: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
-  }
-
-  /**
-   * Create a checkout session for subscription
-   */
-  static async createCheckoutSession({
-    customerId,
-    priceId,
-    successUrl,
-    cancelUrl,
-    metadata = {},
-    trialPeriodDays,
-  }: {
+  static async createBillingPortalSession(params: {
     customerId: string;
+    returnUrl: string;
+  }): Promise<Stripe.BillingPortal.Session> {
+    const stripe = this.getStripe();
+    const session = await stripe.billingPortal.sessions.create({
+      customer: params.customerId,
+      return_url: params.returnUrl,
+    });
+
+    console.log(`🔗 Created billing portal session for customer: ${params.customerId}`);
+    return session;
+  }
+
+  /**
+   * Create checkout session
+   */
+  static async createCheckoutSession(params: {
+    customerId?: string;
     priceId: string;
     successUrl: string;
     cancelUrl: string;
+    trialDays?: number;
     metadata?: Record<string, string>;
-    trialPeriodDays?: number;
   }): Promise<Stripe.Checkout.Session> {
-    try {
-      const sessionParams: Stripe.Checkout.SessionCreateParams = {
-        customer: customerId,
-        mode: 'subscription',
-        line_items: [
-          {
-            price: priceId,
-            quantity: 1,
-          },
-        ],
-        success_url: successUrl,
-        cancel_url: cancelUrl,
-        metadata,
-        payment_method_collection: 'if_required',
-        subscription_data: {
-          metadata,
+    const stripe = this.getStripe();
+    const sessionParams: Stripe.Checkout.SessionCreateParams = {
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price: params.priceId,
+          quantity: 1,
         },
-      };
+      ],
+      mode: 'subscription',
+      success_url: params.successUrl,
+      cancel_url: params.cancelUrl,
+      metadata: params.metadata,
+    };
 
-      if (trialPeriodDays && trialPeriodDays > 0) {
-        sessionParams.subscription_data!.trial_period_days = trialPeriodDays;
-      }
-
-      const session = await stripe.checkout.sessions.create(sessionParams);
-
-      console.log(`✅ Created checkout session: ${session.id} for customer: ${customerId}`);
-      return session;
-    } catch (error) {
-      console.error('❌ Failed to create checkout session:', error);
-      throw new Error(`Failed to create checkout session: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    if (params.customerId) {
+      sessionParams.customer = params.customerId;
     }
+
+    if (params.trialDays) {
+      sessionParams.subscription_data = {
+        trial_period_days: params.trialDays,
+      };
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionParams);
+
+    console.log(`🛒 Created checkout session: ${session.id}`);
+    return session;
   }
 
   /**
    * Verify webhook signature
    */
   static verifyWebhookSignature(body: string, signature: string): Stripe.Event {
-    try {
-      const event = stripe.webhooks.constructEvent(
-        body,
-        signature,
-        requiredEnvVars.STRIPE_WEBHOOK_SECRET!
-      );
+    const stripe = this.getStripe();
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    
+    if (!webhookSecret) {
+      throw new Error('Missing STRIPE_WEBHOOK_SECRET environment variable');
+    }
 
-      return event;
+    try {
+      return stripe.webhooks.constructEvent(body, signature, webhookSecret);
     } catch (error) {
-      console.error('❌ Failed to verify webhook signature:', error);
-      throw new Error(`Invalid webhook signature: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Webhook signature verification failed: ${error}`);
     }
   }
 
   /**
-   * Get the subscription tier from a Stripe price ID
+   * Get subscription tier from price ID
    */
   static getSubscriptionTierFromPriceId(priceId: string): SubscriptionTier | null {
-    for (const [tier, tierPriceId] of Object.entries(STRIPE_PRICES)) {
-      if (tierPriceId === priceId) {
+    for (const [tier, id] of Object.entries(STRIPE_PRICES)) {
+      if (id === priceId) {
         return tier as SubscriptionTier;
       }
     }
@@ -472,7 +416,7 @@ export class StripeService {
   }
 
   /**
-   * Get price ID for a subscription tier
+   * Get price ID for tier
    */
   static getPriceIdForTier(tier: SubscriptionTier): string {
     return STRIPE_PRICES[tier];
@@ -481,12 +425,10 @@ export class StripeService {
   /**
    * Format price in cents to display format
    */
-  static formatPrice(priceInCents: number, currency = 'USD'): string {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency,
-    }).format(priceInCents / 100);
+  static formatPrice(cents: number): string {
+    return `$${(cents / 100).toFixed(2)}`;
   }
 }
 
+export { StripeService };
 export default StripeService;

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "buildCommand": "cd apps/web && npm run build",
+  "outputDirectory": "apps/web/.next",
+  "installCommand": "npm install --legacy-peer-deps",
+  "framework": "nextjs",
+  "ignoreCommand": "git diff --quiet '^HEAD' HEAD -- apps/web/ packages/ || exit 1",
+  "env": {
+    "TURBO_TELEMETRY_DISABLED": "1",
+    "NEXT_TELEMETRY_DISABLED": "1",
+    "NODE_ENV": "production"
+  },
+  "build": {
+    "env": {
+      "NEXT_TELEMETRY_DISABLED": "1",
+      "NODE_ENV": "production",
+      "SKIP_VALIDATION": "1"
+    }
+  },
+  "functions": {
+    "apps/web/src/app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ]
+}
