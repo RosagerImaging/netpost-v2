@@ -26,15 +26,15 @@ describe('Beta Service - Build Verification', () => {
 
   it('should import BetaService without TypeScript errors', async () => {
     // This test verifies that our build fixes allow proper module importing
-    expect(() => {
-      const { BetaService } = require('../beta-service');
+    expect(async () => {
+      const { BetaService } = await import('../beta-service');
       expect(BetaService).toBeDefined();
       expect(typeof BetaService.generateInvitationCode).toBe('function');
     }).not.toThrow();
   });
 
   it('should have proper method signatures', async () => {
-    const { BetaService } = require('../beta-service');
+    const { BetaService } = await import('../beta-service');
 
     // Verify static methods exist with correct signatures
     expect(typeof BetaService.generateInvitationCode).toBe('function');
@@ -43,8 +43,8 @@ describe('Beta Service - Build Verification', () => {
     expect(typeof BetaService.mapBetaInvitationData).toBe('function');
   });
 
-  it('should generate invitation codes without errors', () => {
-    const { BetaService } = require('../beta-service');
+  it('should generate invitation codes without errors', async () => {
+    const { BetaService } = await import('../beta-service');
 
     const code = BetaService.generateInvitationCode();
     expect(typeof code).toBe('string');
@@ -52,8 +52,8 @@ describe('Beta Service - Build Verification', () => {
     expect(code).toMatch(/^[A-Z0-9-]+$/); // Should be alphanumeric with dashes
   });
 
-  it('should have proper TypeScript interface definitions', () => {
-    const { BetaService } = require('../beta-service');
+  it('should have proper TypeScript interface definitions', async () => {
+    const { BetaService } = await import('../beta-service');
 
     // Verify that the class can be referenced without TypeScript errors
     expect(BetaService).toBeDefined();

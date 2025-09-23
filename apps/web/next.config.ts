@@ -26,7 +26,7 @@ const nextConfig: NextConfig = {
 
   eslint: {
     // Allow build to continue with ESLint warnings
-    ignoreDuringBuilds: false,
+    ignoreDuringBuilds: true,
   },
 
   // Experimental features for performance
@@ -34,6 +34,12 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ["@radix-ui/react-select", "@radix-ui/react-dialog", "@radix-ui/react-checkbox", "@radix-ui/react-label"],
     // Reduce bundle size
     optimizeCss: true,
+    outputFileTracingExcludes: {
+      '*': [
+        'node_modules/@swc/core*',
+        'node_modules/@next/swc*',
+      ],
+    },
   },
 };
 

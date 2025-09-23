@@ -111,14 +111,14 @@ export class BetaService {
   /**
    * Generate a unique invitation code
    */
-  private static generateInvitationCode(): string {
+  static generateInvitationCode(): string {
     return 'BETA-' + Math.random().toString(36).substr(2, 9).toUpperCase();
   }
 
   /**
    * Map database data to TypeScript interface
    */
-  private static mapBetaInvitationData(data: BetaInvitationRecord): BetaInvitation {
+  static mapBetaInvitationData(data: BetaInvitationRecord): BetaInvitation {
     return {
       id: data.id,
       invitationCode: data.invitation_code,

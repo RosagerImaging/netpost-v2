@@ -1,20 +1,36 @@
 {
   "mcpServers": {
-    "brave-search": {
-      "command": "npx",
-      "args": ["-y", "@brave/brave-search-mcp-server", "--transport", "stdio"],
-      "env": {
-        "BRAVE_API_KEY": "BSAz0289N9SYx7dm3L0c7sMhzNVRJg6"
-      },
-      "playwright": {
-        "type": "stdio",
-        "command": "npx",
-        "args": [
-          "@playwright/mcp@latest"
-        ],
-        "env": {}
+        "serena": {
+          "type": "stdio",
+          "command": "uvx",
+          "args": [
+            "--from",
+            "git+https://github.com/oraios/serena",
+            "serena",
+            "start-mcp-server",
+            "--context",
+            "ide-assistant",
+            "--project",
+            "/home/optiks/dev/netpost-v2"
+          ],
+          "env": {}
+        },
+        "playwright": {
+          "type": "stdio",
+          "command": "npx",
+          "args": [
+            "@playwright/mcp@latest"
+          ],
+          "env": {}
+        },
+        "sequential-thinking": {
+          "type": "stdio",
+          "command": "npx",
+          "args": [
+            "-y",
+            "@modelcontextprotocol/server-sequential-thinking"
+          ],
+          "env": {}
+        }
       }
     }
-  }
-}
-

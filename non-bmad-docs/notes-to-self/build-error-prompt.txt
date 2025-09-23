@@ -1,0 +1,11 @@
+ok, now please work through this list systematically as you see fit, acting as an orchestrator
+  agent:
+  1. please use whichever agent you think is most applicable to sort out and fix the remaining
+  next.js configuration issue.
+  2. please again use the appropriate agent to look over the code and highlight any blocks to a
+  successful deployment on vercel that may have been revealed after resolving the html import
+  error you fixed in step one.
+  3. invoke the proper agent one more time to resolve any remainng errors that were uncovered in
+  step 2.
+  4. verify we have a successful deployment by using playwright mcp and the vercel mcp to actually
+  view our web app up online available to the public. 

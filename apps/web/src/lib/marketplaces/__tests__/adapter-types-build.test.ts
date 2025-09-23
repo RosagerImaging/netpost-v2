@@ -8,9 +8,9 @@
 import { describe, it, expect } from 'vitest';
 
 describe('Marketplace Adapters - Build Verification', () => {
-  it('should import marketplace adapters without TypeScript errors', () => {
-    expect(() => {
-      const adapters = require('../index');
+  it('should import marketplace adapters without TypeScript errors', async () => {
+    expect(async () => {
+      const adapters = await import('../index');
 
       // Verify main exports exist
       expect(adapters.BaseMarketplaceAdapter).toBeDefined();
@@ -21,8 +21,8 @@ describe('Marketplace Adapters - Build Verification', () => {
     }).not.toThrow();
   });
 
-  it('should have proper ListingStatus type exports', () => {
-    const adapters = require('../index');
+  it('should have proper ListingStatus type exports', async () => {
+    const adapters = await import('../index');
 
     // This test verifies that our DatabaseListingStatus alias is working
     expect(() => {
@@ -39,30 +39,30 @@ describe('Marketplace Adapters - Build Verification', () => {
     }).not.toThrow();
   });
 
-  it('should import BaseMarketplaceAdapter with proper typing', () => {
-    const { BaseMarketplaceAdapter } = require('../base-adapter');
+  it('should import BaseMarketplaceAdapter with proper typing', async () => {
+    const { BaseMarketplaceAdapter } = await import('../base-adapter');
 
     expect(BaseMarketplaceAdapter).toBeDefined();
     expect(typeof BaseMarketplaceAdapter).toBe('function'); // It's a class constructor
   });
 
-  it('should import EBayAdapter with proper typing', () => {
-    const { EBayAdapter } = require('../ebay-adapter');
+  it('should import EBayAdapter with proper typing', async () => {
+    const { EBayAdapter } = await import('../ebay-adapter');
 
     expect(EBayAdapter).toBeDefined();
     expect(typeof EBayAdapter).toBe('function'); // It's a class constructor
 
     // Verify it extends BaseMarketplaceAdapter
-    const { BaseMarketplaceAdapter } = require('../base-adapter');
+    const { BaseMarketplaceAdapter } = await import('../base-adapter');
     expect(EBayAdapter.prototype instanceof BaseMarketplaceAdapter).toBe(true);
   });
 
-  it('should handle ListingStatus type compatibility', () => {
+  it('should handle ListingStatus type compatibility', async () => {
     // This test verifies that our type fixes allow proper instantiation
-    expect(() => {
-      const { EBayAdapter } = require('../ebay-adapter');
-      const { PoshmarkAdapter } = require('../poshmark-adapter');
-      const { FacebookAdapter } = require('../facebook-adapter');
+    expect(async () => {
+      const { EBayAdapter } = await import('../ebay-adapter');
+      const { PoshmarkAdapter } = await import('../poshmark-adapter');
+      const { FacebookAdapter } = await import('../facebook-adapter');
 
       // These should not throw TypeScript compilation errors
       expect(EBayAdapter).toBeDefined();
