@@ -4,7 +4,7 @@ import type {
   InventoryItemFilters,
   CreateInventoryItemInput,
   UpdateInventoryItemInput,
-} from "@netpost/shared-types/database/inventory-item";
+} from "@netpost/shared-types";
 
 export interface PaginatedInventoryResponse {
   items: InventoryItemRecord[];

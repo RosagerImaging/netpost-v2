@@ -8,8 +8,8 @@ import { useState, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { CrossListingService } from '../services/cross-listing-service';
 import type { CrossListingFormData } from '../services/cross-listing-service';
-import type { CreateListingInput, MarketplaceType } from '@netpost/shared-types/database/listing';
-import type { InventoryItemRecord } from '@netpost/shared-types/database/inventory-item';
+import type { CreateListingInput, MarketplaceType } from '@netpost/shared-types';
+import type { InventoryItemRecord } from '@netpost/shared-types';
 
 // Query keys
 export const crossListingKeys = {

@@ -25,7 +25,7 @@ import type {
   HealthCheckResult,
   ConnectionFilters,
   ConnectionStatus,
-} from '@netpost/shared-types/database/marketplace-connection';
+} from '@netpost/shared-types';
 
 // Service response types
 export interface ConnectionServiceResponse<T = any> {

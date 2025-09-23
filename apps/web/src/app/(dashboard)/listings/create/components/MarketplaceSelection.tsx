@@ -10,8 +10,8 @@ import { useState } from 'react';
 import { CheckIcon, ExclamationTriangleIcon, LightBulbIcon } from '@heroicons/react/24/outline';
 import { useActiveMarketplaceConnections, useMarketplaceSuggestions } from '@/lib/hooks/useCrossListing';
 import { getMarketplaceDisplayInfo, getMarketplaceConfig } from '@/lib/marketplaces';
-import type { MarketplaceType } from '@netpost/shared-types/database/listing';
-import type { InventoryItemRecord } from '@netpost/shared-types/database/inventory-item';
+import type { MarketplaceType } from '@netpost/shared-types';
+import type { InventoryItemRecord } from '@netpost/shared-types';
 
 interface MarketplaceSelectionProps {
   selectedMarketplaces: MarketplaceType[];

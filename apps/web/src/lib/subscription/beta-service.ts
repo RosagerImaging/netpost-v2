@@ -3,13 +3,20 @@
  * Handles beta user invitations, onboarding, and feedback collection
  */
 
-import { supabaseAdmin } from '../../../../api/database/supabase';
+import { createClient } from '@supabase/supabase-js';
+import type { Database } from '@netpost/shared-types/database';
 import type {
   BetaInvitationRecord,
   CreateBetaInvitationInput,
   UpdateBetaInvitationInput,
-} from '@netpost/shared-types/database';
-import type { TypedSupabaseClient } from '../supabase/types';
+} from '@netpost/shared-types';
+
+// Create a properly typed supabase admin client for the web app
+// Temporarily using any to bypass type resolution issues in monorepo
+const supabaseAdmin = createClient<any>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 export interface BetaInvitation {
   id: string;
@@ -43,7 +50,7 @@ export class BetaService {
       expires_at: params.expiresAt?.toISOString() || null,
     };
 
-    const { data, error } = await (supabaseAdmin as TypedSupabaseClient)
+    const { data, error } = await supabaseAdmin
       .from('beta_invitations')
       .insert(insertData)
       .select()
@@ -61,7 +68,7 @@ export class BetaService {
    * Validate and use a beta invitation
    */
   static async useBetaInvitation(invitationCode: string, userId: string): Promise<boolean> {
-    const { data: invitation, error } = await (supabaseAdmin as TypedSupabaseClient)
+    const { data: invitation, error } = await supabaseAdmin
       .from('beta_invitations')
       .select()
       .eq('invitation_code', invitationCode)
@@ -88,7 +95,7 @@ export class BetaService {
       is_active: invitation.uses_count + 1 < invitation.max_uses,
     };
 
-    const { error: updateError } = await (supabaseAdmin as TypedSupabaseClient)
+    const { error: updateError } = await supabaseAdmin
       .from('beta_invitations')
       .update(updateData)
       .eq('id', invitation.id);

@@ -14,7 +14,7 @@ import {
   ProcessSaleEventResponse,
   PollingResult,
 } from '@netpost/shared-types';
-import type { ListingRecord } from '@netpost/shared-types/database/listing';
+import type { ListingRecord } from '@netpost/shared-types';
 import crypto from 'crypto';
 
 interface PollingConfig {

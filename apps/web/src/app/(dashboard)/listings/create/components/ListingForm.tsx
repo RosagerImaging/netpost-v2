@@ -10,8 +10,8 @@ import { useState } from 'react';
 import { ExclamationTriangleIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
 import { getMarketplaceDisplayInfo, getMarketplaceConfig } from '@/lib/marketplaces';
 import type { CrossListingFormData, CrossListingValidation } from '@/lib/services/cross-listing-service';
-import type { InventoryItemRecord } from '@netpost/shared-types/database/inventory-item';
-import type { CreateListingInput, MarketplaceType } from '@netpost/shared-types/database/listing';
+import type { InventoryItemRecord } from '@netpost/shared-types';
+import type { CreateListingInput, MarketplaceType } from '@netpost/shared-types';
 
 interface ListingFormProps {
   formData: CrossListingFormData;

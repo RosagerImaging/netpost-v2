@@ -10,7 +10,7 @@ import type {
   MarketplaceConnectionSafe,
   ConnectionFilters,
   ApiKeyCredentials,
-} from '@netpost/shared-types/database/marketplace-connection';
+} from '@netpost/shared-types';
 import type { MarketplaceType } from '@netpost/shared-types';
 
 // Query keys

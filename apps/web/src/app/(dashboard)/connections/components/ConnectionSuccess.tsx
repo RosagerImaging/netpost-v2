@@ -8,7 +8,7 @@
 
 import { CheckCircleIcon, ArrowRightIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
 import { getMarketplaceDisplayInfo } from '@/lib/marketplaces';
-import type { MarketplaceConnectionSafe } from '@netpost/shared-types/database/marketplace-connection';
+import type { MarketplaceConnectionSafe } from '@netpost/shared-types';
 
 interface ConnectionSuccessProps {
   connection: MarketplaceConnectionSafe;

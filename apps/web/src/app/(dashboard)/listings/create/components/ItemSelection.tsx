@@ -9,7 +9,7 @@
 import { useState } from 'react';
 import { MagnifyingGlassIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { useAvailableInventoryItems } from '@/lib/hooks/useCrossListing';
-import type { InventoryItemRecord } from '@netpost/shared-types/database/inventory-item';
+import type { InventoryItemRecord } from '@netpost/shared-types';
 
 interface ItemSelectionProps {
   onItemSelect: (item: InventoryItemRecord) => void;

@@ -16,8 +16,8 @@ import { ListingPreview } from './components/ListingPreview';
 import { SubmissionSuccess } from './components/SubmissionSuccess';
 import { useCrossListingForm } from '@/lib/hooks/useCrossListing';
 import { CrossListingService } from '@/lib/services/cross-listing-service';
-import type { InventoryItemRecord } from '@netpost/shared-types/database/inventory-item';
-import type { MarketplaceType } from '@netpost/shared-types/database/listing';
+import type { InventoryItemRecord } from '@netpost/shared-types';
+import type { MarketplaceType } from '@netpost/shared-types';
 
 type CrossListingStep = 'item_selection' | 'marketplace_selection' | 'listing_form' | 'preview' | 'success';
 

@@ -14,7 +14,7 @@ import {
   getMarketplaceConfig
 } from '@/lib/marketplaces';
 import { useMarketplaceConnections } from '@/lib/hooks/useMarketplaceConnections';
-import type { MarketplaceType } from '@netpost/shared-types/database/listing';
+import type { MarketplaceType } from '@netpost/shared-types';
 
 interface MarketplaceSelectorProps {
   onSelect: (marketplace: MarketplaceType) => void;

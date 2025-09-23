@@ -9,11 +9,11 @@ import { MarketplaceAdapterFactory } from './base-adapter';
 import { EBayAdapter } from './ebay-adapter';
 import { PoshmarkAdapter } from './poshmark-adapter';
 import { FacebookAdapter } from './facebook-adapter';
-import type { MarketplaceType } from '@netpost/shared-types/database/listing';
+import type { MarketplaceType } from '@netpost/shared-types';
 import type {
   MarketplaceConnectionRecord,
   MarketplaceCredentials,
-} from '@netpost/shared-types/database/marketplace-connection';
+} from '@netpost/shared-types';
 
 /**
  * Initialize and register all marketplace adapters

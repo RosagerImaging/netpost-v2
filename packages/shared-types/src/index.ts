@@ -35,8 +35,36 @@ export type {
 } from "./listing";
 
 // Database types - import from database folder
-export type { MarketplaceType } from "../database/listing";
-export type { ConnectionStatus } from "../database/marketplace-connection";
+export type {
+  MarketplaceType,
+  ListingRecord,
+  CreateListingInput,
+  UpdateListingInput,
+  ListingFormat,
+  ShippingMethod,
+  ListingStatus as DatabaseListingStatus,
+  CrossPostingPlan
+} from "../database/listing";
+export type {
+  ConnectionStatus,
+  MarketplaceConnectionRecord,
+  MarketplaceConnectionSafe,
+  CreateMarketplaceConnectionInput,
+  UpdateMarketplaceConnectionInput,
+  ApiKeyCredentials,
+  OAuth2Credentials,
+  OAuth1Credentials,
+  UsernamePasswordCredentials,
+  AuthMethod,
+  MarketplaceCredentials,
+  ConnectionFilters,
+  HealthCheckResult,
+  ConnectionHealth,
+  ConnectionAnalytics,
+  CredentialValidationResult,
+  NotificationPreferences,
+  RateLimitUsage
+} from "../database/marketplace-connection";
 
 // Database types
 export type {

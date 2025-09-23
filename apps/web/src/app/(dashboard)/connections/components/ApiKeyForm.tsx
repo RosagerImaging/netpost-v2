@@ -10,8 +10,8 @@ import { useState } from 'react';
 import { EyeIcon, EyeSlashIcon, KeyIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
 import { useStoreApiKeyCredentials } from '@/lib/hooks/useMarketplaceConnections';
 import { getMarketplaceDisplayInfo, getMarketplaceConfig } from '@/lib/marketplaces';
-import type { MarketplaceType } from '@netpost/shared-types/database/listing';
-import type { MarketplaceConnectionSafe, ApiKeyCredentials } from '@netpost/shared-types/database/marketplace-connection';
+import type { MarketplaceType } from '@netpost/shared-types';
+import type { MarketplaceConnectionSafe, ApiKeyCredentials } from '@netpost/shared-types';
 
 interface ApiKeyFormProps {
   marketplace: MarketplaceType;

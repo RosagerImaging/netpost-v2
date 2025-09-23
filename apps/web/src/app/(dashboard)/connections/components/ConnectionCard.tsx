@@ -21,7 +21,7 @@ import {
   useRefreshToken,
   useDeleteConnection,
 } from '@/lib/hooks/useMarketplaceConnections';
-import type { MarketplaceConnectionSafe } from '@netpost/shared-types/database/marketplace-connection';
+import type { MarketplaceConnectionSafe } from '@netpost/shared-types';
 
 interface ConnectionCardProps {
   connection: MarketplaceConnectionSafe;

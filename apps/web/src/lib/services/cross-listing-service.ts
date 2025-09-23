@@ -10,9 +10,9 @@ import type {
   CreateListingInput,
   MarketplaceType,
   CrossPostingPlan,
-} from '@netpost/shared-types/database/listing';
-import type { InventoryItemRecord } from '@netpost/shared-types/database/inventory-item';
-import type { MarketplaceConnectionSafe } from '@netpost/shared-types/database/marketplace-connection';
+} from '@netpost/shared-types';
+import type { InventoryItemRecord } from '@netpost/shared-types';
+import type { MarketplaceConnectionSafe } from '@netpost/shared-types';
 
 // Cross-listing specific types
 export interface CrossListingFormData {

@@ -42,12 +42,12 @@ export {
 // Re-export types from shared-types for convenience
 export type {
   MarketplaceType,
-  ListingStatus,
+  DatabaseListingStatus as ListingStatus,
   ListingFormat,
   CreateListingInput,
   UpdateListingInput,
   ListingRecord,
-} from '@netpost/shared-types/database/listing';
+} from '@netpost/shared-types';
 
 export type {
   ConnectionStatus,
@@ -58,4 +58,4 @@ export type {
   OAuth2Credentials,
   ApiKeyCredentials,
   HealthCheckResult,
-} from '@netpost/shared-types/database/marketplace-connection';
+} from '@netpost/shared-types';

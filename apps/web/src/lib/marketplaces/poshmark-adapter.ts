@@ -20,13 +20,13 @@ import type {
   UpdateListingInput,
   ListingRecord,
   MarketplaceType,
-  ListingStatus,
-} from '@netpost/shared-types/database/listing';
+  DatabaseListingStatus as ListingStatus,
+} from '@netpost/shared-types';
 import type {
   OAuth2Credentials,
   ApiKeyCredentials,
   HealthCheckResult,
-} from '@netpost/shared-types/database/marketplace-connection';
+} from '@netpost/shared-types';
 
 // Poshmark specific types
 interface PoshmarkBrand {

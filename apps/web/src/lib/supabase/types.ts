@@ -6,8 +6,8 @@
  */
 
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-import { createServerClient, type SupabaseClient as ServerSupabaseClient } from '@supabase/ssr';
-import type { Database } from '@netpost/shared-types/database';
+import { createServerClient } from '@supabase/ssr';
+import type { Database } from '@netpost/shared-types';
 
 /**
  * Type for the properly typed Supabase client
@@ -16,8 +16,9 @@ export type TypedSupabaseClient = SupabaseClient<Database>;
 
 /**
  * Type for the properly typed Supabase server client
+ * Note: Using SupabaseClient type from @supabase/supabase-js for server client too
  */
-export type TypedSupabaseServerClient = ServerSupabaseClient<Database>;
+export type TypedSupabaseServerClient = SupabaseClient<Database>;
 
 /**
  * Create a typed Supabase client for browser usage
@@ -39,7 +40,7 @@ export function createTypedSupabaseServerClient(
 ): TypedSupabaseServerClient {
   return createServerClient<Database>(supabaseUrl, supabaseKey, {
     cookies: cookieStore,
-  });
+  }) as TypedSupabaseServerClient;
 }
 
 /**

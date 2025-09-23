@@ -10,8 +10,8 @@ import { useState, useEffect } from 'react';
 import { ArrowTopRightOnSquareIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { useInitiateOAuth, useCompleteOAuth } from '@/lib/hooks/useMarketplaceConnections';
 import { getMarketplaceDisplayInfo } from '@/lib/marketplaces';
-import type { MarketplaceType } from '@netpost/shared-types/database/listing';
-import type { MarketplaceConnectionSafe } from '@netpost/shared-types/database/marketplace-connection';
+import type { MarketplaceType } from '@netpost/shared-types';
+import type { MarketplaceConnectionSafe } from '@netpost/shared-types';
 
 interface OAuthFlowProps {
   marketplace: MarketplaceType;

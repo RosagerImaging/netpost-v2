@@ -15,8 +15,8 @@ import { OAuthFlow } from './OAuthFlow';
 import { ApiKeyForm } from './ApiKeyForm';
 import { ConnectionSuccess } from './ConnectionSuccess';
 import { getMarketplaceConfig, getMarketplaceDisplayInfo } from '@/lib/marketplaces';
-import type { MarketplaceType } from '@netpost/shared-types/database/listing';
-import type { MarketplaceConnectionSafe } from '@netpost/shared-types/database/marketplace-connection';
+import type { MarketplaceType } from '@netpost/shared-types';
+import type { MarketplaceConnectionSafe } from '@netpost/shared-types';
 
 interface ConnectionSetupProps {
   isOpen: boolean;

@@ -20,12 +20,12 @@ import type {
   UpdateListingInput,
   ListingRecord,
   MarketplaceType,
-  ListingStatus,
-} from '@netpost/shared-types/database/listing';
+  DatabaseListingStatus as ListingStatus,
+} from '@netpost/shared-types';
 import type {
   OAuth2Credentials,
   HealthCheckResult,
-} from '@netpost/shared-types/database/marketplace-connection';
+} from '@netpost/shared-types';
 
 // Facebook specific types
 interface FacebookCategory {

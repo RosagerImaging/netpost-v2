@@ -8,7 +8,7 @@
 
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { getMarketplaceDisplayInfo } from '@/lib/marketplaces';
-import type { MarketplaceType } from '@netpost/shared-types/database/listing';
+import type { MarketplaceType } from '@netpost/shared-types';
 
 interface ConnectionStatsProps {
   total: number;
