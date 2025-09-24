@@ -38,6 +38,9 @@ const nextConfig: NextConfig = {
     // Reduce bundle size
     optimizeCss: true,
   },
+
+  // Optimized for Vercel deployment
+  trailingSlash: false,
 };
 
 export default nextConfig;

@@ -12,6 +12,10 @@ import { processSaleEventQueue, getQueueStats } from '@/lib/queues/sale-event-qu
 import { createClient } from '@/lib/supabase/server';
 import { MarketplaceType } from '@netpost/shared-types';
 
+// API route configuration
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 /**
  * Test sale detection system
  * POST /api/delisting/test-sale-detection
