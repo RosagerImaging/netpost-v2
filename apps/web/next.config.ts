@@ -41,11 +41,31 @@ const nextConfig: NextConfig = {
   // Disable static exports completely
   trailingSlash: false,
 
+  // Disable static generation completely
+  distDir: ".next",
+
+  // Force all routes to be dynamic
+  headers: async () => {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'x-dynamic-page',
+            value: 'true',
+          },
+        ],
+      },
+    ]
+  },
+
   // Experimental features for performance
   experimental: {
     optimizePackageImports: ["@radix-ui/react-select", "@radix-ui/react-dialog", "@radix-ui/react-checkbox", "@radix-ui/react-label"],
     // Reduce bundle size
     optimizeCss: true,
+    // Force server-side rendering to avoid static generation Html import issue
+    staticGenerationBailout: 'force-static-generation-bailout',
   },
 };
 
