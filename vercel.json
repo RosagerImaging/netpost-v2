@@ -3,7 +3,7 @@
   "version": 2,
   "buildCommand": "turbo build --filter=web",
   "outputDirectory": "apps/web/.next",
-  "installCommand": "npm install --legacy-peer-deps",
+  "installCommand": "npm install --include=dev --legacy-peer-deps",
   "framework": "nextjs",
   "ignoreCommand": "bash -c 'git diff --quiet HEAD~1 HEAD -- apps/web/ packages/ && echo \"No changes in web app or packages, skipping build\" && exit 1 || echo \"Changes detected, proceeding with build\" && exit 0'",
   "env": {
