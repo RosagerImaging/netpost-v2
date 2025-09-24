@@ -13,7 +13,24 @@
     "type-check": "turbo type-check",
     "mobile:dev": "npm run dev --workspace=mobile",
     "mobile:android": "npm run android --workspace=mobile",
-    "mobile:ios": "npm run ios --workspace=mobile"
+    "mobile:ios": "npm run ios --workspace=mobile",
+
+    "test:coverage": "turbo test -- --coverage",
+    "test:run": "turbo test -- --run",
+    "test:integration": "turbo test:integration",
+
+    "validate:quick": "npm run type-check && npm run lint && npm run test:run",
+    "validate:enhanced": "node scripts/enhanced-pre-deploy-validation.cjs",
+    "validate:enhanced:verbose": "node scripts/enhanced-pre-deploy-validation.cjs --verbose",
+    "validate:enhanced:skip-security": "node scripts/enhanced-pre-deploy-validation.cjs --skip-security",
+
+    "deploy:preview": "npm run validate:enhanced && vercel",
+    "deploy:prod": "npm run validate:enhanced && vercel --prod",
+    "deploy:emergency": "npm run validate:quick && vercel --prod --force",
+
+    "security:check": "npm run lint -- --config .eslintrc.security.js",
+    "deps:update": "npx npm-check-updates -u && npm install",
+    "deps:audit": "npm audit --audit-level moderate"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
@@ -30,6 +47,7 @@
     "playwright": "^1.55.0",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.6.14",
+    "shadcn": "^3.3.1",
     "supertest": "^7.1.4",
     "turbo": "^1.12.4"
   },

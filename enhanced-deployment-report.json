@@ -1,0 +1,29 @@
+{
+  "timestamp": "2025-09-24T04:36:34.515Z",
+  "duration": "0s",
+  "results": {
+    "typescript": false,
+    "linting": false,
+    "security": false,
+    "tests": false,
+    "coverage": false,
+    "build": false,
+    "e2e": false,
+    "bundle": false
+  },
+  "environment": {
+    "node": "v22.18.0",
+    "npm": "10.9.3",
+    "platform": "linux",
+    "ci": false,
+    "github": false
+  },
+  "coverage": null,
+  "github_integration": {
+    "codecov_ready": true,
+    "codeql_ready": true,
+    "dependabot_ready": true,
+    "claude_integration_ready": true,
+    "claude_workflow_ready": true
+  }
+}

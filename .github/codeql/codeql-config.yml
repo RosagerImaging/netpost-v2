@@ -1,0 +1,39 @@
+# CodeQL Configuration
+name: "NetPost V2 Security Analysis"
+
+disable-default-queries: false
+
+queries:
+  - name: security-extended
+    uses: security-extended
+  - name: security-and-quality
+    uses: security-and-quality
+
+paths:
+  - src
+  - apps/*/src
+  - packages/*/src
+
+paths-ignore:
+  - "**/*.test.ts"
+  - "**/*.test.tsx"
+  - "**/*.spec.ts"
+  - "**/*.spec.tsx"
+  - "**/test-setup.ts"
+  - "**/node_modules"
+  - "**/.next"
+  - "**/coverage"
+  - "**/dist"
+  - "**/build"
+  - "**/__tests__"
+  - "**/playwright-report"
+  - "**/*.config.js"
+  - "**/*.config.ts"
+
+query-filters:
+  - exclude:
+      id: js/unused-local-variable
+      reason: "Handled by ESLint"
+  - exclude:
+      id: js/implicit-operand-conversion
+      reason: "TypeScript handles this"

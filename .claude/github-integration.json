@@ -1,0 +1,87 @@
+{
+  "version": "1.0",
+  "enabled": true,
+  "name": "NetPost V2 Enhanced Development Assistant",
+  "description": "AI assistant for code reviews, bug fixes, feature implementation, and TDD workflow automation",
+  "permissions": {
+    "contents": "write",
+    "pull_requests": "write",
+    "issues": "write",
+    "actions": "read",
+    "checks": "read",
+    "metadata": "read"
+  },
+  "triggers": {
+    "mention": "@claude",
+    "events": [
+      "pull_request",
+      "issues",
+      "issue_comment",
+      "pull_request_review_comment"
+    ]
+  },
+  "capabilities": {
+    "code_review": {
+      "enabled": true,
+      "auto_review": false,
+      "check_patterns": [
+        "TypeScript errors",
+        "ESLint violations",
+        "Security vulnerabilities",
+        "Test coverage",
+        "Design system compliance"
+      ]
+    },
+    "bug_fixes": {
+      "enabled": true,
+      "auto_fix": false,
+      "supported_languages": [
+        "typescript",
+        "javascript",
+        "tsx",
+        "jsx",
+        "json",
+        "yaml",
+        "markdown"
+      ]
+    },
+    "feature_implementation": {
+      "enabled": true,
+      "requires_approval": true,
+      "test_generation": true,
+      "documentation_update": true
+    },
+    "validation_pipeline": {
+      "enabled": true,
+      "pre_deploy_checks": true,
+      "integration_with": [
+        "codecov",
+        "codeql",
+        "dependabot"
+      ]
+    }
+  },
+  "workflow_integration": {
+    "enhanced_validation": true,
+    "tdd_support": true,
+    "auto_commit": false,
+    "branch_protection": true
+  },
+  "response_templates": {
+    "code_review": "## 🔍 Code Review Results\n\n### Analysis:\n{analysis}\n\n### Suggestions:\n{suggestions}\n\n### Action Items:\n{action_items}",
+    "bug_fix": "## 🐛 Bug Fix Implementation\n\n### Issue:\n{issue_description}\n\n### Solution:\n{solution_description}\n\n### Changes Made:\n{changes}\n\n### Testing:\n{testing_info}",
+    "feature_implementation": "## ✨ Feature Implementation\n\n### Feature:\n{feature_description}\n\n### Implementation:\n{implementation_details}\n\n### Tests Added:\n{test_info}\n\n### Documentation:\n{docs_updated}"
+  },
+  "integration_hooks": {
+    "pre_action": [
+      "validate_permissions",
+      "check_branch_protection",
+      "verify_tests_pass"
+    ],
+    "post_action": [
+      "run_validation_pipeline",
+      "update_coverage_report",
+      "notify_stakeholders"
+    ]
+  }
+}

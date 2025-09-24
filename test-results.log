@@ -5,7 +5,30 @@
 • Packages in scope: @netpost/config, @netpost/shared-types, @netpost/ui, mobile, web
 • Running test in 5 packages
 • Remote caching disabled
-@netpost/config:build: cache hit, replaying logs 7ac1324e4b94c159
+@netpost/ui:build: cache hit, replaying logs 1413a67f473f0897
+@netpost/ui:build: 
+@netpost/ui:build: > @netpost/ui@0.1.0 build
+@netpost/ui:build: > tsup
+@netpost/ui:build: 
+@netpost/ui:build: CLI Building entry: src/index.ts
+@netpost/ui:build: CLI Using tsconfig: tsconfig.json
+@netpost/ui:build: CLI tsup v8.5.0
+@netpost/ui:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/ui/tsup.config.ts
+@netpost/ui:build: CLI Target: es2020
+@netpost/ui:build: CLI Cleaning output folder
+@netpost/ui:build: CJS Build start
+@netpost/ui:build: ESM Build start
+@netpost/ui:build: ESM dist/index.js     24.33 KB
+@netpost/ui:build: ESM dist/index.js.map 40.62 KB
+@netpost/ui:build: ESM ⚡️ Build success in 34ms
+@netpost/ui:build: CJS dist/index.cjs     29.17 KB
+@netpost/config:build: cache hit, replaying logs 9f2a46f968f1d55d
+@netpost/ui:build: CJS dist/index.cjs.map 41.83 KB
+@netpost/ui:build: CJS ⚡️ Build success in 35ms
+@netpost/ui:build: DTS Build start
+@netpost/ui:build: DTS ⚡️ Build success in 2721ms
+@netpost/ui:build: DTS dist/index.d.cts 7.99 KB
+@netpost/ui:build: DTS dist/index.d.ts  7.99 KB
 @netpost/config:build: 
 @netpost/config:build: > @netpost/config@0.1.0 build
 @netpost/config:build: > tsup
@@ -20,28 +43,15 @@
 @netpost/config:build: ESM Build start
 @netpost/config:build: ESM dist/index.js     4.84 KB
 @netpost/config:build: ESM dist/index.js.map 8.14 KB
-@netpost/config:build: ESM ⚡️ Build success in 22ms
+@netpost/config:build: ESM ⚡️ Build success in 15ms
 @netpost/config:build: CJS dist/index.cjs     6.05 KB
 @netpost/config:build: CJS dist/index.cjs.map 8.50 KB
-@netpost/config:build: CJS ⚡️ Build success in 24ms
+@netpost/config:build: CJS ⚡️ Build success in 16ms
 @netpost/config:build: DTS Build start
-@netpost/config:build: DTS ⚡️ Build success in 2101ms
+@netpost/config:build: DTS ⚡️ Build success in 1785ms
 @netpost/config:build: DTS dist/index.d.cts 2.86 KB
 @netpost/config:build: DTS dist/index.d.ts  2.86 KB
-mobile:test: cache hit, replaying logs 8ea41eb4bac71499
-mobile:test: 
-mobile:test: > mobile@1.0.0 test
-mobile:test: > jest
-mobile:test: 
-mobile:test: PASS src/services/__tests__/sourcingService.test.ts
-mobile:test: PASS __tests__/App.test.tsx
-mobile:test: 
-mobile:test: Test Suites: 2 passed, 2 total
-mobile:test: Tests:       4 passed, 4 total
-mobile:test: Snapshots:   0 total
-mobile:test: Time:        1.553 s
-mobile:test: Ran all test suites.
-@netpost/shared-types:build: cache hit, replaying logs 94695a1d1a821bf3
+@netpost/shared-types:build: cache hit, replaying logs ad018152135c9c97
 @netpost/shared-types:build: 
 @netpost/shared-types:build: > @netpost/shared-types@0.1.0 build
 @netpost/shared-types:build: > tsup
@@ -54,40 +64,30 @@ mobile:test: Ran all test suites.
 @netpost/shared-types:build: CLI Cleaning output folder
 @netpost/shared-types:build: CJS Build start
 @netpost/shared-types:build: ESM Build start
-@netpost/shared-types:build: CJS dist/index.cjs     6.45 KB
-@netpost/shared-types:build: CJS dist/index.cjs.map 28.47 KB
-@netpost/shared-types:build: CJS ⚡️ Build success in 11ms
 @netpost/shared-types:build: ESM dist/index.js     4.74 KB
 @netpost/shared-types:build: ESM dist/index.js.map 24.53 KB
-@netpost/shared-types:build: ESM ⚡️ Build success in 11ms
+@netpost/shared-types:build: ESM ⚡️ Build success in 20ms
+@netpost/shared-types:build: CJS dist/index.cjs     6.45 KB
+@netpost/shared-types:build: CJS dist/index.cjs.map 28.47 KB
+@netpost/shared-types:build: CJS ⚡️ Build success in 20ms
 @netpost/shared-types:build: DTS Build start
-@netpost/shared-types:build: DTS ⚡️ Build success in 1607ms
+@netpost/shared-types:build: DTS ⚡️ Build success in 2190ms
 @netpost/shared-types:build: DTS dist/index.d.cts 66.56 KB
 @netpost/shared-types:build: DTS dist/index.d.ts  66.56 KB
-@netpost/ui:build: cache hit, replaying logs 2116731fd6136235
-@netpost/ui:build: 
-@netpost/ui:build: > @netpost/ui@0.1.0 build
-@netpost/ui:build: > tsup
-@netpost/ui:build: 
-@netpost/ui:build: CLI Building entry: src/index.ts
-@netpost/ui:build: CLI Using tsconfig: tsconfig.json
-@netpost/ui:build: CLI tsup v8.5.0
-@netpost/ui:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/ui/tsup.config.ts
-@netpost/ui:build: CLI Target: es2020
-@netpost/ui:build: CLI Cleaning output folder
-@netpost/ui:build: CJS Build start
-@netpost/ui:build: ESM Build start
-@netpost/ui:build: CJS dist/index.cjs     29.17 KB
-@netpost/ui:build: CJS dist/index.cjs.map 41.83 KB
-@netpost/ui:build: CJS ⚡️ Build success in 39ms
-@netpost/ui:build: ESM dist/index.js     24.33 KB
-@netpost/ui:build: ESM dist/index.js.map 40.62 KB
-@netpost/ui:build: ESM ⚡️ Build success in 39ms
-@netpost/ui:build: DTS Build start
-@netpost/ui:build: DTS ⚡️ Build success in 3208ms
-@netpost/ui:build: DTS dist/index.d.cts 7.99 KB
-@netpost/ui:build: DTS dist/index.d.ts  7.99 KB
-web:test: cache miss, executing b3d02b51b5af9c9f
+mobile:test: cache hit, replaying logs f610ad04e9465b81
+mobile:test: 
+mobile:test: > mobile@1.0.0 test
+mobile:test: > jest
+mobile:test: 
+mobile:test: PASS src/services/__tests__/sourcingService.test.ts
+mobile:test: PASS __tests__/App.test.tsx
+mobile:test: 
+mobile:test: Test Suites: 2 passed, 2 total
+mobile:test: Tests:       4 passed, 4 total
+mobile:test: Snapshots:   0 total
+mobile:test: Time:        1.338 s
+mobile:test: Ran all test suites.
+web:test: cache miss, executing 3105de1604f92cf8
 web:test: 
 web:test: > web@0.1.0 test
 web:test: > vitest
@@ -95,90 +95,7 @@ web:test:
 web:test: 
 web:test:  RUN  v3.2.4 /home/optiks/dev/netpost-v2/apps/web
 web:test: 
-web:test:  ✓ src/lib/subscription/__tests__/integration.test.ts (12 tests) 6ms
-web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should send success notification when all marketplaces complete
-web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
-web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
-web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
-web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:116:22
-web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
-web:test: 
-web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should send partial failure notification
-web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
-web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
-web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
-web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:162:22
-web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
-web:test: 
-web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should send complete failure notification with urgent priority
-web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
-web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
-web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
-web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:228:22
-web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
-web:test: 
-web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should send confirmation required notification
-web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
-web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
-web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
-web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:293:22
-web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
-web:test: 
-web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should handle notification preferences not found
-web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
-web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
-web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
-web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:305:22
-web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
-web:test: 
-web:test: stderr | lib/auth/__tests__/auth-utils.test.ts > AuthService > signIn > should handle unexpected errors
-web:test: Sign in error: Error: Network error
-web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39mlib/auth/__tests__/auth-utils.test.ts:72:61
-web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:155:11
-web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:26
-web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1897:20
-web:test:     at new Promise (<anonymous>)
-web:test:     at runWithTimeout (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1863:10)
-web:test:     at runTest (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1574:12)
-web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
-web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
-web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
-web:test: 
-web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should handle notification delivery failures gracefully
-web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
-web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
-web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
-web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:355:22
-web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
-web:test: 
-web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendJobCompletionNotification > should send notification for completed job
-web:test: Error sending job completion notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
-web:test:     at NotificationService.sendJobCompletionNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:410:21[90m)[39m
-web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
-web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:422:22
-web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
-web:test: 
-web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendJobCompletionNotification > should handle job not found
-web:test: Error sending job completion notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
-web:test:     at NotificationService.sendJobCompletionNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:410:21[90m)[39m
-web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
-web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:434:22
-web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
-web:test: 
-web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > Webhook Notifications > should send webhook notification successfully
-web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
-web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
-web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
-web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:476:22
-web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
-web:test: 
-web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > Webhook Notifications > should handle webhook failures
-web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
-web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
-web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
-web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:526:22
-web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
-web:test: 
+web:test:  ✓ src/lib/subscription/__tests__/integration.test.ts (12 tests) 5ms
 web:test: stderr | lib/auth/__tests__/auth-integration.test.ts > Authentication Integration Tests > Error Handling Integration > should handle network errors across all auth methods
 web:test: Sign in error: Error: Network error
 web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39mlib/auth/__tests__/auth-integration.test.ts:290:28
@@ -231,6 +148,20 @@ web:test: [90m    at processTicksAndRejections (node:internal/process/task_queu
 web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
 web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
 web:test: 
+web:test:  ✓ lib/auth/__tests__/auth-integration.test.ts (10 tests) 18ms
+web:test: stderr | lib/auth/__tests__/auth-utils.test.ts > AuthService > signIn > should handle unexpected errors
+web:test: Sign in error: Error: Network error
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39mlib/auth/__tests__/auth-utils.test.ts:72:61
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:155:11
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:26
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1897:20
+web:test:     at new Promise (<anonymous>)
+web:test:     at runWithTimeout (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1863:10)
+web:test:     at runTest (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1574:12)
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
+web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
+web:test: 
 web:test: stderr | lib/auth/__tests__/auth-utils.test.ts > AuthService > signUp > should handle unexpected errors
 web:test: Sign up error: Error: Network error
 web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39mlib/auth/__tests__/auth-utils.test.ts:109:49
@@ -244,27 +175,6 @@ web:test: [90m    at processTicksAndRejections (node:internal/process/task_queu
 web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
 web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
 web:test: 
-web:test:  ✓ lib/auth/__tests__/auth-integration.test.ts (10 tests) 30ms
-web:test:  ❯ src/lib/services/__tests__/notification-service.test.ts (10 tests | 9 failed) 45ms
-web:test:    × NotificationService > sendDelistingNotification > should send success notification when all marketplaces complete 18ms
-web:test:      → expected false to be true // Object.is equality
-web:test:    × NotificationService > sendDelistingNotification > should send partial failure notification 2ms
-web:test:      → expected false to be true // Object.is equality
-web:test:    × NotificationService > sendDelistingNotification > should send complete failure notification with urgent priority 2ms
-web:test:      → expected false to be true // Object.is equality
-web:test:    × NotificationService > sendDelistingNotification > should send confirmation required notification 2ms
-web:test:      → expected false to be true // Object.is equality
-web:test:    × NotificationService > sendDelistingNotification > should handle notification preferences not found 3ms
-web:test:      → expected false to be true // Object.is equality
-web:test:    ✓ NotificationService > sendDelistingNotification > should handle notification delivery failures gracefully 2ms
-web:test:    × NotificationService > sendJobCompletionNotification > should send notification for completed job 2ms
-web:test:      → expected false to be true // Object.is equality
-web:test:    × NotificationService > sendJobCompletionNotification > should handle job not found 6ms
-web:test:      → expected 'Cannot destructure property \'data\' …' to contain 'Delisting job not found'
-web:test:    × NotificationService > Webhook Notifications > should send webhook notification successfully 4ms
-web:test:      → expected false to be true // Object.is equality
-web:test:    × NotificationService > Webhook Notifications > should handle webhook failures 4ms
-web:test:      → expected 'Cannot destructure property \'data\' …' to contain 'webhook'
 web:test: stderr | lib/auth/__tests__/auth-utils.test.ts > AuthService > signInWithGoogle > should handle unexpected errors
 web:test: Google sign in error: Error: Network error
 web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39mlib/auth/__tests__/auth-utils.test.ts:173:58
@@ -277,6 +187,27 @@ web:test:     at runTest (file:///home/optiks/dev/netpost-v2/node_modules/[4m@v
 web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
 web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
 web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
+web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should send success notification when all marketplaces complete
+web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:116:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should send partial failure notification
+web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:162:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should send complete failure notification with urgent priority
+web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:228:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
 web:test: 
 web:test: stderr | lib/auth/__tests__/auth-utils.test.ts > AuthService > resetPassword > should handle unexpected errors
 web:test: Password reset error: Error: Network error
@@ -324,6 +255,27 @@ web:test: [90m    at processTicksAndRejections (node:internal/process/task_queu
 web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
 web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
 web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should send confirmation required notification
+web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:293:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should handle notification preferences not found
+web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:305:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendDelistingNotification > should handle notification delivery failures gracefully
+web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:355:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
 web:test: stderr | lib/auth/__tests__/auth-utils.test.ts > AuthService > getCurrentUser > should return null on error
 web:test: Get user error: Error: No user found
 web:test:     at Function.getCurrentUser [90m(/home/optiks/dev/netpost-v2/apps/web/[39mlib/auth/auth-utils.ts:136:15[90m)[39m
@@ -344,6 +296,65 @@ web:test: [90m    at processTicksAndRejections (node:internal/process/task_queu
 web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
 web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
 web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendJobCompletionNotification > should send notification for completed job
+web:test: Error sending job completion notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendJobCompletionNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:410:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:422:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > sendJobCompletionNotification > should handle job not found
+web:test: Error sending job completion notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendJobCompletionNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:410:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:434:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > Webhook Notifications > should send webhook notification successfully
+web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:476:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test: stderr | src/lib/services/__tests__/notification-service.test.ts > NotificationService > Webhook Notifications > should handle webhook failures
+web:test: Error sending delisting notification: TypeError: Cannot destructure property 'data' of '(intermediate value)' as it is undefined.
+web:test:     at NotificationService.sendDelistingNotification [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/notification-service.ts:53:21[90m)[39m
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/services/__tests__/notification-service.test.ts:526:22
+web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+web:test: 
+web:test:  ✓ lib/auth/__tests__/auth-utils.test.ts (36 tests) 39ms
+web:test:  ❯ src/lib/services/__tests__/notification-service.test.ts (10 tests | 9 failed) 47ms
+web:test:    × NotificationService > sendDelistingNotification > should send success notification when all marketplaces complete 17ms
+web:test:      → expected false to be true // Object.is equality
+web:test:    × NotificationService > sendDelistingNotification > should send partial failure notification 2ms
+web:test:      → expected false to be true // Object.is equality
+web:test:    × NotificationService > sendDelistingNotification > should send complete failure notification with urgent priority 2ms
+web:test:      → expected false to be true // Object.is equality
+web:test:    × NotificationService > sendDelistingNotification > should send confirmation required notification 3ms
+web:test:      → expected false to be true // Object.is equality
+web:test:    × NotificationService > sendDelistingNotification > should handle notification preferences not found 3ms
+web:test:      → expected false to be true // Object.is equality
+web:test:    ✓ NotificationService > sendDelistingNotification > should handle notification delivery failures gracefully 3ms
+web:test:    × NotificationService > sendJobCompletionNotification > should send notification for completed job 2ms
+web:test:      → expected false to be true // Object.is equality
+web:test:    × NotificationService > sendJobCompletionNotification > should handle job not found 6ms
+web:test:      → expected 'Cannot destructure property \'data\' …' to contain 'Delisting job not found'
+web:test:    × NotificationService > Webhook Notifications > should send webhook notification successfully 3ms
+web:test:      → expected false to be true // Object.is equality
+web:test:    × NotificationService > Webhook Notifications > should handle webhook failures 3ms
+web:test:      → expected 'Cannot destructure property \'data\' …' to contain 'webhook'
+web:test:  ✓ src/lib/subscription/__tests__/beta-service-build.test.ts (4 tests) 174ms
+web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should successfully execute a delisting job with one marketplace
+web:test: Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+web:test: 
+web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should handle job not found error
+web:test: Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+web:test: 
+web:test: stdout | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should handle job not found error
+web:test: Executing delisting job: nonexistent-job
+web:test: 
 web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Welcome Email > should send welcome email with beta code
 web:test: 📧 Sending welcome email for beta subscription to John Doe (test@example.com)
 web:test: 
@@ -352,20 +363,26 @@ web:test: 📧 Sending welcome email for beta subscription to John Doe (test@exa
 web:test: 
 web:test: stderr | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Welcome Email > should handle email sending failure gracefully
 web:test: Failed to send welcome email: Error: Email service unavailable
-web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Usage Warning Email > should send usage warning with correct percentage
-web:test: 📧 Sending usage warning for inventory_items: 85/100 to Jane Smith (user@example.com)
-web:test: 
 web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/subscription/__tests__/email-integration.test.ts:58:9
 web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:155:11
-web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Usage Warning Email > should calculate usage percentage correctly
-web:test: 📧 Sending usage warning for api_calls: 750/1000 to Test User (user@example.com)
 web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:26
-web:test: 
-web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Payment Failed Email > should send payment failed notification with amount
-web:test: 📧 Sending payment failed notification for $29.99 to John Customer (customer@example.com)
 web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1897:20
 web:test:     at new Promise (<anonymous>)
 web:test:     at runWithTimeout (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1863:10)
+web:test:     at runTest (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1574:12)
+web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
+web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
+web:test: 
+web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Usage Warning Email > should send usage warning with correct percentage
+web:test: 📧 Sending usage warning for inventory_items: 85/100 to Jane Smith (user@example.com)
+web:test: 
+web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Usage Warning Email > should calculate usage percentage correctly
+web:test: 📧 Sending usage warning for api_calls: 750/1000 to Test User (user@example.com)
+web:test: 
+web:test:  ✓ src/lib/subscription/__tests__/feature-gates.test.ts (4 tests) 5ms
+web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Payment Failed Email > should send payment failed notification with amount
+web:test: 📧 Sending payment failed notification for $29.99 to John Customer (customer@example.com)
 web:test: 
 web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Subscription Change Emails > should send upgrade confirmation
 web:test: 📧 Sending subscription upgrade notification to Upgrading User (user@example.com)
@@ -376,21 +393,13 @@ web:test:
 web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Beta Feedback Email > should send beta feedback request
 web:test: 📧 Sending beta feedback request to Beta Tester (beta@example.com)
 web:test: 
-web:test:     at runTest (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1574:12)
 web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Environment Variable Handling > should use environment variables in email context
-web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
-web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
-web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
 web:test: 📧 Sending welcome email for beta subscription to Test User (test@example.com)
 web:test: 
 web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Error Handling > should handle network errors
 web:test: 📧 Sending welcome email for beta subscription to Test User (test@example.com)
 web:test: 
-web:test: 
-web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Error Handling > should handle email service configuration errors
-web:test: 📧 Sending payment failed notification for $19.99 to Test User (test@example.com)
 web:test: stderr | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Error Handling > should handle network errors
-web:test: 
 web:test: Failed to send welcome email: Error: Network timeout
 web:test:     at [90m/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/subscription/__tests__/email-integration.test.ts:270:9
 web:test:     at file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:155:11
@@ -402,6 +411,9 @@ web:test:     at runTest (file:///home/optiks/dev/netpost-v2/node_modules/[4m@v
 web:test: [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
 web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
 web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
+web:test: 
+web:test: stdout | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Error Handling > should handle email service configuration errors
+web:test: 📧 Sending payment failed notification for $19.99 to Test User (test@example.com)
 web:test: 
 web:test: stderr | src/lib/subscription/__tests__/email-integration.test.ts > Email Integration Tests > Error Handling > should handle email service configuration errors
 web:test: Failed to send payment failed email: Error: Invalid API key
@@ -416,22 +428,9 @@ web:test: [90m    at processTicksAndRejections (node:internal/process/task_queu
 web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
 web:test:     at runSuite (file:///home/optiks/dev/netpost-v2/node_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8)
 web:test: 
-web:test:  ✓ src/lib/subscription/__tests__/email-integration.test.ts (11 tests) 33ms
-web:test:  ✓ lib/auth/__tests__/auth-utils.test.ts (36 tests) 49ms
-web:test:  ✓ src/lib/subscription/__tests__/beta-service-build.test.ts (4 tests) 139ms
-web:test:  ✓ src/lib/subscription/__tests__/feature-gates.test.ts (4 tests) 5ms
-web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should successfully execute a delisting job with one marketplace
-web:test: Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
-web:test: 
-web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should handle job not found error
-web:test: Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
-web:test: 
-web:test:  ✓ src/lib/marketplaces/__tests__/adapter-types-build.test.ts (5 tests) 273ms
-web:test: stdout | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should handle job not found error
-web:test: Executing delisting job: nonexistent-job
-web:test: 
-web:test:  ✓ src/lib/subscription/__tests__/subscription-service.test.ts (4 tests) 1014ms
-web:test:    ✓ SubscriptionService > getUserSubscription > should return null when no subscription exists  1010ms
+web:test:  ✓ src/lib/subscription/__tests__/email-integration.test.ts (11 tests) 41ms
+web:test:  ✓ src/lib/marketplaces/__tests__/adapter-types-build.test.ts (5 tests) 293ms
+web:test:  ✓ src/lib/subscription/__tests__/subscription-service.test.ts (4 tests) 239ms
 web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > executeDelistingJob > should handle job not found error
 web:test: Error executing delisting job nonexistent-job: Error: Delisting job not found: nonexistent-job
 web:test:     at DelistingEngine.executeDelistingJob [90m(/home/optiks/dev/netpost-v2/apps/web/[39msrc/lib/delisting/delisting-engine.ts:61:15[90m)[39m
@@ -513,25 +512,25 @@ web:test:
 web:test: stderr | src/lib/delisting/__tests__/delisting-engine.test.ts > DelistingEngine > Audit Logging > should log successful delisting operations
 web:test: Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
 web:test: 
-web:test:  ❯ src/lib/delisting/__tests__/delisting-engine.test.ts (12 tests | 7 failed) 2231ms
-web:test:    × DelistingEngine > executeDelistingJob > should successfully execute a delisting job with one marketplace 19ms
+web:test:  ❯ src/lib/delisting/__tests__/delisting-engine.test.ts (12 tests | 7 failed) 1008ms
+web:test:    × DelistingEngine > executeDelistingJob > should successfully execute a delisting job with one marketplace 16ms
 web:test:      → mockSupabase.from(...).select(...).mockResolvedValue is not a function
-web:test:    ✓ DelistingEngine > executeDelistingJob > should handle job not found error  1162ms
-web:test:    × DelistingEngine > executeDelistingJob > should handle job requiring user confirmation 243ms
+web:test:    ✓ DelistingEngine > executeDelistingJob > should handle job not found error  445ms
+web:test:    × DelistingEngine > executeDelistingJob > should handle job requiring user confirmation 185ms
 web:test:      → expected 'Delisting job not found: job-123' to contain 'requires user confirmation'
-web:test:    × DelistingEngine > executeDelistingJob > should handle scheduled future job 570ms
+web:test:    × DelistingEngine > executeDelistingJob > should handle scheduled future job 193ms
 web:test:      → expected 'Delisting job not found: job-123' to contain 'scheduled for future'
-web:test:    × DelistingEngine > executeDelistingJob > should handle no active listings scenario 8ms
+web:test:    × DelistingEngine > executeDelistingJob > should handle no active listings scenario 6ms
 web:test:      → mockSupabase.from(...).select(...).mockResolvedValue is not a function
-web:test:    × DelistingEngine > retryFailedDelistings > should retry failed delisting jobs 89ms
+web:test:    × DelistingEngine > retryFailedDelistings > should retry failed delisting jobs 76ms
 web:test:      → expected 0 to be greater than 0
-web:test:    ✓ DelistingEngine > retryFailedDelistings > should handle no failed jobs to retry 102ms
-web:test:    ✓ DelistingEngine > processPendingJobs > should process multiple pending jobs concurrently 11ms
-web:test:    ✓ DelistingEngine > processPendingJobs > should handle job processing failures gracefully 11ms
+web:test:    ✓ DelistingEngine > retryFailedDelistings > should handle no failed jobs to retry 67ms
+web:test:    ✓ DelistingEngine > processPendingJobs > should process multiple pending jobs concurrently 3ms
+web:test:    ✓ DelistingEngine > processPendingJobs > should handle job processing failures gracefully 4ms
 web:test:    ✓ DelistingEngine > processPendingJobs > should handle no pending jobs 3ms
-web:test:    × DelistingEngine > Error Handling > should handle marketplace adapter creation failure 3ms
+web:test:    × DelistingEngine > Error Handling > should handle marketplace adapter creation failure 4ms
 web:test:      → mockSupabase.from(...).select(...).mockResolvedValue is not a function
-web:test:    × DelistingEngine > Audit Logging > should log successful delisting operations 4ms
+web:test:    × DelistingEngine > Audit Logging > should log successful delisting operations 3ms
 web:test:      → mockSupabase.from(...).select(...).mockResolvedValue is not a function
 web:test: 
 web:test: ⎯⎯⎯⎯⎯⎯ Failed Tests 16 ⎯⎯⎯⎯⎯⎯⎯
@@ -796,8 +795,8 @@ web:test:
 web:test: 
 web:test:  Test Files  2 failed | 8 passed (10)
 web:test:       Tests  16 failed | 92 passed (108)
-web:test:    Start at  14:53:36
-web:test:    Duration  3.94s (transform 1.17s, setup 955ms, collect 2.33s, tests 3.83s, environment 8.14s, prepare 1.52s)
+web:test:    Start at  21:36:26
+web:test:    Duration  2.72s (transform 1.18s, setup 979ms, collect 2.07s, tests 1.87s, environment 8.59s, prepare 1.68s)
 web:test: 
 web:test: npm error Lifecycle script `test` failed with error:
 web:test: npm error code 1
@@ -811,7 +810,7 @@ web#test: command (/home/optiks/dev/netpost-v2/apps/web) /home/optiks/.nvm/versi
 
  Tasks:    4 successful, 5 total
 Cached:    4 cached, 5 total
-  Time:    4.61s 
+  Time:    3.382s 
 Failed:    web#test
 
  ERROR  run failed: command  exited (1)

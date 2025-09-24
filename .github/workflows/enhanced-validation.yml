@@ -1,0 +1,146 @@
+# Enhanced Validation with GitHub Apps Integration
+name: Enhanced Validation Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      skip_e2e:
+        description: 'Skip E2E tests'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  enhanced-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    permissions:
+      contents: read
+      security-events: write
+      pull-requests: write
+
+    steps:
+      - name: 📦 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📋 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: 📥 Install dependencies
+        run: |
+          npm ci
+          npx playwright install --with-deps
+
+      - name: 🔍 Run enhanced validation
+        run: npm run validate:enhanced
+        env:
+          NODE_ENV: production
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SKIP_E2E: ${{ inputs.skip_e2e }}
+
+      - name: 📊 Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        if: always()
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          flags: enhanced-validation
+          name: netpost-enhanced-validation
+
+      - name: 📋 Upload enhanced deployment report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: enhanced-deployment-report
+          path: |
+            enhanced-deployment-report.json
+            coverage/
+            playwright-report/
+          retention-days: 30
+
+      - name: 💬 Comment PR with enhanced results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            try {
+              const report = JSON.parse(fs.readFileSync('enhanced-deployment-report.json', 'utf8'));
+              const success = Object.values(report.results).every(r => r === true);
+
+              const resultsEmoji = {
+                typescript: report.results.typescript ? '✅' : '❌',
+                linting: report.results.linting ? '✅' : '❌',
+                security: report.results.security ? '✅' : '❌',
+                tests: report.results.tests ? '✅' : '❌',
+                coverage: report.results.coverage ? '✅' : '❌',
+                build: report.results.build ? '✅' : '❌',
+                e2e: report.results.e2e ? '✅' : '❌',
+                bundle: report.results.bundle ? '✅' : '❌'
+              };
+
+              let coverageInfo = '';
+              if (report.coverage && report.coverage.total) {
+                const { lines, functions, branches, statements } = report.coverage.total;
+                coverageInfo = `
+              ### 📊 Coverage Report
+              - **Lines**: ${lines.pct}%
+              - **Functions**: ${functions.pct}%
+              - **Branches**: ${branches.pct}%
+              - **Statements**: ${statements.pct}%`;
+              }
+
+              const comment = `## 🚀 Enhanced Pre-Deployment Validation Results
+
+              **Status:** ${success ? '✅ ALL CHECKS PASSED' : '❌ VALIDATION FAILED'}
+              **Duration:** ${report.duration}
+              **Timestamp:** ${report.timestamp}
+
+              ### 🔍 Detailed Results:
+              - ${resultsEmoji.typescript} **TypeScript** - Type checking
+              - ${resultsEmoji.linting} **Linting** - Code quality
+              - ${resultsEmoji.security} **Security** - Vulnerability scan
+              - ${resultsEmoji.tests} **Tests** - Unit & integration
+              - ${resultsEmoji.coverage} **Coverage** - Test coverage
+              - ${resultsEmoji.build} **Build** - Production build
+              - ${resultsEmoji.e2e} **E2E** - End-to-end tests
+              - ${resultsEmoji.bundle} **Bundle** - Size analysis
+              ${coverageInfo}
+
+              ### 🔗 GitHub Apps Integration:
+              - ${report.github_integration.codecov_ready ? '✅' : '❌'} **Codecov** ready
+              - ${report.github_integration.codeql_ready ? '✅' : '❌'} **CodeQL** ready
+              - ${report.github_integration.dependabot_ready ? '✅' : '❌'} **Dependabot** ready
+              - ${report.github_integration.claude_integration_ready ? '✅' : '❌'} **Claude Code** integration ready
+              - ${report.github_integration.claude_workflow_ready ? '✅' : '❌'} **Claude Workflow** active
+
+              ${success ?
+                '🎉 **Ready for deployment!** All enhanced validations passed with GitHub apps integration.' :
+                '⚠️ **Deployment blocked.** Please fix the failed validations before merging.'
+              }
+
+              ---
+              *Enhanced validation powered by Codecov, CodeQL, Dependabot, and Claude Code*
+
+              💡 **Tip:** Mention \`@claude\` in comments for AI-powered assistance with fixes and reviews!`;
+
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            } catch (error) {
+              console.log('Could not read enhanced deployment report:', error.message);
+            }

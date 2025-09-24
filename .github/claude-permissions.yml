@@ -1,0 +1,104 @@
+# Claude Code GitHub App Permissions Configuration
+# This file defines the required permissions for Claude Code GitHub integration
+
+app_permissions:
+  # Core repository permissions
+  contents: write         # Read/write repository contents
+  pull_requests: write    # Create/update pull requests and comments
+  issues: write          # Create/update issues and comments
+  metadata: read         # Read repository metadata
+
+  # Workflow and validation permissions
+  actions: read          # Read GitHub Actions workflow runs
+  checks: read           # Read check run status
+  security_events: write # Write security analysis results
+
+  # Advanced integration permissions
+  deployments: read      # Read deployment status
+  environments: read     # Read environment configuration
+  pages: read           # Read GitHub Pages configuration
+
+# Repository-specific settings
+repository_config:
+  auto_merge_enabled: false
+  require_status_checks: true
+  branch_protection:
+    enforce_admins: false
+    required_status_checks:
+      strict: true
+      contexts:
+        - "Enhanced Validation Pipeline"
+        - "codecov/project"
+        - "CodeQL"
+
+# Integration settings
+integration:
+  webhooks:
+    events:
+      - "issues"
+      - "issue_comment"
+      - "pull_request"
+      - "pull_request_review_comment"
+      - "push"
+      - "pull_request_review"
+
+  rate_limits:
+    api_calls_per_hour: 5000
+    concurrent_operations: 10
+
+# Security settings
+security:
+  allowed_file_patterns:
+    - "**/*.ts"
+    - "**/*.tsx"
+    - "**/*.js"
+    - "**/*.jsx"
+    - "**/*.json"
+    - "**/*.md"
+    - "**/*.yml"
+    - "**/*.yaml"
+    - "**/*.css"
+    - "**/*.scss"
+
+  blocked_file_patterns:
+    - ".env*"
+    - "**/*.key"
+    - "**/*.pem"
+    - "node_modules/**"
+    - ".git/**"
+    - "**/*secret*"
+    - "**/*password*"
+
+  max_file_size: "1MB"
+  max_files_per_operation: 50
+
+# Validation pipeline integration
+validation:
+  trigger_on_mention: true
+  auto_validate_prs: true
+  integration_with:
+    codecov:
+      enabled: true
+      coverage_threshold: 80
+    codeql:
+      enabled: true
+      languages: ["javascript", "typescript"]
+    dependabot:
+      enabled: true
+      auto_merge_patch: true
+      auto_merge_minor: false
+
+# Response templates and behavior
+behavior:
+  response_style: "professional"
+  include_explanations: true
+  suggest_improvements: true
+  auto_fix_simple_issues: false  # Requires explicit user approval
+  create_follow_up_issues: true
+
+# Monitoring and logging
+monitoring:
+  log_interactions: true
+  track_performance: true
+  alert_on_failures: true
+  usage_analytics: true

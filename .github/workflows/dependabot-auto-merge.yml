@@ -1,0 +1,63 @@
+# Auto-merge Dependabot PRs after validation
+name: Dependabot Auto-Merge
+
+on:
+  pull_request_target:
+    types: [labeled, unlabeled, synchronize, opened, edited, ready_for_review]
+
+jobs:
+  dependabot:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+
+    permissions:
+      contents: write
+      pull-requests: write
+      checks: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run validation pipeline
+        run: npm run validate:pre-deploy
+        env:
+          NODE_ENV: production
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+      - name: Check if PR is ready for auto-merge
+        id: check-merge
+        run: |
+          # Check if this is a minor/patch update
+          if [[ "${{ github.event.pull_request.title }}" =~ ^deps.*minor|patch ]]; then
+            echo "auto_merge=true" >> $GITHUB_OUTPUT
+          else
+            echo "auto_merge=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Enable auto-merge for minor/patch updates
+        if: steps.check-merge.outputs.auto_merge == 'true'
+        run: |
+          gh pr merge --auto --squash "${{ github.event.pull_request.number }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add review required label for major updates
+        if: steps.check-merge.outputs.auto_merge == 'false'
+        run: |
+          gh pr edit "${{ github.event.pull_request.number }}" --add-label "review-required"
+          gh pr comment "${{ github.event.pull_request.number }}" --body "🔍 This is a major dependency update that requires manual review before merging."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
