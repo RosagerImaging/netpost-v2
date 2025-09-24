@@ -2,7 +2,7 @@
   "mcpServers": {
     "vercel": {
       "type": "http",
-      "url": "https://mcp.vercel.com"
+      "url": "https://mcp.vercel.com/rosager/v0-netpost-v2"
     },
     "shadcn": {
       "command": "npx",
@@ -42,6 +42,15 @@
         "@modelcontextprotocol/server-sequential-thinking"
       ],
       "env": {}
+    },
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--access-token",
+        "sbp_218818a7c905333d1f5dacdef1a319f68620db49"
+      ]
     }
   }
 }

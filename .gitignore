@@ -1,6 +1,9 @@
 # Ignore private secrets folder
 private-secrets/
 
+# MCP Servers w/ Access Tokens
+.mcp.json
+
 # Dependencies
 node_modules/
 .pnp
