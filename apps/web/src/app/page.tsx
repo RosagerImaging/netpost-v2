@@ -1,5 +1,6 @@
 "use client";
 
+// Test Vercel deployment fix
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
