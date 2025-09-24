@@ -5,8 +5,8 @@ const nextConfig: NextConfig = {
   // Optimize for Vercel deployment with monorepo
   outputFileTracingRoot: path.join(__dirname, "../../"),
 
-  // Essential packages to transpile for monorepo
-  transpilePackages: ["@netpost/ui", "@netpost/shared-types"],
+  // Essential packages to transpile for monorepo - temporarily disabled
+  // transpilePackages: ["@netpost/ui", "@netpost/shared-types"],
 
   // Disable telemetry
   env: {
@@ -32,15 +32,21 @@ const nextConfig: NextConfig = {
   // Disable strict mode to avoid React version conflicts
   reactStrictMode: false,
 
+  // Use standalone output to avoid static generation issues
+  output: "standalone",
+
+  // Skip static optimization for error pages to avoid Html import issue
+  skipTrailingSlashRedirect: true,
+
+  // Disable static exports completely
+  trailingSlash: false,
+
   // Experimental features for performance
   experimental: {
     optimizePackageImports: ["@radix-ui/react-select", "@radix-ui/react-dialog", "@radix-ui/react-checkbox", "@radix-ui/react-label"],
     // Reduce bundle size
     optimizeCss: true,
   },
-
-  // Optimized for Vercel deployment
-  trailingSlash: false,
 };
 
 export default nextConfig;

@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "build:packages": "turbo build --filter=@netpost/config --filter=@netpost/shared-types --filter=@netpost/ui",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "test": "turbo test",

@@ -5,43 +5,25 @@
 • Packages in scope: @netpost/config, @netpost/shared-types, @netpost/ui, mobile, web
 • Running test in 5 packages
 • Remote caching disabled
-mobile:test: cache hit, replaying logs 32d170584da2988d
-mobile:test: 
-mobile:test: > mobile@1.0.0 test
-mobile:test: > jest
-mobile:test: 
-mobile:test: PASS src/services/__tests__/sourcingService.test.ts
-mobile:test: PASS __tests__/App.test.tsx
-mobile:test: 
-mobile:test: Test Suites: 2 passed, 2 total
-mobile:test: Tests:       4 passed, 4 total
-mobile:test: Snapshots:   0 total
-mobile:test: Time:        1.238 s
-mobile:test: Ran all test suites.
-@netpost/config:build: cache hit, replaying logs d51abca7672a6717
-@netpost/config:build: 
-@netpost/config:build: > @netpost/config@0.1.0 build
-@netpost/config:build: > tsup
-@netpost/config:build: 
-@netpost/config:build: CLI Building entry: src/index.ts
-@netpost/config:build: CLI Using tsconfig: tsconfig.json
-@netpost/config:build: CLI tsup v8.5.0
-@netpost/config:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/config/tsup.config.ts
-@netpost/config:build: CLI Target: es2020
-@netpost/config:build: CLI Cleaning output folder
-@netpost/config:build: CJS Build start
-@netpost/config:build: ESM Build start
-@netpost/config:build: CJS dist/index.cjs     6.05 KB
-@netpost/config:build: CJS dist/index.cjs.map 8.50 KB
-@netpost/config:build: CJS ⚡️ Build success in 18ms
-@netpost/config:build: ESM dist/index.js     4.84 KB
-@netpost/config:build: ESM dist/index.js.map 8.14 KB
-@netpost/config:build: ESM ⚡️ Build success in 19ms
-@netpost/config:build: DTS Build start
-@netpost/config:build: DTS ⚡️ Build success in 1976ms
-@netpost/config:build: DTS dist/index.d.cts 2.86 KB
-@netpost/config:build: DTS dist/index.d.ts  2.86 KB
-@netpost/shared-types:build: cache hit, replaying logs a64070cbc9d70059
+@netpost/ui:build: cache hit, replaying logs 8b352361b89eecc0
+@netpost/ui:build: 
+@netpost/ui:build: > @netpost/ui@0.1.0 build
+@netpost/ui:build: > tsup
+@netpost/ui:build: 
+@netpost/ui:build: CLI Building entry: src/index.ts
+@netpost/ui:build: CLI Using tsconfig: tsconfig.json
+@netpost/ui:build: CLI tsup v8.5.0
+@netpost/ui:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/ui/tsup.config.ts
+@netpost/ui:build: CLI Target: es2020
+@netpost/ui:build: CLI Cleaning output folder
+@netpost/ui:build: ESM Build start
+@netpost/ui:build: ESM dist/index.js     24.33 KB
+@netpost/ui:build: ESM dist/index.js.map 40.62 KB
+@netpost/ui:build: ESM ⚡️ Build success in 25ms
+@netpost/ui:build: DTS Build start
+@netpost/ui:build: DTS ⚡️ Build success in 2984ms
+@netpost/ui:build: DTS dist/index.d.ts 7.99 KB
+@netpost/shared-types:build: cache hit, replaying logs 0e1da39c6dbcfd44
 @netpost/shared-types:build: 
 @netpost/shared-types:build: > @netpost/shared-types@0.1.0 build
 @netpost/shared-types:build: > tsup
@@ -54,40 +36,45 @@ mobile:test: Ran all test suites.
 @netpost/shared-types:build: CLI Cleaning output folder
 @netpost/shared-types:build: CJS Build start
 @netpost/shared-types:build: ESM Build start
-@netpost/shared-types:build: CJS dist/index.cjs     6.45 KB
-@netpost/shared-types:build: CJS dist/index.cjs.map 28.47 KB
-@netpost/shared-types:build: CJS ⚡️ Build success in 26ms
 @netpost/shared-types:build: ESM dist/index.js     4.74 KB
 @netpost/shared-types:build: ESM dist/index.js.map 24.53 KB
-@netpost/shared-types:build: ESM ⚡️ Build success in 26ms
+@netpost/shared-types:build: ESM ⚡️ Build success in 19ms
+@netpost/shared-types:build: CJS dist/index.cjs     6.45 KB
+@netpost/shared-types:build: CJS dist/index.cjs.map 28.47 KB
+@netpost/shared-types:build: CJS ⚡️ Build success in 20ms
 @netpost/shared-types:build: DTS Build start
-@netpost/shared-types:build: DTS ⚡️ Build success in 2492ms
+@netpost/shared-types:build: DTS ⚡️ Build success in 2279ms
 @netpost/shared-types:build: DTS dist/index.d.cts 66.56 KB
 @netpost/shared-types:build: DTS dist/index.d.ts  66.56 KB
-@netpost/ui:build: cache hit, replaying logs 769f52bfd7da1295
-@netpost/ui:build: 
-@netpost/ui:build: > @netpost/ui@0.1.0 build
-@netpost/ui:build: > tsup
-@netpost/ui:build: 
-@netpost/ui:build: CLI Building entry: src/index.ts
-@netpost/ui:build: CLI Using tsconfig: tsconfig.json
-@netpost/ui:build: CLI tsup v8.5.0
-@netpost/ui:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/ui/tsup.config.ts
-@netpost/ui:build: CLI Target: es2020
-@netpost/ui:build: CLI Cleaning output folder
-@netpost/ui:build: CJS Build start
-@netpost/ui:build: ESM Build start
-@netpost/ui:build: CJS dist/index.cjs     29.17 KB
-@netpost/ui:build: CJS dist/index.cjs.map 41.83 KB
-@netpost/ui:build: CJS ⚡️ Build success in 33ms
-@netpost/ui:build: ESM dist/index.js     24.33 KB
-@netpost/ui:build: ESM dist/index.js.map 40.62 KB
-@netpost/ui:build: ESM ⚡️ Build success in 34ms
-@netpost/ui:build: DTS Build start
-@netpost/ui:build: DTS ⚡️ Build success in 3058ms
-@netpost/ui:build: DTS dist/index.d.cts 7.99 KB
-@netpost/ui:build: DTS dist/index.d.ts  7.99 KB
-web:test: cache miss, executing 681ff64aa5b06f82
+mobile:test: cache miss, executing a4b0e842d62b908a
+@netpost/config:build: cache hit, replaying logs 600af09f85b5ec9c
+@netpost/config:build: 
+@netpost/config:build: > @netpost/config@0.1.0 build
+@netpost/config:build: > tsup
+@netpost/config:build: 
+@netpost/config:build: CLI Building entry: src/index.ts
+@netpost/config:build: CLI Using tsconfig: tsconfig.json
+@netpost/config:build: CLI tsup v8.5.0
+@netpost/config:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/config/tsup.config.ts
+@netpost/config:build: CLI Target: es2020
+@netpost/config:build: CLI Cleaning output folder
+@netpost/config:build: CJS Build start
+@netpost/config:build: ESM Build start
+@netpost/config:build: ESM dist/index.js     4.84 KB
+@netpost/config:build: ESM dist/index.js.map 8.14 KB
+@netpost/config:build: ESM ⚡️ Build success in 20ms
+@netpost/config:build: CJS dist/index.cjs     6.05 KB
+@netpost/config:build: CJS dist/index.cjs.map 8.50 KB
+@netpost/config:build: CJS ⚡️ Build success in 20ms
+@netpost/config:build: DTS Build start
+@netpost/config:build: DTS ⚡️ Build success in 1937ms
+@netpost/config:build: DTS dist/index.d.cts 2.86 KB
+@netpost/config:build: DTS dist/index.d.ts  2.86 KB
+web:test: cache miss, executing 9eaee721f1e329a2
+mobile:test: 
+mobile:test: > mobile@1.0.0 test
+mobile:test: > jest
+mobile:test: 
 web:test: 
 web:test: > web@0.1.0 test
 web:test: > vitest
@@ -110,9 +97,9 @@ web:test: npm error command sh -c vitest
 web:test: ERROR: command finished with error: command (/home/optiks/dev/netpost-v2/apps/web) /home/optiks/.nvm/versions/node/v22.18.0/bin/npm run test exited (1)
 web#test: command (/home/optiks/dev/netpost-v2/apps/web) /home/optiks/.nvm/versions/node/v22.18.0/bin/npm run test exited (1)
 
- Tasks:    4 successful, 5 total
-Cached:    4 cached, 5 total
-  Time:    575ms 
+ Tasks:    3 successful, 5 total
+Cached:    3 cached, 5 total
+  Time:    618ms 
 Failed:    web#test
 
  ERROR  run failed: command  exited (1)
