@@ -60,7 +60,13 @@ describe('AuthService', () => {
     it('should return formatted error for invalid credentials', async () => {
       mockSupabaseAuth.signInWithPassword.mockResolvedValue({
         data: null,
-        error: { message: 'Invalid login credentials' },
+        error: {
+          message: 'Invalid login credentials',
+          code: 'invalid_credentials',
+          status: 400,
+          __isAuthError: true,
+          name: 'AuthError'
+        },
       })
 
       const result = await AuthService.signIn('test@example.com', 'wrongpassword')
@@ -97,7 +103,13 @@ describe('AuthService', () => {
     it('should return formatted error for weak password', async () => {
       mockSupabaseAuth.signUp.mockResolvedValue({
         data: null,
-        error: { message: 'Password should be at least 6 characters' },
+        error: {
+          message: 'Password should be at least 6 characters',
+          code: 'weak_password',
+          status: 422,
+          __isAuthError: true,
+          name: 'AuthError'
+        },
       })
 
       const result = await AuthService.signUp('test@example.com', '123')
@@ -124,7 +136,13 @@ describe('AuthService', () => {
 
     it('should throw formatted error on sign out failure', async () => {
       mockSupabaseAuth.signOut.mockResolvedValue({
-        error: { message: 'Sign out failed' },
+        error: {
+          message: 'Sign out failed',
+          code: 'signout_failed',
+          status: 500,
+          __isAuthError: true,
+          name: 'AuthError'
+        },
       })
 
       await expect(AuthService.signOut()).rejects.toThrow('Sign out failed')
@@ -161,7 +179,13 @@ describe('AuthService', () => {
     it('should return formatted error on OAuth failure', async () => {
       mockSupabaseAuth.signInWithOAuth.mockResolvedValue({
         data: null,
-        error: { message: 'OAuth provider error' },
+        error: {
+          message: 'OAuth provider error',
+          code: 'oauth_error',
+          status: 400,
+          __isAuthError: true,
+          name: 'AuthError'
+        },
       })
 
       const result = await AuthService.signInWithGoogle()
@@ -195,7 +219,13 @@ describe('AuthService', () => {
 
     it('should return formatted error on failure', async () => {
       mockSupabaseAuth.resetPasswordForEmail.mockResolvedValue({
-        error: { message: 'Invalid email' },
+        error: {
+          message: 'Invalid email',
+          code: 'invalid_email',
+          status: 422,
+          __isAuthError: true,
+          name: 'AuthError'
+        },
       })
 
       const result = await AuthService.resetPassword('invalid-email')
@@ -226,7 +256,13 @@ describe('AuthService', () => {
 
     it('should return formatted error on failure', async () => {
       mockSupabaseAuth.updateUser.mockResolvedValue({
-        error: { message: 'Password should be at least 6 characters' },
+        error: {
+          message: 'Password should be at least 6 characters',
+          code: 'weak_password',
+          status: 422,
+          __isAuthError: true,
+          name: 'AuthError'
+        },
       })
 
       const result = await AuthService.updatePassword('123')
@@ -259,7 +295,13 @@ describe('AuthService', () => {
     it('should return null on error', async () => {
       mockSupabaseAuth.getSession.mockResolvedValue({
         data: { session: null },
-        error: { message: 'No active session' },
+        error: {
+          message: 'No active session',
+          code: 'session_not_found',
+          status: 401,
+          __isAuthError: true,
+          name: 'AuthError'
+        },
       })
 
       const result = await AuthService.getCurrentSession()
@@ -278,7 +320,14 @@ describe('AuthService', () => {
 
   describe('getCurrentUser', () => {
     it('should return current user', async () => {
-      const mockUser = { id: '123', email: 'test@example.com' }
+      const mockUser = {
+        id: '123',
+        email: 'test@example.com',
+        app_metadata: {},
+        user_metadata: {},
+        aud: 'authenticated',
+        created_at: '2023-01-01T00:00:00.000Z'
+      }
       mockSupabaseAuth.getUser.mockResolvedValue({
         data: { user: mockUser },
         error: null,
@@ -292,7 +341,13 @@ describe('AuthService', () => {
     it('should return null on error', async () => {
       mockSupabaseAuth.getUser.mockResolvedValue({
         data: { user: null },
-        error: { message: 'No user found' },
+        error: {
+          message: 'No user found',
+          code: 'user_not_found',
+          status: 404,
+          __isAuthError: true,
+          name: 'AuthError'
+        },
       })
 
       const result = await AuthService.getCurrentUser()
@@ -388,7 +443,13 @@ describe('AuthService', () => {
       // Test through signIn method
       mockSupabaseAuth.signInWithPassword.mockResolvedValue({
         data: null,
-        error: { message: 'Email not confirmed' },
+        error: {
+          message: 'Email not confirmed',
+          code: 'email_not_confirmed',
+          status: 400,
+          __isAuthError: true,
+          name: 'AuthError'
+        },
       })
 
       const result = await AuthService.signIn('test@example.com', 'password')
@@ -398,7 +459,13 @@ describe('AuthService', () => {
     it('should format user already registered error', async () => {
       mockSupabaseAuth.signUp.mockResolvedValue({
         data: null,
-        error: { message: 'User already registered' },
+        error: {
+          message: 'User already registered',
+          code: 'user_already_registered',
+          status: 422,
+          __isAuthError: true,
+          name: 'AuthError'
+        },
       })
 
       const result = await AuthService.signUp('test@example.com', 'password')
@@ -408,7 +475,13 @@ describe('AuthService', () => {
     it('should return generic message for unknown errors', async () => {
       mockSupabaseAuth.signInWithPassword.mockResolvedValue({
         data: null,
-        error: { message: 'Unknown error' },
+        error: {
+          message: 'Unknown error',
+          code: 'unknown_error',
+          status: 500,
+          __isAuthError: true,
+          name: 'AuthError'
+        },
       })
 
       const result = await AuthService.signIn('test@example.com', 'password')

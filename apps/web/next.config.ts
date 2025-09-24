@@ -29,17 +29,14 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
 
+  // Disable strict mode to avoid React version conflicts
+  reactStrictMode: false,
+
   // Experimental features for performance
   experimental: {
     optimizePackageImports: ["@radix-ui/react-select", "@radix-ui/react-dialog", "@radix-ui/react-checkbox", "@radix-ui/react-label"],
     // Reduce bundle size
     optimizeCss: true,
-    outputFileTracingExcludes: {
-      '*': [
-        'node_modules/@swc/core*',
-        'node_modules/@next/swc*',
-      ],
-    },
   },
 };
 
