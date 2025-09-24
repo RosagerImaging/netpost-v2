@@ -5,7 +5,7 @@
   "outputDirectory": "apps/web/.next",
   "installCommand": "npm install --legacy-peer-deps",
   "framework": "nextjs",
-  "ignoreCommand": "git diff --quiet '^HEAD' HEAD -- apps/web/ packages/ || exit 1",
+  "ignoreCommand": "bash -c '[[ $VERCEL_ENV == \"production\" ]] && exit 0; git diff --quiet HEAD~1 HEAD -- apps/web/ packages/ && exit 1 || exit 0'",
   "env": {
     "TURBO_TELEMETRY_DISABLED": "1",
     "NEXT_TELEMETRY_DISABLED": "1",
