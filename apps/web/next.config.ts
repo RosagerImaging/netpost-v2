@@ -35,11 +35,8 @@ const nextConfig: NextConfig = {
   // CRITICAL: Use standalone output with server-only rendering
   output: "standalone",
 
-  // CRITICAL: Completely disable static optimization
-  generateStaticParams: false,
-
-  // CRITICAL: Force dynamic rendering for all pages
-  dynamic: 'force-dynamic',
+  // Note: generateStaticParams and dynamic are page-level configs, not global configs
+  // These should be set in individual page files, not next.config.ts
 
   // Skip trailing slash redirect
   skipTrailingSlashRedirect: true,
@@ -89,24 +86,20 @@ const nextConfig: NextConfig = {
 
   // Experimental features optimized for dynamic rendering
   experimental: {
-    // Disable all static optimizations
-    staticWorkerRequestDeduping: false,
-
-    // Force server-side rendering
-    serverActions: true,
+    // Server Actions configuration (object form for Next.js 15+)
+    serverActions: {
+      allowedOrigins: ['localhost:3000', '*.vercel.app'],
+    },
 
     // Optimize package imports
     optimizePackageImports: ["@radix-ui/react-select", "@radix-ui/react-dialog", "@radix-ui/react-checkbox", "@radix-ui/react-label"],
 
-    // CRITICAL: Disable static generation bailout
-    staticGenerationBailout: 'skip',
-
     // Force dynamic imports
     esmExternals: true,
-
-    // Disable prerendering completely
-    serverComponentsExternalPackages: [],
   },
+
+  // Move serverComponentsExternalPackages to top-level (Next.js 15+ deprecation fix)
+  serverExternalPackages: [],
 };
 
 export default nextConfig;
