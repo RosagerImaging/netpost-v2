@@ -1,6 +1,6 @@
 "use client";
 
-// Test Vercel deployment fix - no ignore command, should deploy
+// Testing final deployment after monorepo package build fixes
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
