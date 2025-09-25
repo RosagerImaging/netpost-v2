@@ -9,12 +9,10 @@
  * Usage: node scripts/dynamic-build.js
  */
 
-import { execSync } from 'child_process';
-import { existsSync, rmSync } from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+const { execSync } = require('child_process');
+const { existsSync, rmSync } = require('fs');
+const path = require('path');
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
 const webAppPath = path.join(projectRoot, 'apps', 'web');
 
@@ -51,7 +49,7 @@ function executeCommand(command, cwd = projectRoot, description = '') {
   }
 }
 
-async function main() {
+function main() {
   try {
     // Step 1: Clean previous builds
     console.log('\n🧹 Cleaning previous builds...');
@@ -132,7 +130,9 @@ process.on('SIGTERM', () => {
 });
 
 // Run the main function
-main().catch((error) => {
+try {
+  main();
+} catch (error) {
   console.error('💥 Unhandled error in build process:', error);
   process.exit(1);
-});
+}
