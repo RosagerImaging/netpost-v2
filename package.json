@@ -5,7 +5,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "turbo build",
+    "build": "npm run build:packages && npm run build:dynamic",
     "build:packages": "turbo build --filter=@netpost/config --filter=@netpost/shared-types --filter=@netpost/ui",
     "build:dynamic": "node scripts/dynamic-build.js",
     "build:serverless": "node scripts/serverless-build.js",
