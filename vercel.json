@@ -4,7 +4,7 @@
   "buildCommand": "cd /vercel/path0 && npm run build:packages && npm run build:dynamic",
   "outputDirectory": "apps/web/.next",
   "installCommand": "npm install --include=dev --legacy-peer-deps",
-  "framework": "nextjs",
+  "framework": null,
   "env": {
     "TURBO_TELEMETRY_DISABLED": "1",
     "NEXT_TELEMETRY_DISABLED": "1",
