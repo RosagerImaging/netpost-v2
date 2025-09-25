@@ -5,8 +5,8 @@ const nextConfig: NextConfig = {
   // Optimize for Vercel deployment with monorepo
   outputFileTracingRoot: path.join(__dirname, "../../"),
 
-  // Essential packages to transpile for monorepo - temporarily disabled
-  // transpilePackages: ["@netpost/ui", "@netpost/shared-types"],
+  // Essential packages to transpile for monorepo
+  transpilePackages: ["@netpost/ui", "@netpost/shared-types", "@netpost/config"],
 
   // Disable telemetry
   env: {
