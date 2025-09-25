@@ -5,6 +5,24 @@
 • Packages in scope: @netpost/config, @netpost/shared-types, @netpost/ui, mobile, web
 • Running test in 5 packages
 • Remote caching disabled
+@netpost/ui:build: cache hit, replaying logs 8b352361b89eecc0
+@netpost/ui:build: 
+@netpost/ui:build: > @netpost/ui@0.1.0 build
+@netpost/ui:build: > tsup
+@netpost/ui:build: 
+@netpost/ui:build: CLI Building entry: src/index.ts
+@netpost/ui:build: CLI Using tsconfig: tsconfig.json
+@netpost/ui:build: CLI tsup v8.5.0
+@netpost/ui:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/ui/tsup.config.ts
+@netpost/ui:build: CLI Target: es2020
+@netpost/ui:build: CLI Cleaning output folder
+@netpost/ui:build: ESM Build start
+@netpost/ui:build: ESM dist/index.js     24.33 KB
+@netpost/ui:build: ESM dist/index.js.map 40.62 KB
+@netpost/ui:build: ESM ⚡️ Build success in 25ms
+@netpost/ui:build: DTS Build start
+@netpost/ui:build: DTS ⚡️ Build success in 2984ms
+@netpost/ui:build: DTS dist/index.d.ts 7.99 KB
 @netpost/shared-types:build: cache hit, replaying logs 0e1da39c6dbcfd44
 @netpost/shared-types:build: 
 @netpost/shared-types:build: > @netpost/shared-types@0.1.0 build
@@ -28,25 +46,6 @@
 @netpost/shared-types:build: DTS ⚡️ Build success in 2279ms
 @netpost/shared-types:build: DTS dist/index.d.cts 66.56 KB
 @netpost/shared-types:build: DTS dist/index.d.ts  66.56 KB
-mobile:test: cache miss, executing 237638ed7445a792
-@netpost/ui:build: cache hit, replaying logs 8b352361b89eecc0
-@netpost/ui:build: 
-@netpost/ui:build: > @netpost/ui@0.1.0 build
-@netpost/ui:build: > tsup
-@netpost/ui:build: 
-@netpost/ui:build: CLI Building entry: src/index.ts
-@netpost/ui:build: CLI Using tsconfig: tsconfig.json
-@netpost/ui:build: CLI tsup v8.5.0
-@netpost/ui:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/ui/tsup.config.ts
-@netpost/ui:build: CLI Target: es2020
-@netpost/ui:build: CLI Cleaning output folder
-@netpost/ui:build: ESM Build start
-@netpost/ui:build: ESM dist/index.js     24.33 KB
-@netpost/ui:build: ESM dist/index.js.map 40.62 KB
-@netpost/ui:build: ESM ⚡️ Build success in 25ms
-@netpost/ui:build: DTS Build start
-@netpost/ui:build: DTS ⚡️ Build success in 2984ms
-@netpost/ui:build: DTS dist/index.d.ts 7.99 KB
 @netpost/config:build: cache hit, replaying logs 600af09f85b5ec9c
 @netpost/config:build: 
 @netpost/config:build: > @netpost/config@0.1.0 build
@@ -70,7 +69,8 @@ mobile:test: cache miss, executing 237638ed7445a792
 @netpost/config:build: DTS ⚡️ Build success in 1937ms
 @netpost/config:build: DTS dist/index.d.cts 2.86 KB
 @netpost/config:build: DTS dist/index.d.ts  2.86 KB
-web:test: cache miss, executing a1a954300cd1a56f
+mobile:test: cache miss, executing 237638ed7445a792
+web:test: cache miss, executing ee8c152313a394c8
 mobile:test: 
 mobile:test: > mobile@1.0.0 test
 mobile:test: > jest
@@ -99,7 +99,7 @@ web#test: command (/home/optiks/dev/netpost-v2/apps/web) /home/optiks/.nvm/versi
 
  Tasks:    3 successful, 5 total
 Cached:    3 cached, 5 total
-  Time:    608ms 
+  Time:    655ms 
 Failed:    web#test
 
  ERROR  run failed: command  exited (1)
