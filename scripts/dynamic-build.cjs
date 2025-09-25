@@ -34,6 +34,9 @@ const buildEnv = {
 
 function executeCommand(command, cwd = projectRoot, description = '') {
   console.log(`\n⏳ ${description || `Executing: ${command}`}`);
+  console.log(`📍 Working directory: ${cwd}`);
+  console.log(`🔧 Environment: NODE_ENV=${buildEnv.NODE_ENV}, FORCE_DYNAMIC=${buildEnv.FORCE_DYNAMIC}`);
+
   try {
     const result = execSync(command, {
       cwd,
@@ -45,12 +48,34 @@ function executeCommand(command, cwd = projectRoot, description = '') {
     return result;
   } catch (error) {
     console.error(`❌ ${description || 'Command'} failed:`, error.message);
+    console.error(`❌ Exit code: ${error.status || 'unknown'}`);
+    console.error(`❌ Signal: ${error.signal || 'none'}`);
+    console.error(`❌ Full error:`, error);
     process.exit(1);
   }
 }
 
 function main() {
   try {
+    // Environment diagnostics
+    console.log('\n🔍 Environment Diagnostics:');
+    console.log(`   Node version: ${process.version}`);
+    console.log(`   Platform: ${process.platform}`);
+    console.log(`   Architecture: ${process.arch}`);
+    console.log(`   CWD: ${process.cwd()}`);
+    console.log(`   Project exists: ${existsSync(projectRoot)}`);
+    console.log(`   Web app exists: ${existsSync(webAppPath)}`);
+    console.log(`   Node modules exist: ${existsSync(path.join(projectRoot, 'node_modules'))}`);
+
+    // Check if this is Vercel build environment
+    if (process.env.VERCEL) {
+      console.log('   🟢 Running in Vercel build environment');
+      console.log(`   Vercel region: ${process.env.VERCEL_REGION || 'unknown'}`);
+      console.log(`   Build path: ${process.env.VERCEL_PROJECT_PRODUCTION_SOURCE || 'unknown'}`);
+    } else {
+      console.log('   🔵 Running in local/other environment');
+    }
+
     // Step 1: Clean previous builds
     console.log('\n🧹 Cleaning previous builds...');
     const nextDir = path.join(webAppPath, '.next');
