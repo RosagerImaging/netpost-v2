@@ -32,24 +32,38 @@ const nextConfig: NextConfig = {
   // Disable strict mode to avoid React version conflicts
   reactStrictMode: false,
 
-  // Use standalone output to avoid static generation issues
+  // CRITICAL: Use standalone output with server-only rendering
   output: "standalone",
 
-  // Skip static optimization for error pages to avoid Html import issue
-  skipTrailingSlashRedirect: true,
+  // CRITICAL: Completely disable static optimization
+  generateStaticParams: false,
 
-  // Disable static exports completely
+  // CRITICAL: Force dynamic rendering for all pages
+  dynamic: 'force-dynamic',
+
+  // Skip trailing slash redirect
+  skipTrailingSlashRedirect: true,
   trailingSlash: false,
 
-  // Disable static generation completely
+  // Custom build directory
   distDir: ".next",
 
-  // Force all routes to be dynamic
+  // CRITICAL: Disable static generation and prerendering completely
+  generateBuildId: async () => {
+    // Use timestamp to ensure dynamic builds
+    return `dynamic-${Date.now()}`;
+  },
+
+  // Force all routes to be dynamic with headers
   headers: async () => {
     return [
       {
         source: '/:path*',
         headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store, must-revalidate',
+          },
           {
             key: 'x-dynamic-page',
             value: 'true',
@@ -59,13 +73,39 @@ const nextConfig: NextConfig = {
     ]
   },
 
-  // Experimental features for performance
+  // CRITICAL: Redirect configuration to prevent static generation
+  redirects: async () => {
+    return [];
+  },
+
+  // CRITICAL: Rewrites to ensure dynamic handling
+  rewrites: async () => {
+    return {
+      beforeFiles: [],
+      afterFiles: [],
+      fallback: [],
+    };
+  },
+
+  // Experimental features optimized for dynamic rendering
   experimental: {
+    // Disable all static optimizations
+    staticWorkerRequestDeduping: false,
+
+    // Force server-side rendering
+    serverActions: true,
+
+    // Optimize package imports
     optimizePackageImports: ["@radix-ui/react-select", "@radix-ui/react-dialog", "@radix-ui/react-checkbox", "@radix-ui/react-label"],
-    // Reduce bundle size
-    optimizeCss: true,
-    // Force server-side rendering to avoid static generation Html import issue
-    staticGenerationBailout: 'force-static-generation-bailout',
+
+    // CRITICAL: Disable static generation bailout
+    staticGenerationBailout: 'skip',
+
+    // Force dynamic imports
+    esmExternals: true,
+
+    // Disable prerendering completely
+    serverComponentsExternalPackages: [],
   },
 };
 

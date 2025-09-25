@@ -4,6 +4,10 @@ import "./globals.css";
 import { AuthProvider } from "../../lib/auth/auth-context";
 import { QueryProvider } from "../../lib/providers/query-provider";
 
+// CRITICAL: Force all pages to be dynamic to prevent static generation Html import issue
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",

@@ -7,6 +7,9 @@
   "scripts": {
     "build": "turbo build",
     "build:packages": "turbo build --filter=@netpost/config --filter=@netpost/shared-types --filter=@netpost/ui",
+    "build:dynamic": "node scripts/dynamic-build.js",
+    "build:serverless": "node scripts/serverless-build.js",
+    "verify:deployment": "node scripts/verify-deployment-setup.js",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "test": "turbo test",

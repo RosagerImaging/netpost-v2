@@ -1,16 +1,17 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "buildCommand": "npm run build:packages && npm run build:dynamic",
+  "buildCommand": "npm run build:packages && npm run build:serverless",
   "outputDirectory": "apps/web/.next",
   "installCommand": "npm install --include=dev --legacy-peer-deps",
-  "framework": "nextjs",
+  "framework": null,
   "env": {
     "TURBO_TELEMETRY_DISABLED": "1",
     "NEXT_TELEMETRY_DISABLED": "1",
     "NODE_ENV": "production",
     "FORCE_DYNAMIC": "1",
-    "DISABLE_STATIC_GENERATION": "1"
+    "DISABLE_STATIC_GENERATION": "1",
+    "VERCEL_SERVERLESS_ONLY": "1"
   },
   "build": {
     "env": {
@@ -22,21 +23,36 @@
       "FORCE_DYNAMIC": "1",
       "DISABLE_STATIC_GENERATION": "1",
       "NEXT_DISABLE_STATIC_GENERATION": "1",
-      "SKIP_STATIC_GENERATION": "1"
+      "SKIP_STATIC_GENERATION": "1",
+      "VERCEL_SERVERLESS_ONLY": "1"
     }
   },
   "functions": {
-    "apps/web/src/app/api/**/*.ts": {
+    "apps/web/.next/server/pages/**/*.js": {
+      "runtime": "nodejs20.x",
       "maxDuration": 30
     },
     "apps/web/.next/server/app/**/*.js": {
+      "runtime": "nodejs20.x",
+      "maxDuration": 30
+    },
+    "apps/web/src/app/**/*.tsx": {
+      "runtime": "nodejs20.x",
+      "maxDuration": 30
+    },
+    "apps/web/src/app/api/**/*.ts": {
+      "runtime": "nodejs20.x",
       "maxDuration": 30
     }
   },
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/:path*",
-      "destination": "/api/:path*"
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/apps/web/.next/server/app/$1"
     }
   ],
   "headers": [
@@ -61,10 +77,9 @@
         },
         {
           "key": "X-Deployment-Type",
-          "value": "dynamic-only"
+          "value": "serverless-fallback"
         }
       ]
     }
-  ],
-  "crons": []
+  ]
 }
