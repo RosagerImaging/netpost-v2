@@ -61,14 +61,23 @@ async function main() {
       console.log('✅ Cleaned .next directory');
     }
 
-    // Step 2: Build packages first
-    executeCommand(
-      'npm run build:packages',
-      projectRoot,
-      'Building internal packages (@netpost/ui, @netpost/shared-types, @netpost/config)'
-    );
+    // Step 2: Verify packages are already built (handled by Vercel buildCommand)
+    console.log('\n📦 Verifying packages are built (packages were built in previous step)...');
+    const packagePaths = [
+      path.join(projectRoot, 'packages/config/dist'),
+      path.join(projectRoot, 'packages/shared-types/dist'),
+      path.join(projectRoot, 'packages/ui/dist')
+    ];
 
-    // Step 3: Navigate to web app and build with dynamic-only configuration
+    for (const packagePath of packagePaths) {
+      if (existsSync(packagePath)) {
+        console.log(`✅ Found built package: ${path.basename(path.dirname(packagePath))}`);
+      } else {
+        console.warn(`⚠️  Missing package build: ${path.basename(path.dirname(packagePath))}`);
+      }
+    }
+
+    // Step 3: Build the Next.js web application
     console.log('\n🔨 Building Next.js app with dynamic-only configuration...');
 
     // Use Next.js build with environment variables that force dynamic rendering
