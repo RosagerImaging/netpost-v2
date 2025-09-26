@@ -36,8 +36,8 @@ const nextConfig: NextConfig = {
   // Disable strict mode to avoid React version conflicts
   reactStrictMode: false,
 
-  // CRITICAL: Use standalone output with server-only rendering
-  output: "standalone",
+  // Note: Disable standalone for Vercel deployment compatibility
+  // output: "standalone",
 
   // Note: generateStaticParams and dynamic are page-level configs, not global configs
   // These should be set in individual page files, not next.config.ts

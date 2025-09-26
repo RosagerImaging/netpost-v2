@@ -23,6 +23,19 @@
 @netpost/ui:build: DTS Build start
 @netpost/ui:build: DTS ⚡️ Build success in 3199ms
 @netpost/ui:build: DTS dist/index.d.ts 7.99 KB
+mobile:test: cache hit, replaying logs b97b8ada3e6ec591
+mobile:test: 
+mobile:test: > mobile@1.0.0 test
+mobile:test: > jest
+mobile:test: 
+mobile:test: PASS src/services/__tests__/sourcingService.test.ts
+mobile:test: PASS __tests__/App.test.tsx
+mobile:test: 
+mobile:test: Test Suites: 2 passed, 2 total
+mobile:test: Tests:       4 passed, 4 total
+mobile:test: Snapshots:   0 total
+mobile:test: Time:        1.221 s
+mobile:test: Ran all test suites.
 @netpost/shared-types:build: cache hit, replaying logs e93425bfc693c2cc
 @netpost/shared-types:build: 
 @netpost/shared-types:build: > @netpost/shared-types@0.1.0 build
@@ -69,20 +82,7 @@
 @netpost/config:build: DTS ⚡️ Build success in 2020ms
 @netpost/config:build: DTS dist/index.d.cts 2.86 KB
 @netpost/config:build: DTS dist/index.d.ts  2.86 KB
-mobile:test: cache hit, replaying logs b97b8ada3e6ec591
-mobile:test: 
-mobile:test: > mobile@1.0.0 test
-mobile:test: > jest
-mobile:test: 
-mobile:test: PASS src/services/__tests__/sourcingService.test.ts
-mobile:test: PASS __tests__/App.test.tsx
-mobile:test: 
-mobile:test: Test Suites: 2 passed, 2 total
-mobile:test: Tests:       4 passed, 4 total
-mobile:test: Snapshots:   0 total
-mobile:test: Time:        1.221 s
-mobile:test: Ran all test suites.
-web:test: cache miss, executing 960c21974cbbf277
+web:test: cache miss, executing d77dd6b71eab9fbd
 web:test: 
 web:test: > web@0.1.0 test
 web:test: > vitest
@@ -107,7 +107,7 @@ web#test: command (/home/optiks/dev/netpost-v2/apps/web) /home/optiks/.nvm/versi
 
  Tasks:    4 successful, 5 total
 Cached:    4 cached, 5 total
-  Time:    618ms 
+  Time:    661ms 
 Failed:    web#test
 
  ERROR  run failed: command  exited (1)

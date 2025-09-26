@@ -1,9 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "buildCommand": "cd /vercel/path0 && npm run build:packages && npm run build:dynamic",
+  "buildCommand": "npm run build:packages && cd apps/web && npm run build",
   "installCommand": "npm install --include=dev --legacy-peer-deps",
-  "framework": null,
+  "framework": "nextjs",
   "env": {
     "TURBO_TELEMETRY_DISABLED": "1",
     "NEXT_TELEMETRY_DISABLED": "1",
