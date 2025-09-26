@@ -30,7 +30,7 @@ export default function GlobalError({
                 Application Error
               </h2>
               <p style={{ color: '#6b7280', maxWidth: '24rem', margin: '0' }}>
-                A global error has occurred. Please refresh the page or try again later
+                A global error has occurred. Please refresh the page or try again later.
               </p>
             </div>
 
