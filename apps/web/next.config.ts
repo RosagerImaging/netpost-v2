@@ -13,9 +13,13 @@ const nextConfig: NextConfig = {
     NEXT_TELEMETRY_DISABLED: "1",
   },
 
-  // Image optimization
+  // Enhanced image optimization for performance
   images: {
-    domains: [],
+    domains: ['hfvrnidlwnrwvhrhyzzr.supabase.co', '*.supabase.co'],
+    formats: ['image/webp', 'image/avif'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
   },
 
   // For deployment readiness - avoid static generation issues
@@ -91,8 +95,19 @@ const nextConfig: NextConfig = {
       allowedOrigins: ['localhost:3000', '*.vercel.app'],
     },
 
-    // Optimize package imports
-    optimizePackageImports: ["@radix-ui/react-select", "@radix-ui/react-dialog", "@radix-ui/react-checkbox", "@radix-ui/react-label"],
+    // Enhanced package import optimization for bundle size reduction
+    optimizePackageImports: [
+      "@radix-ui/react-select",
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-checkbox",
+      "@radix-ui/react-label",
+      "@radix-ui/react-progress",
+      "@radix-ui/react-tabs",
+      "@radix-ui/react-slot",
+      "lucide-react",
+      "@heroicons/react",
+      "@headlessui/react"
+    ],
 
     // Force dynamic imports
     esmExternals: true,

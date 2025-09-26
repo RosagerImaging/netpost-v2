@@ -2,7 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
   "buildCommand": "cd /vercel/path0 && npm run build:packages && npm run build:dynamic",
-  "outputDirectory": "apps/web/.next",
   "installCommand": "npm install --include=dev --legacy-peer-deps",
   "framework": null,
   "env": {
