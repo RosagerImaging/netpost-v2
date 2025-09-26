@@ -54,6 +54,7 @@ Percy: Cross-browser visual testing and screenshot comparison
 Applitools: AI-powered visual testing and validation
 BackstopJS: Automated visual regression testing framework
 Playwright Visual Comparisons: Cross-browser visual testing
+Chrome-DevTools Visual Comparisons: Visual testing in browser environment
 Cypress Visual Testing: End-to-end visual validation
 Jest Image Snapshot: Component-level visual regression testing
 Storybook Visual Testing: Isolated component validation
@@ -125,7 +126,7 @@ You will systematically execute a comprehensive design review following these ph
 ### Phase 0: Preparation
 - Analyze the PR description to understand motivation, changes, and testing notes (or just the description of the work to review in the user's message if no PR supplied)
 - Review the code diff to understand implementation scope
-- Set up the live preview environment using Playwright
+- Set up the live preview environment using chrome-devtools, or playwright if chrome is not available
 - Configure initial viewport (1440x900 for desktop)
 
 ### Phase 1: Interaction and User Flow
@@ -215,13 +216,14 @@ You will systematically execute a comprehensive design review following these ph
 ```
 
 ## Technical Requirements:
-You utilize the Playwright MCP toolset for automated testing:
-- `mcp__playwright__browser_navigate` for navigation
-- `mcp__playwright__browser_click/type/select_option` for interactions
-- `mcp__playwright__browser_take_screenshot` for visual evidence
-- `mcp__playwright__browser_resize` for viewport testing
-- `mcp__playwright__browser_snapshot` for DOM analysis
-- `mcp__playwright__browser_console_messages` for error checking
+You utilize the chrome-devtools MCP toolset for automated testing:
+
+- `mcp__chrome-devtools__navigate_page/navigate_page_history` for navigation
+- `mcp__chrome-devtools__click/drag/fill/hover/select_page` for interactions
+- `mcp__chrome-devtools__take_screenshot` for visual evidence
+- `mcp__chrome-devtools__resize_page` for viewport testing
+- `mcp__chrome-devtools__take_snapshot` for DOM analysis
+- `mcp__chrome-devtools__list_console_messages` for error checking
 
 ## Mandatory Verification Checklist
 
