@@ -5,7 +5,7 @@
 • Packages in scope: @netpost/config, @netpost/shared-types, @netpost/ui, mobile, web
 • Running test in 5 packages
 • Remote caching disabled
-@netpost/ui:build: cache hit, replaying logs 97cf513d46bd610a
+@netpost/ui:build: cache hit, replaying logs 9c358ee2ce06c4e4
 @netpost/ui:build: 
 @netpost/ui:build: > @netpost/ui@0.1.0 build
 @netpost/ui:build: > tsup
@@ -19,47 +19,11 @@
 @netpost/ui:build: ESM Build start
 @netpost/ui:build: ESM dist/index.js     24.33 KB
 @netpost/ui:build: ESM dist/index.js.map 40.62 KB
-@netpost/ui:build: ESM ⚡️ Build success in 25ms
+@netpost/ui:build: ESM ⚡️ Build success in 22ms
 @netpost/ui:build: DTS Build start
-@netpost/ui:build: DTS ⚡️ Build success in 3199ms
+@netpost/ui:build: DTS ⚡️ Build success in 3173ms
 @netpost/ui:build: DTS dist/index.d.ts 7.99 KB
-mobile:test: cache hit, replaying logs b97b8ada3e6ec591
-mobile:test: 
-mobile:test: > mobile@1.0.0 test
-mobile:test: > jest
-mobile:test: 
-mobile:test: PASS src/services/__tests__/sourcingService.test.ts
-mobile:test: PASS __tests__/App.test.tsx
-mobile:test: 
-mobile:test: Test Suites: 2 passed, 2 total
-mobile:test: Tests:       4 passed, 4 total
-mobile:test: Snapshots:   0 total
-mobile:test: Time:        1.221 s
-mobile:test: Ran all test suites.
-@netpost/shared-types:build: cache hit, replaying logs e93425bfc693c2cc
-@netpost/shared-types:build: 
-@netpost/shared-types:build: > @netpost/shared-types@0.1.0 build
-@netpost/shared-types:build: > tsup
-@netpost/shared-types:build: 
-@netpost/shared-types:build: CLI Building entry: src/index.ts
-@netpost/shared-types:build: CLI Using tsconfig: tsconfig.json
-@netpost/shared-types:build: CLI tsup v8.5.0
-@netpost/shared-types:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/shared-types/tsup.config.ts
-@netpost/shared-types:build: CLI Target: es2020
-@netpost/shared-types:build: CLI Cleaning output folder
-@netpost/shared-types:build: CJS Build start
-@netpost/shared-types:build: ESM Build start
-@netpost/shared-types:build: CJS dist/index.cjs     6.45 KB
-@netpost/shared-types:build: CJS dist/index.cjs.map 28.47 KB
-@netpost/shared-types:build: CJS ⚡️ Build success in 19ms
-@netpost/shared-types:build: ESM dist/index.js     4.74 KB
-@netpost/shared-types:build: ESM dist/index.js.map 24.53 KB
-@netpost/shared-types:build: ESM ⚡️ Build success in 20ms
-@netpost/shared-types:build: DTS Build start
-@netpost/shared-types:build: DTS ⚡️ Build success in 2539ms
-@netpost/shared-types:build: DTS dist/index.d.cts 66.56 KB
-@netpost/shared-types:build: DTS dist/index.d.ts  66.56 KB
-@netpost/config:build: cache hit, replaying logs 0ce30abfcf8b4a1b
+@netpost/config:build: cache hit, replaying logs b3a3ece942d0ac4c
 @netpost/config:build: 
 @netpost/config:build: > @netpost/config@0.1.0 build
 @netpost/config:build: > tsup
@@ -74,15 +38,51 @@ mobile:test: Ran all test suites.
 @netpost/config:build: ESM Build start
 @netpost/config:build: ESM dist/index.js     4.84 KB
 @netpost/config:build: ESM dist/index.js.map 8.14 KB
-@netpost/config:build: ESM ⚡️ Build success in 14ms
+@netpost/config:build: ESM ⚡️ Build success in 15ms
 @netpost/config:build: CJS dist/index.cjs     6.05 KB
 @netpost/config:build: CJS dist/index.cjs.map 8.50 KB
-@netpost/config:build: CJS ⚡️ Build success in 14ms
+@netpost/config:build: CJS ⚡️ Build success in 16ms
 @netpost/config:build: DTS Build start
-@netpost/config:build: DTS ⚡️ Build success in 2020ms
+@netpost/config:build: DTS ⚡️ Build success in 1901ms
 @netpost/config:build: DTS dist/index.d.cts 2.86 KB
 @netpost/config:build: DTS dist/index.d.ts  2.86 KB
-web:test: cache miss, executing d77dd6b71eab9fbd
+mobile:test: cache hit, replaying logs b97b8ada3e6ec591
+mobile:test: 
+mobile:test: > mobile@1.0.0 test
+mobile:test: > jest
+mobile:test: 
+mobile:test: PASS src/services/__tests__/sourcingService.test.ts
+mobile:test: PASS __tests__/App.test.tsx
+mobile:test: 
+mobile:test: Test Suites: 2 passed, 2 total
+mobile:test: Tests:       4 passed, 4 total
+mobile:test: Snapshots:   0 total
+mobile:test: Time:        1.221 s
+mobile:test: Ran all test suites.
+@netpost/shared-types:build: cache hit, replaying logs b986ad4957fb595c
+@netpost/shared-types:build: 
+@netpost/shared-types:build: > @netpost/shared-types@0.1.0 build
+@netpost/shared-types:build: > tsup
+@netpost/shared-types:build: 
+@netpost/shared-types:build: CLI Building entry: src/index.ts
+@netpost/shared-types:build: CLI Using tsconfig: tsconfig.json
+@netpost/shared-types:build: CLI tsup v8.5.0
+@netpost/shared-types:build: CLI Using tsup config: /home/optiks/dev/netpost-v2/packages/shared-types/tsup.config.ts
+@netpost/shared-types:build: CLI Target: es2020
+@netpost/shared-types:build: CLI Cleaning output folder
+@netpost/shared-types:build: CJS Build start
+@netpost/shared-types:build: ESM Build start
+@netpost/shared-types:build: ESM dist/index.js     4.74 KB
+@netpost/shared-types:build: ESM dist/index.js.map 24.53 KB
+@netpost/shared-types:build: ESM ⚡️ Build success in 15ms
+@netpost/shared-types:build: CJS dist/index.cjs     6.45 KB
+@netpost/shared-types:build: CJS dist/index.cjs.map 28.47 KB
+@netpost/shared-types:build: CJS ⚡️ Build success in 16ms
+@netpost/shared-types:build: DTS Build start
+@netpost/shared-types:build: DTS ⚡️ Build success in 2570ms
+@netpost/shared-types:build: DTS dist/index.d.cts 66.56 KB
+@netpost/shared-types:build: DTS dist/index.d.ts  66.56 KB
+web:test: cache miss, executing 2ed6a23653153e12
 web:test: 
 web:test: > web@0.1.0 test
 web:test: > vitest
@@ -107,7 +107,7 @@ web#test: command (/home/optiks/dev/netpost-v2/apps/web) /home/optiks/.nvm/versi
 
  Tasks:    4 successful, 5 total
 Cached:    4 cached, 5 total
-  Time:    661ms 
+  Time:    664ms 
 Failed:    web#test
 
  ERROR  run failed: command  exited (1)

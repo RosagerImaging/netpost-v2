@@ -1,11 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "buildCommand": "turbo build --filter=web",
-  "installCommand": "npm install --include=dev --legacy-peer-deps",
+  "buildCommand": "turbo build --filter=web --no-daemon",
+  "installCommand": "npm ci --include=dev --legacy-peer-deps",
   "framework": "nextjs",
   "outputDirectory": ".next",
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- apps/web packages",
   "env": {
     "TURBO_TELEMETRY_DISABLED": "1",
     "TURBO_TEAM": "team_netpost",
@@ -20,6 +20,8 @@
       "TURBO_TELEMETRY_DISABLED": "1",
       "TURBO_TEAM": "team_netpost",
       "TURBO_TOKEN": "",
+      "TURBO_LOG_LEVEL": "info",
+      "TURBO_NO_UPDATE_NOTIFIER": "1",
       "NEXT_TELEMETRY_DISABLED": "1",
       "NODE_ENV": "production",
       "SKIP_VALIDATION": "1",
