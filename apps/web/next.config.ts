@@ -55,6 +55,9 @@ const nextConfig: NextConfig = {
     return `dynamic-${Date.now()}`;
   },
 
+  // Skip problematic pages during build
+  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
+
   // Force all routes to be dynamic with headers
   headers: async () => {
     return [

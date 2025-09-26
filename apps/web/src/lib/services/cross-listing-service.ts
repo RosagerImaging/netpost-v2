@@ -4,7 +4,7 @@
  * Handles cross-listing operations, form generation, and marketplace validation
  */
 
-import { supabase } from '../supabase';
+import { supabase } from '../supabase/client';
 import { getMarketplaceConfig, validateMarketplaceRequirements } from '../marketplaces';
 import type {
   CreateListingInput,

@@ -4,7 +4,7 @@
  * Handles marketplace authentication, connection management, and health monitoring
  */
 
-import { supabase } from '../supabase';
+import { supabase } from '../supabase/client';
 import {
   createMarketplaceAdapter,
   isMarketplaceSupported,

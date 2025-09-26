@@ -38,7 +38,9 @@ interface DelistingJobResult {
 }
 
 class DelistingEngine {
-  private supabase = createClient();
+  private get supabase() {
+    return createClient();
+  }
 
   /**
    * Execute a delisting job

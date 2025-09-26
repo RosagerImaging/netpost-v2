@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "../../../../lib/auth/auth-hooks";
+import { useAuth } from "../../../lib/auth/auth-context";
 import { DashboardLayout } from "../../../components/layout/dashboard-layout";
 import {
   Card,
