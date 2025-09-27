@@ -18,20 +18,16 @@
     "mobile:dev": "npm run dev --workspace=mobile",
     "mobile:android": "npm run android --workspace=mobile",
     "mobile:ios": "npm run ios --workspace=mobile",
-
     "test:coverage": "turbo test -- --coverage",
     "test:run": "turbo test -- --run",
     "test:integration": "turbo test:integration",
-
     "validate:quick": "npm run type-check && npm run lint && npm run test:run",
     "validate:enhanced": "node scripts/enhanced-pre-deploy-validation.cjs",
     "validate:enhanced:verbose": "node scripts/enhanced-pre-deploy-validation.cjs --verbose",
     "validate:enhanced:skip-security": "node scripts/enhanced-pre-deploy-validation.cjs --skip-security",
-
     "deploy:preview": "npm run validate:enhanced && vercel",
     "deploy:prod": "npm run validate:enhanced && vercel --prod",
     "deploy:emergency": "npm run validate:quick && vercel --prod --force",
-
     "security:check": "npm run lint -- --config .eslintrc.security.js",
     "deps:update": "npx npm-check-updates -u && npm install",
     "deps:audit": "npm audit --audit-level moderate"
@@ -68,7 +64,8 @@
     "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-separator": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.3",
-    "@radix-ui/react-toast": "^1.2.15"
+    "@radix-ui/react-toast": "^1.2.15",
+    "gsap": "^3.13.0"
   },
   "overrides": {
     "react": "19.1.1",

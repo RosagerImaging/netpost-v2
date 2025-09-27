@@ -56,13 +56,14 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="from-background via-background/95 to-background/90 flex min-h-screen items-center justify-center bg-gradient-to-br px-4">
-      <Card className="mx-auto w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-primary-text text-center text-2xl font-semibold tracking-tight">
-            Reset your password
-          </CardTitle>
-          <CardDescription className="text-center">
+    <div className="min-h-screen bg-gradient-to-br from-[oklch(0.1738_0.0026_67.6532)] via-[oklch(0.2161_0.0061_56.0434)] to-[oklch(0.1738_0.0026_67.6532)]" style={{ fontFamily: 'Figtree, ui-sans-serif, system-ui, sans-serif' }}>
+      <div className="flex min-h-screen items-center justify-center px-4">
+        <Card className="glass-card mx-auto w-full max-w-md">
+          <CardHeader className="space-y-1">
+            <CardTitle className="text-gradient-primary text-center text-2xl font-semibold tracking-tight">
+              Reset your password
+            </CardTitle>
+          <CardDescription className="text-center text-[oklch(0.7161_0.0091_56.2590)]">
             Enter your email address and we&apos;ll send you a reset link
           </CardDescription>
         </CardHeader>
@@ -109,7 +110,8 @@ export default function ForgotPasswordPage() {
             </p>
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 }

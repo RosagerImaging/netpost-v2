@@ -110,14 +110,15 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="from-background via-background/95 to-background/90 flex min-h-screen items-center justify-center bg-gradient-to-br px-4">
-      <Card className="mx-auto w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-primary-text text-center text-2xl font-semibold tracking-tight">
-            Create your account
-          </CardTitle>
-          <CardDescription className="text-center">
-            Get started with NetPost V2 today
+    <div className="min-h-screen bg-gradient-to-br from-[oklch(0.1738_0.0026_67.6532)] via-[oklch(0.2161_0.0061_56.0434)] to-[oklch(0.1738_0.0026_67.6532)]" style={{ fontFamily: 'Figtree, ui-sans-serif, system-ui, sans-serif' }}>
+      <div className="flex min-h-screen items-center justify-center px-4">
+        <Card className="glass-card mx-auto w-full max-w-md">
+          <CardHeader className="space-y-1">
+            <CardTitle className="text-gradient-primary text-center text-2xl font-semibold tracking-tight">
+              Create your account
+            </CardTitle>
+          <CardDescription className="text-center text-[oklch(0.7161_0.0091_56.2590)]">
+            Get started with <span className="text-gradient-primary font-semibold">NetPost</span> today
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -236,7 +237,8 @@ export default function RegisterPage() {
             </p>
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 }

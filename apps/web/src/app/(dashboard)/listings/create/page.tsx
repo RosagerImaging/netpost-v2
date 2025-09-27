@@ -8,6 +8,9 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { DashboardLayout } from '../../../../components/layout/dashboard-layout';
+import { useAuth } from '../../../../lib/auth/auth-context';
+import { AnimatedHeadline } from '../../../../components/ui/animated-headline';
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { ItemSelection } from './components/ItemSelection';
 import { MarketplaceSelection } from './components/MarketplaceSelection';
@@ -22,8 +25,17 @@ import type { MarketplaceType } from '@netpost/shared-types';
 type CrossListingStep = 'item_selection' | 'marketplace_selection' | 'listing_form' | 'preview' | 'success';
 
 export default function CreateCrossListingPage() {
+  const { user } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  // Mock subscription data
+  const subscriptionData = {
+    tier: "Free",
+    status: "active" as const,
+    itemLimit: 10,
+    currentItems: 0,
+  };
 
   const [currentStep, setCurrentStep] = useState<CrossListingStep>('item_selection');
   const [selectedItem, setSelectedItem] = useState<InventoryItemRecord | null>(null);
@@ -122,25 +134,32 @@ export default function CreateCrossListingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <DashboardLayout
+      user={user?.email ? {
+        email: user.email,
+        name: user.user_metadata?.name,
+        subscription: subscriptionData
+      } : undefined}
+    >
+      <div className="p-6 space-y-6">
         {/* Header */}
-        <div className="py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <button
-                onClick={() => router.back()}
-                className="mr-4 inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700"
-              >
-                <ArrowLeftIcon className="h-5 w-5 mr-1" />
-                Back
-              </button>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Create Cross-Listing</h1>
-                <p className="mt-1 text-sm text-gray-500">
-                  List your item across multiple marketplaces simultaneously
-                </p>
-              </div>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <button
+              onClick={() => router.back()}
+              className="mr-4 inline-flex items-center text-sm font-medium text-secondary-text hover:text-primary-text"
+            >
+              <ArrowLeftIcon className="h-5 w-5 mr-1" />
+              Back
+            </button>
+            <div>
+              <AnimatedHeadline
+                text="Create Cross-Listing"
+                className="from-primary-600 to-accent-600 bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+              />
+              <p className="mt-2 text-secondary-text">
+                List your item across multiple marketplaces simultaneously
+              </p>
             </div>
           </div>
         </div>
@@ -165,7 +184,7 @@ export default function CreateCrossListingPage() {
                         <div className="absolute inset-0 flex items-center" aria-hidden="true">
                           <div
                             className={`h-0.5 w-full ${
-                              isCompletedStep ? 'bg-indigo-600' : 'bg-gray-200'
+                              isCompletedStep ? 'bg-primary-600' : 'bg-white/20'
                             }`}
                           />
                         </div>
@@ -174,7 +193,7 @@ export default function CreateCrossListingPage() {
                       {/* Step Circle */}
                       <div className="relative flex h-8 w-8 items-center justify-center">
                         {isCompletedStep ? (
-                          <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center">
+                          <div className="h-8 w-8 rounded-full bg-primary-600 flex items-center justify-center">
                             <svg className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
                               <path
                                 fillRule="evenodd"
@@ -184,15 +203,15 @@ export default function CreateCrossListingPage() {
                             </svg>
                           </div>
                         ) : isCurrentStep ? (
-                          <div className="h-8 w-8 rounded-full border-2 border-indigo-600 bg-white">
-                            <span className="h-full w-full rounded-full bg-indigo-600 flex items-center justify-center">
+                          <div className="h-8 w-8 rounded-full border-2 border-primary-600 bg-white/10">
+                            <span className="h-full w-full rounded-full bg-primary-600 flex items-center justify-center">
                               <span className="text-xs font-medium text-white">{stepIdx + 1}</span>
                             </span>
                           </div>
                         ) : (
-                          <div className="h-8 w-8 rounded-full border-2 border-gray-300 bg-white">
+                          <div className="h-8 w-8 rounded-full border-2 border-white/20 bg-white/10">
                             <span className="h-full w-full rounded-full flex items-center justify-center">
-                              <span className="text-xs font-medium text-gray-500">{stepIdx + 1}</span>
+                              <span className="text-xs font-medium text-secondary-text">{stepIdx + 1}</span>
                             </span>
                           </div>
                         )}
@@ -204,15 +223,15 @@ export default function CreateCrossListingPage() {
                           <div
                             className={`text-xs font-medium ${
                               isCurrentStep
-                                ? 'text-indigo-600'
+                                ? 'text-primary-600'
                                 : isCompletedStep
-                                ? 'text-gray-900'
-                                : 'text-gray-500'
+                                ? 'text-primary-text'
+                                : 'text-secondary-text'
                             }`}
                           >
                             {step.name}
                           </div>
-                          <div className="text-xs text-gray-500 mt-1">{step.description}</div>
+                          <div className="text-xs text-secondary-text mt-1">{step.description}</div>
                         </div>
                       </div>
                     </li>
@@ -225,7 +244,7 @@ export default function CreateCrossListingPage() {
 
         {/* Step Content */}
         <div className="py-6">
-          <div className="bg-white shadow-sm rounded-lg">
+          <div className="glass rounded-lg">
             {currentStep === 'item_selection' && (
               <ItemSelection onItemSelect={handleItemSelect} selectedItem={selectedItem} />
             )}
@@ -278,7 +297,7 @@ export default function CreateCrossListingPage() {
                 type="button"
                 onClick={handleBack}
                 disabled={getCurrentStepIndex() === 0}
-                className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-primary-text shadow-sm ring-1 ring-inset ring-white/20 hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <ArrowLeftIcon className="h-4 w-4 mr-2" />
                 Back
@@ -288,7 +307,7 @@ export default function CreateCrossListingPage() {
                 type="button"
                 onClick={handleNext}
                 disabled={!canProceed()}
-                className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="inline-flex items-center rounded-md bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {getCurrentStepIndex() === steps.length - 1 ? 'Review' : 'Continue'}
                 <ArrowRightIcon className="h-4 w-4 ml-2" />
@@ -297,6 +316,6 @@ export default function CreateCrossListingPage() {
           </div>
         )}
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

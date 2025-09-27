@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { DashboardLayout } from "../../../components/layout/dashboard-layout";
 import { useAuth } from "../../../../lib/auth/auth-hooks";
+import { AnimatedHeadline } from "../../../components/ui/animated-headline";
 import {
   Card,
   CardContent,
@@ -119,9 +120,10 @@ export default function InventoryPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-primary-text">
-              Inventory
-            </h1>
+            <AnimatedHeadline
+              text="Inventory"
+              className="from-primary-600 to-accent-600 bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+            />
             <p className="text-secondary-text mt-2">
               Manage your sourced items and track their status
             </p>
@@ -155,7 +157,7 @@ export default function InventoryPage() {
         </div>
 
         {/* Inventory Limit Display */}
-        <Card className="border-primary-500/20">
+        <Card className="glass border-primary-500/20">
           <CardContent className="pt-4">
             <div className="flex items-center justify-between">
               <div>
@@ -184,7 +186,7 @@ export default function InventoryPage() {
 
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
+          <Card className="glass">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Items</CardTitle>
               <Package className="h-4 w-4 text-primary-500" />
@@ -197,7 +199,7 @@ export default function InventoryPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="glass">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Investment</CardTitle>
               <Package className="h-4 w-4 text-primary-500" />
@@ -212,7 +214,7 @@ export default function InventoryPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="glass">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Potential Profit</CardTitle>
               <Package className="h-4 w-4 text-green-400" />
@@ -250,7 +252,7 @@ export default function InventoryPage() {
         </div>
 
         {/* Items Grid */}
-        <Card>
+        <Card className="glass">
           <CardHeader>
             <CardTitle>Items ({filteredItems.length})</CardTitle>
           </CardHeader>
@@ -277,7 +279,7 @@ export default function InventoryPage() {
                 {filteredItems.map((item) => (
                   <Card
                     key={item.id}
-                    className="relative cursor-pointer hover:bg-white/5 transition-colors"
+                    className="glass relative cursor-pointer hover:bg-white/5 transition-colors"
                     onClick={() => handleItemClick(item)}
                     data-testid="inventory-item"
                   >

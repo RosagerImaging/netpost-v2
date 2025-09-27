@@ -5,7 +5,7 @@ export const netpostTailwindConfig: Partial<Config> = {
   theme: {
     extend: {
       colors: {
-        // NetPost V2 Brand Colors
+        // NetPost Brand Colors
         primary: {
           50: "#e6f8ff",
           100: "#b3efff",

@@ -118,6 +118,18 @@ const nextConfig: NextConfig = {
 
   // Move serverComponentsExternalPackages to top-level (Next.js 15+ deprecation fix)
   serverExternalPackages: [],
+
+  // Webpack configuration to ensure GSAP loads properly
+  webpack: (config: any, { isServer }: { isServer: boolean }) => {
+    // Ensure GSAP is properly bundled for client-side
+    if (!isServer) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        gsap: require.resolve('gsap'),
+      };
+    }
+    return config;
+  },
 };
 
 export default nextConfig;

@@ -18,6 +18,7 @@ import {
   BarChart3,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { AnimatedHeadline } from "../../../components/ui/animated-headline";
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -51,9 +52,10 @@ export default function DashboardPage() {
       <div className="p-6 space-y-6" data-testid="dashboard-welcome">
         {/* Welcome Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-primary-text mb-2">
-            Welcome back{userName ? `, ${userName}` : ''}!
-          </h1>
+          <AnimatedHeadline
+            text={`Welcome back${userName ? `, ${userName}` : ''}!`}
+            className="from-primary-600 to-accent-600 mb-2 bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+          />
           <p className="text-secondary-text">
             Here's what's happening with your reselling business today.
           </p>
@@ -61,7 +63,7 @@ export default function DashboardPage() {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card>
+          <Card className="glass">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Items</CardTitle>
               <Package className="h-4 w-4 text-primary-500" />
@@ -76,7 +78,7 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="glass">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Value</CardTitle>
               <DollarSign className="h-4 w-4 text-primary-500" />
@@ -91,7 +93,7 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="glass">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Potential Profit</CardTitle>
               <TrendingUp className="h-4 w-4 text-green-400" />
@@ -106,7 +108,7 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="glass">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Active Listings</CardTitle>
               <BarChart3 className="h-4 w-4 text-primary-500" />
@@ -124,7 +126,7 @@ export default function DashboardPage() {
 
         {/* Quick Actions Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card className="hover:bg-white/5 transition-colors">
+          <Card className="glass hover:bg-white/5 transition-colors">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Search className="h-5 w-5 text-primary-500" />
@@ -144,7 +146,7 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
 
-          <Card className="hover:bg-white/5 transition-colors">
+          <Card className="glass hover:bg-white/5 transition-colors">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Package className="h-5 w-5 text-primary-500" />
@@ -165,7 +167,7 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
 
-          <Card className="hover:bg-white/5 transition-colors">
+          <Card className="glass hover:bg-white/5 transition-colors">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <TrendingUp className="h-5 w-5 text-primary-500" />
@@ -190,7 +192,7 @@ export default function DashboardPage() {
 
         {/* Subscription Status Banner */}
         {subscriptionData.tier === "Free" && (
-          <Card className="border-primary-500/20 bg-primary-500/5">
+          <Card className="glass border-primary-500/20 bg-primary-500/5">
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -213,7 +215,7 @@ export default function DashboardPage() {
         )}
 
         {/* Recent Activity Placeholder */}
-        <Card>
+        <Card className="glass">
           <CardHeader>
             <CardTitle>Recent Activity</CardTitle>
           </CardHeader>

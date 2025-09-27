@@ -1,38 +1,27 @@
 @import "tailwindcss";
 
-/* NetPost V2 Design System - Dark Mode First */
+/* NetPost Design System - Teal/Stone Theme */
 :root {
-  /* Dark Theme by Default - NetPost V2 Brand Colors */
-  --background: 210 17% 3.9%;                      /* Near black #0A0A0B */
-  --background-secondary: 210 16% 10.6%;           /* Dark gray #1A1A1C */
-  --background-tertiary: 210 13% 17.3%;            /* Medium dark #2A2A2D */
+  /* Light Theme Variables */
+  --background: oklch(0.9816 0.0017 247.8390);
+  --foreground: oklch(0.1408 0.0044 285.8229);
+  --card: oklch(1.0000 0 0);
+  --card-foreground: oklch(0.1408 0.0044 285.8229);
+  --popover: oklch(1.0000 0 0);
+  --popover-foreground: #09090B;
+  --primary: oklch(0.5510 0.0234 264.3637);
+  --primary-foreground: oklch(0.9816 0.0017 247.8390);
+  --secondary: oklch(0.9476 0.0190 192.8095);
+  --secondary-foreground: oklch(0.3755 0.0700 176.3952);
+  --muted: oklch(0.9670 0.0029 264.5419);
+  --muted-foreground: oklch(0.5510 0.0234 264.3637);
 
-  --foreground: 210 9% 96.1%;                      /* Off-white #F5F5F7 */
-  --foreground-secondary: 210 7% 69.8%;            /* Light gray #B0B0B3 */
-  --foreground-muted: 210 5% 50.2%;                /* Medium gray #808083 */
+  --accent: oklch(0.8708 0.0470 189.6325);
+  --accent-foreground: oklch(0.3755 0.0700 176.3952);
 
-  --card: 210 17% 3.9%;                            /* Same as background */
-  --card-foreground: 210 9% 96.1%;
-
-  --popover: 210 16% 10.6%;                        /* Dark gray for popover */
-  --popover-foreground: 210 9% 96.1%;
-
-  /* Brand Colors - NetPost V2 Identity */
-  --primary: 195 100% 50%;                         /* DeepSkyBlue #00BFFF */
-  --primary-foreground: 0 0% 100%;
-  --primary-hover: 195 100% 45%;                   /* Darker variant */
-  --primary-muted: 195 100% 20%;                   /* Very dark variant */
-
-  --accent: 51 100% 50%;                           /* Gold #FFD700 */
-  --accent-foreground: 0 0% 0%;
-  --accent-hover: 51 100% 45%;                     /* Darker gold */
-  --accent-muted: 51 100% 20%;                     /* Very dark gold */
-
-  --secondary: 210 13% 17.3%;                      /* Medium dark */
-  --secondary-foreground: 210 9% 96.1%;
-
-  --muted: 210 13% 17.3%;
-  --muted-foreground: 210 7% 69.8%;
+  --border: oklch(0.9276 0.0058 264.5313);
+  --input: oklch(0.9276 0.0058 264.5313);
+  --ring: oklch(0.5166 0.0931 181.0803);
 
   /* Status Colors */
   --success: 142 76% 36%;                          /* Green #34D399 */
@@ -248,7 +237,7 @@ body {
   }
 }
 
-/* NetPost V2 Animation System */
+/* NetPost Animation System */
 @keyframes button-press {
   0% { transform: scale(1); }
   50% { transform: scale(0.98); }
@@ -434,4 +423,51 @@ body {
 
 .focus-ring-success:focus {
   box-shadow: 0 0 0 3px hsla(var(--success), 0.3);
+}
+
+/* Marquee Animations for Testimonials */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee-reverse {
+  animation: marquee-reverse 30s linear infinite;
+}
+
+/* Teal Gradient Text Effects - Matching SuperDesign */
+.text-gradient-primary {
+  background: linear-gradient(135deg, var(--primary), var(--ring));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-secondary {
+  background: linear-gradient(135deg, var(--secondary), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glow Effect for Special Text */
+.glow {
+  text-shadow: 0 0 20px oklch(0.5166 0.0931 181.0803 / 0.5);
 }

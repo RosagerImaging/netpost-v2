@@ -136,7 +136,7 @@ export interface OnboardingStep {
 export const ONBOARDING_STEPS: Record<number, Omit<OnboardingStep, 'step' | 'completed'>> = {
   0: {
     title: 'Welcome',
-    description: 'Get started with NetPost V2',
+    description: 'Get started with NetPost',
     required: true,
   },
   1: {

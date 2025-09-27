@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+import { DashboardLayout } from "../../../components/layout/dashboard-layout";
+import { useAuth } from "../../../lib/auth/auth-context";
+import { AnimatedHeadline } from "../../../components/ui/animated-headline";
 import {
   Card,
   CardContent,
@@ -24,10 +27,19 @@ interface SourcingItem {
 }
 
 export default function SourcingPage() {
+  const { user } = useAuth();
   const [items, setItems] = useState<SourcingItem[]>([]);
   const [draftItems, setDraftItems] = useState<Partial<SourcingItem>[]>([]);
   const [sortBy, setSortBy] = useState("title");
   const [categoryFilter, setCategoryFilter] = useState("All");
+
+  // Mock subscription data
+  const subscriptionData = {
+    tier: "Free",
+    status: "active" as const,
+    itemLimit: 10,
+    currentItems: items.length,
+  };
 
   const handleItemSaved = (item: SourcingItem) => {
     setItems(prev => [...prev, { ...item, status: "active" }]);
@@ -81,14 +93,21 @@ export default function SourcingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background/90 p-6">
-      <div className="mx-auto max-w-7xl space-y-6">
+    <DashboardLayout
+      user={user?.email ? {
+        email: user.email,
+        name: user.user_metadata?.name,
+        subscription: subscriptionData
+      } : undefined}
+    >
+      <div className="p-6 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-primary-text" data-testid="sourcing-header">
-              Sourcing
-            </h1>
+            <AnimatedHeadline
+              text="Sourcing"
+              className="from-primary-600 to-accent-600 bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+            />
             <p className="text-secondary-text mt-2">
               Track and manage potential inventory items
             </p>
@@ -101,7 +120,7 @@ export default function SourcingPage() {
 
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
+          <Card className="glass">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Items</CardTitle>
               <Package className="h-4 w-4 text-primary-500" />
@@ -114,7 +133,7 @@ export default function SourcingPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="glass">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Investment</CardTitle>
               <DollarSign className="h-4 w-4 text-primary-500" />
@@ -129,7 +148,7 @@ export default function SourcingPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="glass">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Potential Profit</CardTitle>
               <TrendingUp className="h-4 w-4 text-green-400" />
@@ -168,7 +187,7 @@ export default function SourcingPage() {
 
         {/* Draft Items Section */}
         {draftItems.length > 0 && (
-          <Card>
+          <Card className="glass">
             <CardHeader>
               <CardTitle>Draft Items</CardTitle>
             </CardHeader>
@@ -199,7 +218,7 @@ export default function SourcingPage() {
         )}
 
         {/* Items List */}
-        <Card>
+        <Card className="glass">
           <CardHeader>
             <CardTitle>Sourcing Items ({filteredItems.length})</CardTitle>
           </CardHeader>
@@ -221,7 +240,7 @@ export default function SourcingPage() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredItems.map((item) => (
-                  <Card key={item.id} className="relative">
+                  <Card key={item.id} className="glass relative">
                     <CardHeader>
                       <CardTitle className="text-lg">{item.title}</CardTitle>
                       <div className="flex items-center gap-2">
@@ -281,6 +300,6 @@ export default function SourcingPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

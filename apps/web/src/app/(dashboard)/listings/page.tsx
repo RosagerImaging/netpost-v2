@@ -2,6 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { DashboardLayout } from '../../../components/layout/dashboard-layout';
+import { useAuth } from '../../../lib/auth/auth-context';
+import { AnimatedHeadline } from '../../../components/ui/animated-headline';
 import {
   Plus,
   Search,
@@ -73,6 +76,7 @@ const marketplaceLogos = {
 
 export default function ListingsPage() {
   const router = useRouter();
+  const { user } = useAuth();
   const [listings, setListings] = useState<ListingWithJob[]>([]);
   const [jobs, setJobs] = useState<ListingJob[]>([]);
   const [jobStats, setJobStats] = useState<JobStats | null>(null);
@@ -247,15 +251,19 @@ export default function ListingsPage() {
   }
 
   return (
-    <div className="space-y-6 p-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Listings</h1>
-          <p className="text-gray-500">
-            Manage your cross-platform listings and monitor their status
-          </p>
-        </div>
+    <DashboardLayout user={user ? { email: user.email, name: user.user_metadata?.name } : undefined}>
+      <div className="space-y-6 p-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <AnimatedHeadline
+              text="Listings"
+              className="from-primary-600 to-accent-600 bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent tracking-tight"
+            />
+            <p className="text-muted-foreground">
+              Manage your cross-platform listings and monitor their status
+            </p>
+          </div>
         <button
           onClick={() => router.push('/listings/create')}
           className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
@@ -265,17 +273,17 @@ export default function ListingsPage() {
         </button>
       </div>
 
-      {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-2">
-          <AlertCircle className="h-4 w-4 text-red-500" />
-          <span className="text-red-700">{error}</span>
-        </div>
-      )}
+        {error && (
+          <div className="glass bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-2">
+            <AlertCircle className="h-4 w-4 text-red-500" />
+            <span className="text-red-700">{error}</span>
+          </div>
+        )}
 
       {/* Stats Cards */}
       {jobStats && (
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          <div className="bg-white p-4 rounded-lg border shadow-sm">
+          <div className="glass p-4 rounded-lg border shadow-sm">
             <div className="flex items-center space-x-2">
               <Clock className="h-4 w-4 text-blue-500" />
               <div>
@@ -284,7 +292,7 @@ export default function ListingsPage() {
               </div>
             </div>
           </div>
-          <div className="bg-white p-4 rounded-lg border shadow-sm">
+          <div className="glass p-4 rounded-lg border shadow-sm">
             <div className="flex items-center space-x-2">
               <RefreshCw className="h-4 w-4 text-yellow-500" />
               <div>
@@ -293,7 +301,7 @@ export default function ListingsPage() {
               </div>
             </div>
           </div>
-          <div className="bg-white p-4 rounded-lg border shadow-sm">
+          <div className="glass p-4 rounded-lg border shadow-sm">
             <div className="flex items-center space-x-2">
               <CheckCircle className="h-4 w-4 text-green-500" />
               <div>
@@ -302,7 +310,7 @@ export default function ListingsPage() {
               </div>
             </div>
           </div>
-          <div className="bg-white p-4 rounded-lg border shadow-sm">
+          <div className="glass p-4 rounded-lg border shadow-sm">
             <div className="flex items-center space-x-2">
               <XCircle className="h-4 w-4 text-red-500" />
               <div>
@@ -311,7 +319,7 @@ export default function ListingsPage() {
               </div>
             </div>
           </div>
-          <div className="bg-white p-4 rounded-lg border shadow-sm">
+          <div className="glass p-4 rounded-lg border shadow-sm">
             <div className="flex items-center space-x-2">
               <TrendingUp className="h-4 w-4 text-purple-500" />
               <div>
@@ -400,7 +408,7 @@ export default function ListingsPage() {
 
         <div className="mt-6">
           {activeTab === 'listings' && (
-            <div className="bg-white rounded-lg border shadow-sm">
+            <div className="glass rounded-lg border shadow-sm">
               <div className="px-6 py-4 border-b border-gray-200">
                 <h3 className="text-lg font-semibold">Active Listings</h3>
                 <p className="text-sm text-gray-500">Your listings across all connected marketplaces</p>
@@ -519,7 +527,7 @@ export default function ListingsPage() {
           )}
 
           {activeTab === 'jobs' && (
-            <div className="bg-white rounded-lg border shadow-sm">
+            <div className="glass rounded-lg border shadow-sm">
               <div className="px-6 py-4 border-b border-gray-200">
                 <h3 className="text-lg font-semibold">Job Queue</h3>
                 <p className="text-sm text-gray-500">Monitor the status of your listing creation jobs</p>
@@ -637,6 +645,7 @@ export default function ListingsPage() {
           )}
         </div>
       </div>
-    </div>
+      </div>
+    </DashboardLayout>
   );
 }

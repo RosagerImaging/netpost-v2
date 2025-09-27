@@ -6,6 +6,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { DashboardLayout } from '../../../components/layout/dashboard-layout';
+import { useAuth } from '../../../lib/auth/auth-context';
+import { AnimatedHeadline } from '../../../components/ui/animated-headline';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -23,8 +26,17 @@ interface SubscriptionData {
 }
 
 export default function SubscriptionPage() {
+  const { user } = useAuth();
   const [subscription, setSubscription] = useState<SubscriptionData | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Mock subscription data for layout
+  const subscriptionData = {
+    tier: "Free",
+    status: "active" as const,
+    itemLimit: 10,
+    currentItems: 0,
+  };
 
   useEffect(() => {
     // Mock data - replace with actual API call
@@ -42,11 +54,31 @@ export default function SubscriptionPage() {
   }, []);
 
   if (loading) {
-    return <div className="p-6">Loading subscription details...</div>;
+    return (
+      <DashboardLayout
+        user={user?.email ? {
+          email: user.email,
+          name: user.user_metadata?.name,
+          subscription: subscriptionData
+        } : undefined}
+      >
+        <div className="p-6">Loading subscription details...</div>
+      </DashboardLayout>
+    );
   }
 
   if (!subscription) {
-    return <div className="p-6">No subscription found</div>;
+    return (
+      <DashboardLayout
+        user={user?.email ? {
+          email: user.email,
+          name: user.user_metadata?.name,
+          subscription: subscriptionData
+        } : undefined}
+      >
+        <div className="p-6">No subscription found</div>
+      </DashboardLayout>
+    );
   }
 
   const getUsagePercentage = (current: number, limit: number) => {
@@ -60,14 +92,29 @@ export default function SubscriptionPage() {
   };
 
   return (
-    <div className="space-y-6 p-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Subscription</h1>
-        <Button>Manage Billing</Button>
-      </div>
+    <DashboardLayout
+      user={user?.email ? {
+        email: user.email,
+        name: user.user_metadata?.name,
+        subscription: subscriptionData
+      } : undefined}
+    >
+      <div className="space-y-6 p-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <AnimatedHeadline
+              text="Subscription"
+              className="from-primary-600 to-accent-600 bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+            />
+            <p className="text-secondary-text mt-2">
+              Manage your subscription and track usage
+            </p>
+          </div>
+          <Button>Manage Billing</Button>
+        </div>
 
-      {/* Current Plan */}
-      <Card>
+        {/* Current Plan */}
+        <Card className="glass">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             Current Plan
@@ -86,8 +133,8 @@ export default function SubscriptionPage() {
         </CardContent>
       </Card>
 
-      {/* Usage Statistics */}
-      <Card>
+        {/* Usage Statistics */}
+        <Card className="glass">
         <CardHeader>
           <CardTitle>Usage This Month</CardTitle>
           <CardDescription>Track your usage across different features</CardDescription>
@@ -137,8 +184,8 @@ export default function SubscriptionPage() {
         </CardContent>
       </Card>
 
-      {/* Billing History */}
-      <Card>
+        {/* Billing History */}
+        <Card className="glass">
         <CardHeader>
           <CardTitle>Billing History</CardTitle>
           <CardDescription>Your recent payments and invoices</CardDescription>
@@ -155,7 +202,8 @@ export default function SubscriptionPage() {
             </div>
           </div>
         </CardContent>
-      </Card>
-    </div>
+        </Card>
+      </div>
+    </DashboardLayout>
   );
 }

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetPost - AI-Native Reselling Assistant Platform</title>
+    
+    <!-- Flowbite & Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts - Figtree -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <style>
+        /* Shadcn Theme Variables */
+        :root {
+            --background: oklch(0.9816 0.0017 247.8390);
+            --foreground: oklch(0.1408 0.0044 285.8229);
+            --card: oklch(1.0000 0 0);
+            --card-foreground: oklch(0.1408 0.0044 285.8229);
+            --popover: oklch(1.0000 0 0);
+            --popover-foreground: #09090B;
+            --primary: oklch(0.5510 0.0234 264.3637);
+            --primary-foreground: oklch(0.9816 0.0017 247.8390);
+            --secondary: oklch(0.9476 0.0190 192.8095);
+            --secondary-foreground: oklch(0.3755 0.0700 176.3952);
+            --muted: oklch(0.9670 0.0029 264.5419);
+            --muted-foreground: oklch(0.5510 0.0234 264.3637);
+            --accent: oklch(0.8708 0.0470 189.6325);
+            --accent-foreground: oklch(0.3755 0.0700 176.3952);
+            --destructive: oklch(0.6368 0.2078 25.3313);
+            --destructive-foreground: oklch(0.9816 0.0017 247.8390);
+            --border: oklch(0.9276 0.0058 264.5313);
+            --input: oklch(0.9276 0.0058 264.5313);
+            --ring: oklch(0.5166 0.0931 181.0803);
+            --font-sans: 'Figtree', sans-serif;
+            --radius: 0.5rem;
+        }
+
+        .dark {
+            --background: oklch(0.1738 0.0026 67.6532);
+            --foreground: oklch(0.9816 0.0017 247.8390);
+            --card: oklch(0.2161 0.0061 56.0434);
+            --card-foreground: oklch(0.9816 0.0017 247.8390);
+            --popover: oklch(0.2161 0.0061 56.0434);
+            --popover-foreground: oklch(0.9816 0.0017 247.8390);
+            --primary: oklch(0.7161 0.0091 56.2590);
+            --primary-foreground: oklch(0.2161 0.0061 56.0434);
+            --secondary: oklch(0.3755 0.0700 176.3952);
+            --secondary-foreground: oklch(0.9476 0.0190 192.8095);
+            --muted: oklch(0.2685 0.0063 34.2976);
+            --muted-foreground: oklch(0.7161 0.0091 56.2590);
+            --accent: oklch(0.3045 0.0567 176.3966);
+            --accent-foreground: oklch(0.8708 0.0470 189.6325);
+            --destructive: oklch(0.3958 0.1331 25.7230);
+            --destructive-foreground: oklch(0.9816 0.0017 247.8390);
+            --border: oklch(0.2685 0.0063 34.2976);
+            --input: oklch(0.2685 0.0063 34.2976);
+            --ring: oklch(0.5166 0.0931 181.0803);
+        }
+        
+        * {
+            font-family: var(--font-sans) !important;
+        }
+        
+        body {
+            background: var(--background) !important;
+            color: var(--foreground) !important;
+        }
+        
+        /* Gradient Background with Stone Tones */
+        .gradient-bg {
+            background: linear-gradient(135deg, 
+                var(--background) 0%, 
+                oklch(0.2 0.01 60) 50%, 
+                var(--background) 100%);
+        }
+        
+        /* Hero Gradient with Teal Accent */
+        .hero-gradient {
+            background: radial-gradient(ellipse 80% 50% at 50% -20%, 
+                oklch(0.5166 0.0931 181.0803 / 0.2), 
+                transparent);
+        }
+        
+        /* Glassmorphism Effect */
+        .glass {
+            background: oklch(0.2161 0.0061 56.0434 / 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+        }
+        
+        .glass-card {
+            background: var(--card);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-card:hover {
+            background: oklch(0.2361 0.0061 56.0434);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            background: var(--primary);
+            color: var(--primary-foreground);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: oklch(0.6561 0.0091 56.2590);
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--secondary-foreground);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: oklch(0.4055 0.0700 176.3952);
+            transform: translateY(-1px);
+        }
+        
+        .btn-ghost {
+            background: transparent;
+            color: var(--foreground);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-ghost:hover {
+            background: var(--muted);
+            border-color: var(--primary);
+        }
+        
+        /* Feature Card Icons */
+        .feature-icon-primary {
+            background: linear-gradient(135deg, var(--primary), var(--ring));
+        }
+        
+        .feature-icon-secondary {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+        }
+        
+        .feature-icon-accent {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+        }
+        
+        /* Text Gradient */
+        .text-gradient-primary {
+            background: linear-gradient(135deg, var(--primary), var(--ring));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .text-gradient-secondary {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Glow Effect */
+        .glow {
+            text-shadow: 0 0 20px oklch(0.5166 0.0931 181.0803 / 0.5);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    
+    <!-- Navigation -->
+    <nav class="glass fixed w-full z-50 px-6 py-4">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 feature-icon-primary rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-xl">N</span>
+                </div>
+                <span class="font-bold text-xl" style="color: var(--foreground)">NetPost</span>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#features" class="hover:opacity-100 opacity-70 transition" style="color: var(--foreground)">Features</a>
+                <a href="#how-it-works" class="hover:opacity-100 opacity-70 transition" style="color: var(--foreground)">How It Works</a>
+                <a href="#pricing" class="hover:opacity-100 opacity-70 transition" style="color: var(--foreground)">Pricing</a>
+                <a href="#about" class="hover:opacity-100 opacity-70 transition" style="color: var(--foreground)">About</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button class="btn-ghost px-6 py-2 rounded-lg font-medium">
+                    Sign In
+                </button>
+                <button class="btn-primary px-6 py-2 rounded-lg font-semibold">
+                    Get Started
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero-gradient pt-32 pb-20">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="inline-flex items-center px-4 py-2 glass-card rounded-full mb-6">
+                    <span class="mr-2">✨</span>
+                    <span class="text-sm opacity-80">AI-Powered Cross-Platform Listing</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                    Save time listing on the
+                    <span class="text-gradient-primary glow">
+                        world's largest marketplaces
+                    </span>
+                </h1>
+                
+                <p class="text-xl opacity-80 mb-10 max-w-2xl mx-auto" style="color: var(--muted-foreground)">
+                    Transform your reselling workflow with intelligent automation. List once, sell everywhere with NetPost's AI-native platform.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button class="btn-primary px-8 py-4 rounded-xl text-lg font-semibold flex items-center">
+                        <span>Start Free Trial</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+                    </button>
+                    <button class="btn-secondary px-8 py-4 rounded-xl text-lg font-medium flex items-center">
+                        <i data-lucide="play-circle" class="w-5 h-5 mr-2"></i>
+                        <span>Watch Demo</span>
+                    </button>
+                </div>
+                
+                <div class="flex items-center justify-center space-x-8 mt-12">
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-gradient-primary">10M+</p>
+                        <p class="text-sm opacity-60">Items Listed</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-gradient-secondary">50K+</p>
+                        <p class="text-sm opacity-60">Active Sellers</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-gradient-primary">99.9%</p>
+                        <p class="text-sm opacity-60">Uptime</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section id="features" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">
+                    Grow your multichannel e-commerce business
+                </h2>
+                <p class="text-lg max-w-2xl mx-auto opacity-80" style="color: var(--muted-foreground)">
+                    Powered by cutting-edge AI technology to maximize your selling potential
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass-card p-8 rounded-2xl">
+                    <div class="w-14 h-14 feature-icon-primary rounded-xl flex items-center justify-center mb-6">
+                        <i data-lucide="layers" class="w-7 h-7" style="color: var(--primary-foreground)"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">
+                        Bulk list on 15+ marketplaces
+                    </h3>
+                    <p class="mb-4 opacity-80" style="color: var(--muted-foreground)">
+                        Complete one form – list everywhere. Our AI automatically optimizes your listings for each platform's requirements.
+                    </p>
+                    <a href="#" class="flex items-center font-medium transition" style="color: var(--primary)">
+                        Learn more
+                        <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                    </a>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="glass-card p-8 rounded-2xl">
+                    <div class="w-14 h-14 feature-icon-secondary rounded-xl flex items-center justify-center mb-6">
+                        <i data-lucide="sparkles" class="w-7 h-7" style="color: var(--secondary-foreground)"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">
+                        AI-Powered Optimization
+                    </h3>
+                    <p class="mb-4 opacity-80" style="color: var(--muted-foreground)">
+                        Generate compelling listings from just an image. Get optimal pricing suggestions based on millions of data points.
+                    </p>
+                    <a href="#" class="flex items-center font-medium transition" style="color: var(--secondary)">
+                        Learn more
+                        <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                    </a>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="glass-card p-8 rounded-2xl">
+                    <div class="w-14 h-14 feature-icon-accent rounded-xl flex items-center justify-center mb-6">
+                        <i data-lucide="layout-dashboard" class="w-7 h-7" style="color: var(--accent-foreground)"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">
+                        Unified Dashboard
+                    </h3>
+                    <p class="mb-4 opacity-80" style="color: var(--muted-foreground)">
+                        Manage all your listings from one convenient interface. Track performance, handle orders, and sync inventory seamlessly.
+                    </p>
+                    <a href="#" class="flex items-center font-medium transition" style="color: var(--accent)">
+                        Learn more
+                        <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">
+                    How NetPost Works
+                </h2>
+                <p class="text-lg max-w-2xl mx-auto opacity-80" style="color: var(--muted-foreground)">
+                    Get started in minutes with our simple three-step process
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-6" 
+                         style="background: oklch(0.7161 0.0091 56.2590 / 0.15); border: 2px solid var(--primary)">
+                        <span class="text-3xl font-bold" style="color: var(--primary)">1</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Snap or Import</h3>
+                    <p class="opacity-80" style="color: var(--muted-foreground)">
+                        Take a photo of your item or import existing listings from other platforms
+                    </p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-6" 
+                         style="background: oklch(0.3755 0.0700 176.3952 / 0.15); border: 2px solid var(--secondary)">
+                        <span class="text-3xl font-bold" style="color: var(--secondary)">2</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">AI Enhancement</h3>
+                    <p class="opacity-80" style="color: var(--muted-foreground)">
+                        Our AI generates optimized titles, descriptions, and suggests pricing
+                    </p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-6" 
+                         style="background: oklch(0.3045 0.0567 176.3966 / 0.15); border: 2px solid var(--accent)">
+                        <span class="text-3xl font-bold" style="color: var(--accent)">3</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Cross-List</h3>
+                    <p class="opacity-80" style="color: var(--muted-foreground)">
+                        With one click, your item is listed across all selected marketplaces
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">
+                    What our customers are saying
+                </h2>
+                <p class="text-lg opacity-80" style="color: var(--muted-foreground)">
+                    Join thousands of successful resellers using NetPost
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex" style="color: var(--primary)">
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        </div>
+                    </div>
+                    <p class="mb-4 opacity-90">
+                        "NetPost has completely transformed my reselling business. I've tripled my listings and doubled my revenue in just 3 months!"
+                    </p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 feature-icon-primary rounded-full mr-3"></div>
+                        <div>
+                            <p class="font-semibold">Sarah Johnson</p>
+                            <p class="text-sm opacity-60">Fashion Reseller</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex" style="color: var(--secondary)">
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        </div>
+                    </div>
+                    <p class="mb-4 opacity-90">
+                        "The AI-powered pricing suggestions are spot on. I'm selling items faster and at better prices than ever before."
+                    </p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 feature-icon-secondary rounded-full mr-3"></div>
+                        <div>
+                            <p class="font-semibold">Mike Chen</p>
+                            <p class="text-sm opacity-60">Electronics Dealer</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex" style="color: var(--accent)">
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                        </div>
+                    </div>
+                    <p class="mb-4 opacity-90">
+                        "Managing inventory across platforms was a nightmare. NetPost made it effortless. Can't imagine working without it!"
+                    </p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 feature-icon-accent rounded-full mr-3"></div>
+                        <div>
+                            <p class="font-semibold">Emily Davis</p>
+                            <p class="text-sm opacity-60">Vintage Collector</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="glass-card p-12 rounded-3xl text-center">
+                <h2 class="text-4xl font-bold mb-4">
+                    Ready to transform your reselling business?
+                </h2>
+                <p class="text-lg mb-8 max-w-2xl mx-auto opacity-80" style="color: var(--muted-foreground)">
+                    Join thousands of successful sellers. Start your free trial today with our 30-day money-back guarantee.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button class="btn-primary px-8 py-4 rounded-xl text-lg font-semibold flex items-center">
+                        <span>Start Free Trial</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+                    </button>
+                    <button class="btn-secondary px-8 py-4 rounded-xl text-lg font-medium flex items-center">
+                        <i data-lucide="message-circle" class="w-5 h-5 mr-2"></i>
+                        <span>Contact Sales</span>
+                    </button>
+                </div>
+                
+                <div class="flex items-center justify-center space-x-8 mt-8">
+                    <div class="flex items-center opacity-80">
+                        <i data-lucide="check-circle" class="w-5 h-5 mr-2" style="color: var(--primary)"></i>
+                        <span>No credit card required</span>
+                    </div>
+                    <div class="flex items-center opacity-80">
+                        <i data-lucide="check-circle" class="w-5 h-5 mr-2" style="color: var(--primary)"></i>
+                        <span>30-day money back</span>
+                    </div>
+                    <div class="flex items-center opacity-80">
+                        <i data-lucide="check-circle" class="w-5 h-5 mr-2" style="color: var(--primary)"></i>
+                        <span>Cancel anytime</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="glass py-12 mt-20">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-10 h-10 feature-icon-primary rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-xl">N</span>
+                        </div>
+                        <span class="font-bold text-xl">NetPost</span>
+                    </div>
+                    <p class="opacity-70">
+                        AI-powered reselling platform for modern entrepreneurs
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Product</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="opacity-70 hover:opacity-100 transition">Features</a></li>
+                        <li><a href="#" class="opacity-70 hover:opacity-100 transition">Pricing</a></li>
+                        <li><a href="#" class="opacity-70 hover:opacity-100 transition">API</a></li>
+                        <li><a href="#" class="opacity-70 hover:opacity-100 transition">Integrations</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="opacity-70 hover:opacity-100 transition">About</a></li>
+                        <li><a href="#" class="opacity-70 hover:opacity-100 transition">Blog</a></li>
+                        <li><a href="#" class="opacity-70 hover:opacity-100 transition">Careers</a></li>
+                        <li><a href="#" class="opacity-70 hover:opacity-100 transition">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="opacity-70 hover:opacity-100 transition">Documentation</a></li>
+                        <li><a href="#" class="opacity-70 hover:opacity-100 transition">Help Center</a></li>
+                        <li><a href="#" class="opacity-70 hover:opacity-100 transition">Community</a></li>
+                        <li><a href="#" class="opacity-70 hover:opacity-100 transition">Status</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t mt-12 pt-8 flex flex-col md:flex-row items-center justify-between" style="border-color: var(--border)">
+                <p class="text-sm opacity-60">
+                    © 2025 NetPost. All rights reserved.
+                </p>
+                <div class="flex items-center space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="opacity-60 hover:opacity-100 transition">
+                        <i data-lucide="twitter" class="w-5 h-5"></i>
+                    </a>
+                    <a href="#" class="opacity-60 hover:opacity-100 transition">
+                        <i data-lucide="github" class="w-5 h-5"></i>
+                    </a>
+                    <a href="#" class="opacity-60 hover:opacity-100 transition">
+                        <i data-lucide="linkedin" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Initialize Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+</body>
+</html>

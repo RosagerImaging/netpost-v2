@@ -5,6 +5,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { DashboardLayout } from '../../../components/layout/dashboard-layout';
+import { useAuth } from '../../../lib/auth/auth-context';
+import { AnimatedHeadline } from '../../../components/ui/animated-headline';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -34,8 +37,17 @@ import { useDelistingJobs } from './hooks/useDelistingJobs';
 import { useDelistingStats } from './hooks/useDelistingStats';
 
 export default function DelistingDashboard() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
   const [showPreferences, setShowPreferences] = useState(false);
+
+  // Mock subscription data
+  const subscriptionData = {
+    tier: "Free",
+    status: "active" as const,
+    itemLimit: 10,
+    currentItems: 0,
+  };
 
   const {
     jobs,
@@ -109,47 +121,65 @@ export default function DelistingDashboard() {
 
   if (jobsError || statsError) {
     return (
-      <div className="p-6">
-        <Alert variant="destructive">
-          <AlertTriangle className="h-4 w-4" />
-          <AlertDescription>
-            Failed to load delisting dashboard. {jobsError || statsError}
-          </AlertDescription>
-        </Alert>
-      </div>
+      <DashboardLayout
+        user={user?.email ? {
+          email: user.email,
+          name: user.user_metadata?.name,
+          subscription: subscriptionData
+        } : undefined}
+      >
+        <div className="p-6">
+          <Alert variant="destructive">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription>
+              Failed to load delisting dashboard. {jobsError || statsError}
+            </AlertDescription>
+          </Alert>
+        </div>
+      </DashboardLayout>
     );
   }
 
   return (
-    <div className="p-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">De-listing Dashboard</h1>
-          <p className="text-muted-foreground">
-            Monitor and manage your automated and manual de-listing activities
-          </p>
+    <DashboardLayout
+      user={user?.email ? {
+        email: user.email,
+        name: user.user_metadata?.name,
+        subscription: subscriptionData
+      } : undefined}
+    >
+      <div className="p-6 space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <AnimatedHeadline
+              text="De-listing Dashboard"
+              className="from-primary-600 to-accent-600 bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+            />
+            <p className="text-secondary-text mt-2">
+              Monitor and manage your automated and manual de-listing activities
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRefreshAll}
+              disabled={jobsLoading || statsLoading}
+            >
+              <RefreshCw className={`h-4 w-4 mr-2 ${(jobsLoading || statsLoading) ? 'animate-spin' : ''}`} />
+              Refresh
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowPreferences(true)}
+            >
+              <Settings className="h-4 w-4 mr-2" />
+              Preferences
+            </Button>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleRefreshAll}
-            disabled={jobsLoading || statsLoading}
-          >
-            <RefreshCw className={`h-4 w-4 mr-2 ${(jobsLoading || statsLoading) ? 'animate-spin' : ''}`} />
-            Refresh
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowPreferences(true)}
-          >
-            <Settings className="h-4 w-4 mr-2" />
-            Preferences
-          </Button>
-        </div>
-      </div>
 
       {/* Quick Stats */}
       <DelistingStats stats={stats} loading={statsLoading} />
@@ -166,7 +196,7 @@ export default function DelistingDashboard() {
         <TabsContent value="overview" className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Recent Jobs Summary */}
-            <Card>
+            <Card className="glass">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Clock className="h-5 w-5" />
@@ -206,7 +236,7 @@ export default function DelistingDashboard() {
             </Card>
 
             {/* Quick Actions */}
-            <Card>
+            <Card className="glass">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Play className="h-5 w-5" />
@@ -276,7 +306,8 @@ export default function DelistingDashboard() {
             refreshStats();
           }}
         />
-      )}
-    </div>
+        )}
+      </div>
+    </DashboardLayout>
   );
 }

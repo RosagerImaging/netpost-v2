@@ -92,11 +92,11 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
     <div className="flex h-full flex-col">
       {/* Logo and App Name */}
       <div className="flex h-16 items-center border-b border-white/10 px-6">
-        <Link href="/dashboard" className="text-primary-text flex items-center gap-2">
+        <Link href="/" className="text-primary-text flex items-center gap-2 hover:opacity-80 transition-opacity">
           <Package className="h-7 w-7 text-primary-500" />
           {!isSidebarCollapsed && (
             <span className="text-xl font-semibold tracking-tight">
-              NetPost V2
+              NetPost
             </span>
           )}
         </Link>
@@ -175,7 +175,7 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background/90">
+    <div className="min-h-screen bg-gradient-to-br from-[oklch(0.1738_0.0026_67.6532)] via-[oklch(0.2161_0.0061_56.0434)] to-[oklch(0.1738_0.0026_67.6532)]" style={{ fontFamily: 'Figtree, ui-sans-serif, system-ui, sans-serif' }}>
       {/* Skip Navigation Link */}
       <a
         href="#main-content"
@@ -186,12 +186,12 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
 
       {/* Mobile Header */}
       <header
-        className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-white/10 bg-black/90 backdrop-blur-sm px-4 lg:hidden"
+        className="glass-card sticky top-0 z-30 flex h-14 items-center justify-between border-b border-white/10 px-4 lg:hidden"
         role="banner"
       >
-        <Link href="/dashboard" className="text-primary-text flex items-center gap-2">
-          <Package className="h-6 w-6 text-primary-500" />
-          <span className="text-lg font-semibold">NetPost V2</span>
+        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <Package className="h-6 w-6" style={{ color: 'oklch(0.7161 0.0091 56.2590)' }} />
+          <span className="text-lg font-semibold text-gradient-primary">NetPost</span>
         </Link>
 
         <div className="flex items-center gap-2">
@@ -230,7 +230,7 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
       >
         <aside
           id="mobile-navigation"
-          className="fixed top-0 left-0 h-full w-72 max-w-[80vw] border-r border-white/10 bg-black/95 backdrop-blur-md"
+          className="glass fixed top-0 left-0 h-full w-72 max-w-[80vw] border-r border-white/10"
           onClick={(e) => e.stopPropagation()}
           role="navigation"
           aria-label="Mobile navigation"
@@ -243,7 +243,7 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
         {/* Desktop Sidebar */}
         <aside
           className={cn(
-            "relative hidden h-screen border-r border-white/10 bg-black/95 backdrop-blur-md transition-all duration-300 ease-in-out lg:block",
+            "glass relative hidden h-screen border-r border-white/10 transition-all duration-300 ease-in-out lg:block",
             isSidebarCollapsed ? "w-20" : "w-72"
           )}
           role="navigation"

@@ -14,7 +14,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "NetPost V2 - AI-Native Reselling Assistant",
+  title: "NetPost - AI-Native Reselling Assistant",
   description: "Transform your reselling workflow with intelligent automation",
 };
 
