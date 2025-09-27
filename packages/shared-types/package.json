@@ -1,7 +1,7 @@
 {
   "name": "@netpost/shared-types",
   "version": "0.1.0",
-  "description": "Shared TypeScript type definitions for NetPost V2",
+  "description": "Shared TypeScript type definitions for NetPost",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

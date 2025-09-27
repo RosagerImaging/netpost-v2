@@ -27,7 +27,7 @@
   position: absolute;
   top: -40px;
   left: 6px;
-  background: #00BFFF;
+  background: oklch(0.7161 0.0091 56.2590);
   color: white;
   padding: 8px;
   text-decoration: none;
@@ -43,9 +43,9 @@
 
 /* Enhanced Focus Indicators */
 .focus-visible {
-  outline: 2px solid #00BFFF !important;
+  outline: 2px solid oklch(0.7161 0.0091 56.2590) !important;
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(0, 191, 255, 0.2);
+  box-shadow: 0 0 0 4px oklch(0.5166 0.0931 181.0803 / 0.2);
 }
 
 /* High Contrast Support */
@@ -93,9 +93,9 @@ textarea:focus-visible,
 [role="button"]:focus-visible,
 [role="tab"]:focus-visible,
 [role="menuitem"]:focus-visible {
-  outline: 2px solid #00BFFF;
+  outline: 2px solid oklch(0.7161 0.0091 56.2590);
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(0, 191, 255, 0.2);
+  box-shadow: 0 0 0 4px oklch(0.5166 0.0931 181.0803 / 0.2);
 }
 
 /* Error States with High Visibility */
@@ -147,7 +147,7 @@ textarea:focus-visible,
 
 [aria-selected="true"] {
   /* Selected state styling */
-  background-color: rgba(0, 191, 255, 0.1);
+  background-color: oklch(0.7161 0.0091 56.2590 / 0.1);
 }
 
 [aria-disabled="true"] {

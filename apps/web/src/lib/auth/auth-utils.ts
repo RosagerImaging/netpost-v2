@@ -1,5 +1,5 @@
 /**
- * Authentication utilities for NetPost V2
+ * Authentication utilities for NetPost
  * Provides authentication service methods and validation functions
  */
 

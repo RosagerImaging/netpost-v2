@@ -11,18 +11,18 @@ This document bridges the gap between the UI specification requirements and the 
 ```css
 :root {
   /* Brand Colors */
-  --color-primary: #00BFFF;         /* DeepSkyBlue */
-  --color-primary-dark: #0099CC;    /* Darker variant */
-  --color-primary-light: #33CCFF;   /* Lighter variant */
+  --color-primary: oklch(0.7161 0.0091 56.2590);    /* Primary Teal */
+  --color-primary-dark: oklch(0.5166 0.0931 181.0803);  /* Darker teal variant */
+  --color-primary-light: oklch(0.8161 0.0091 56.2590);  /* Lighter teal variant */
 
-  --color-accent: #FFD700;          /* Gold */
-  --color-accent-dark: #E6C200;     /* Darker gold */
-  --color-accent-light: #FFEB66;    /* Lighter gold */
+  --color-accent: oklch(0.3755 0.0700 176.3952);        /* Secondary Stone */
+  --color-accent-dark: oklch(0.3045 0.0567 176.3966);   /* Darker stone */
+  --color-accent-light: oklch(0.4755 0.0700 176.3952);  /* Lighter stone */
 
   /* Dark Theme Background System */
-  --color-background-primary: #0A0A0B;     /* Near black */
-  --color-background-secondary: #1A1A1C;   /* Dark gray */
-  --color-background-tertiary: #2A2A2D;    /* Medium dark */
+  --color-background-primary: oklch(0.1738 0.0026 67.6532);   /* Background Dark */
+  --color-background-secondary: oklch(0.2161 0.0061 56.0434); /* Card/Surface */
+  --color-background-tertiary: oklch(0.3045 0.0567 176.3966); /* Accent background */
 
   /* Text Colors */
   --color-text-primary: #F5F5F7;     /* Off-white */
@@ -51,7 +51,7 @@ This document bridges the gap between the UI specification requirements and the 
 ```css
 :root {
   /* Font Family */
-  --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-sans: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-family-mono: 'JetBrains Mono', 'Menlo', 'Monaco', monospace;
 
   /* Font Sizes (8-point scale) */

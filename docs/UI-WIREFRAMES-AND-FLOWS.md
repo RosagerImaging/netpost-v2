@@ -14,8 +14,8 @@ This document provides detailed wireframes and interaction flows for the NetPost
 - `@reui/data-grid-table` - Advanced data table with sorting/filtering
 
 ### Design System Foundation
-- **Color Palette**: DeepSkyBlue (#00BFFF) primary, Gold (#FFD700) accent, dark theme
-- **Typography**: Inter font family
+- **Color Palette**: Teal (`oklch(0.7161 0.0091 56.2590)`) primary, Stone (`oklch(0.3755 0.0700 176.3952)`) accent, dark theme
+- **Typography**: Figtree font family
 - **Grid**: 8-point grid system
 - **Style**: Glassmorphism effects with minimalist line-art icons
 

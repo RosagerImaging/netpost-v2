@@ -1,5 +1,5 @@
 /**
- * Email Service for NetPost V2
+ * Email Service for NetPost
  * Handles email delivery using Resend with fallback options
  */
 

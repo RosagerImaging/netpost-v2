@@ -145,16 +145,16 @@ Visual Identity
 The identity will be clean, modern, and minimalist, built upon a monochromatic, dark-themed aesthetic with generous use of negative space.
 
 Color Palette
-Primary: #00BFFF (DeepSkyBlue) - For primary interactive elements.
+Primary: `oklch(0.7161 0.0091 56.2590)` (Teal) - For primary interactive elements.
 
-Accent: #FFD700 (Gold) - For secondary highlights.
+Accent: `oklch(0.3755 0.0700 176.3952)` (Stone) - For secondary highlights.
 
-Backgrounds: A palette of near-black and dark grays.
+Backgrounds: `oklch(0.1738 0.0026 67.6532)` (Background Dark), `oklch(0.2161 0.0061 56.0434)` (Card/Surface).
 
 Text & Borders: Off-white and light grays.
 
 Typography
-Primary Font: Inter.
+Primary Font: Figtree.
 
 Layout & Spacing
 Grid System: A strict 8-point grid system.

@@ -90,7 +90,7 @@ async function verifyConnection() {
 }
 
 async function main() {
-  console.log('🗄️  NetPost V2 Subscription System Migration');
+  console.log('🗄️  NetPost Subscription System Migration');
   console.log('===============================================');
 
   // Verify connection first

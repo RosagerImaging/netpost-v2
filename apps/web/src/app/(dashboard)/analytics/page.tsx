@@ -41,6 +41,8 @@ import {
   TabsTrigger,
 } from "@netpost/ui";
 import { cn } from "@netpost/ui";
+import { useAuth } from "../../../lib/auth/auth-context";
+import { DashboardLayout } from "../../../components/layout/dashboard-layout";
 
 // Mock data for demonstration
 const metrics = {
@@ -119,8 +121,15 @@ const topCategories = [
 ];
 
 export default function AnalyticsPage() {
+  const { user } = useAuth();
   const [timeRange, setTimeRange] = useState("30d");
   const [selectedPlatform, setSelectedPlatform] = useState("all");
+
+  // Mock subscription data - in real app, this would come from API
+  const subscriptionData = {
+    tier: "Professional",
+    status: "active",
+  };
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -148,8 +157,15 @@ export default function AnalyticsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/5 p-6">
-      <div className="mx-auto max-w-7xl space-y-8">
+    <DashboardLayout
+      user={user?.email ? {
+        email: user.email,
+        name: user.user_metadata?.name,
+        subscription: subscriptionData
+      } : undefined}
+    >
+      <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/5 p-6">
+        <div className="mx-auto max-w-7xl space-y-8">
         {/* Header */}
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-4">
@@ -513,7 +529,8 @@ export default function AnalyticsPage() {
             </div>
           </CardContent>
         </Card>
+        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

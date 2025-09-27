@@ -1,7 +1,7 @@
 {
   "name": "@netpost/config",
   "version": "0.1.0",
-  "description": "Shared configuration for NetPost V2 monorepo",
+  "description": "Shared configuration for NetPost monorepo",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

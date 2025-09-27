@@ -92,10 +92,10 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
     <div className="flex h-full flex-col">
       {/* Logo and App Name */}
       <div className="flex h-16 items-center border-b border-white/10 px-6">
-        <Link href="/" className="text-primary-text flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <Package className="h-7 w-7 text-primary-500" />
+        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <Package className="h-7 w-7" style={{ color: 'oklch(0.7161 0.0091 56.2590)' }} />
           {!isSidebarCollapsed && (
-            <span className="text-xl font-semibold tracking-tight">
+            <span className="text-xl font-semibold tracking-tight text-gradient-primary">
               NetPost
             </span>
           )}
@@ -120,9 +120,9 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
       <div className="mt-auto border-t border-white/10 p-4">
         {/* Subscription Status */}
         {user?.subscription && !isSidebarCollapsed && (
-          <div className="mb-3 p-2 bg-primary-500/10 rounded-md">
-            <div className="text-xs text-secondary-text">Subscription</div>
-            <div className="text-sm font-medium text-primary-text" data-testid="subscription-tier">
+          <div className="mb-3 p-2 rounded-md" style={{ backgroundColor: 'oklch(0.7161 0.0091 56.2590 / 0.1)' }}>
+            <div className="text-xs" style={{ color: 'oklch(0.7161 0.0091 56.2590)' }}>Subscription</div>
+            <div className="text-sm font-medium" style={{ color: 'oklch(0.9816 0.0017 247.8390)' }} data-testid="subscription-tier">
               {user.subscription.tier} Plan
             </div>
           </div>
@@ -230,7 +230,7 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
       >
         <aside
           id="mobile-navigation"
-          className="glass fixed top-0 left-0 h-full w-72 max-w-[80vw] border-r border-white/10"
+          className="glass-card fixed top-0 left-0 h-full w-72 max-w-[80vw] border-r border-white/10"
           onClick={(e) => e.stopPropagation()}
           role="navigation"
           aria-label="Mobile navigation"
@@ -243,7 +243,7 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
         {/* Desktop Sidebar */}
         <aside
           className={cn(
-            "glass relative hidden h-screen border-r border-white/10 transition-all duration-300 ease-in-out lg:block",
+            "glass-card relative hidden h-screen border-r border-white/10 transition-all duration-300 ease-in-out lg:block",
             isSidebarCollapsed ? "w-20" : "w-72"
           )}
           role="navigation"

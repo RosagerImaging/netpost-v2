@@ -7,32 +7,36 @@ export const netpostTailwindConfig: Partial<Config> = {
       colors: {
         // NetPost Brand Colors
         primary: {
-          50: "#e6f8ff",
-          100: "#b3efff",
-          200: "#80e6ff",
-          300: "#4dddff",
-          400: "#1ad4ff",
-          500: "#00BFFF", // DeepSkyBlue - Primary
-          600: "#0099cc",
-          700: "#007399",
-          800: "#004d66",
-          900: "#002633",
+          50: "oklch(0.9161 0.0091 56.2590)",
+          100: "oklch(0.8661 0.0091 56.2590)",
+          200: "oklch(0.8161 0.0091 56.2590)",
+          300: "oklch(0.7661 0.0091 56.2590)",
+          400: "oklch(0.7411 0.0091 56.2590)",
+          500: "oklch(0.7161 0.0091 56.2590)", // Primary Teal
+          600: "oklch(0.6661 0.0091 56.2590)",
+          700: "oklch(0.6161 0.0091 56.2590)",
+          800: "oklch(0.5661 0.0091 56.2590)",
+          900: "oklch(0.5166 0.0931 181.0803)",
         },
         accent: {
-          50: "#fffdf0",
-          100: "#fffad1",
-          200: "#fff7a3",
-          300: "#fff374",
-          400: "#fff046",
-          500: "#FFD700", // Gold - Accent
-          600: "#ccac00",
-          700: "#998100",
-          800: "#665600",
-          900: "#332b00",
+          50: "oklch(0.8755 0.0400 176.3952)",
+          100: "oklch(0.7755 0.0500 176.3952)",
+          200: "oklch(0.6755 0.0600 176.3952)",
+          300: "oklch(0.5755 0.0650 176.3952)",
+          400: "oklch(0.4755 0.0700 176.3952)",
+          500: "oklch(0.3755 0.0700 176.3952)", // Secondary Stone
+          600: "oklch(0.3545 0.0650 176.3952)",
+          700: "oklch(0.3345 0.0600 176.3952)",
+          800: "oklch(0.3145 0.0580 176.3952)",
+          900: "oklch(0.3045 0.0567 176.3966)",
         },
         // Dark theme backgrounds and surfaces
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        "background-dark": "oklch(0.1738 0.0026 67.6532)",
+        "card-surface": "oklch(0.2161 0.0061 56.0434)",
+        "accent-bg": "oklch(0.3045 0.0567 176.3966)",
+        "ring-focus": "oklch(0.5166 0.0931 181.0803)",
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
@@ -67,7 +71,7 @@ export const netpostTailwindConfig: Partial<Config> = {
         },
       },
       fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui"],
+        sans: ["Figtree", "ui-sans-serif", "system-ui"],
       },
       fontSize: {
         // Typography scale based on front-end spec

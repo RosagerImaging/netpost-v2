@@ -54,70 +54,70 @@ export default function DashboardPage() {
         <div className="mb-8">
           <AnimatedHeadline
             text={`Welcome back${userName ? `, ${userName}` : ''}!`}
-            className="from-primary-600 to-accent-600 mb-2 bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
+            className="text-gradient-primary mb-2 text-3xl font-bold"
           />
-          <p className="text-secondary-text">
+          <p style={{ color: 'oklch(0.7161 0.0091 56.2590)' }}>
             Here's what's happening with your reselling business today.
           </p>
         </div>
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="glass">
+          <Card className="glass-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Items</CardTitle>
-              <Package className="h-4 w-4 text-primary-500" />
+              <Package className="h-4 w-4" style={{ color: 'oklch(0.7161 0.0091 56.2590)' }} />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-primary-text">
+              <div className="text-2xl font-bold" style={{ color: 'oklch(0.9816 0.0017 247.8390)' }}>
                 {mockStats.totalItems}
               </div>
-              <p className="text-xs text-secondary-text">
+              <p className="text-xs" style={{ color: 'oklch(0.7161 0.0091 56.2590)' }}>
                 {subscriptionData.itemLimit - mockStats.totalItems} remaining in {subscriptionData.tier} plan
               </p>
             </CardContent>
           </Card>
 
-          <Card className="glass">
+          <Card className="glass-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Value</CardTitle>
-              <DollarSign className="h-4 w-4 text-primary-500" />
+              <DollarSign className="h-4 w-4" style={{ color: 'oklch(0.7161 0.0091 56.2590)' }} />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-primary-text">
+              <div className="text-2xl font-bold" style={{ color: 'oklch(0.9816 0.0017 247.8390)' }}>
                 ${mockStats.totalValue.toFixed(2)}
               </div>
-              <p className="text-xs text-secondary-text">
+              <p className="text-xs" style={{ color: 'oklch(0.7161 0.0091 56.2590)' }}>
                 Estimated inventory value
               </p>
             </CardContent>
           </Card>
 
-          <Card className="glass">
+          <Card className="glass-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Potential Profit</CardTitle>
-              <TrendingUp className="h-4 w-4 text-green-400" />
+              <TrendingUp className="h-4 w-4" style={{ color: 'oklch(0.3755 0.0700 176.3952)' }} />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-400">
+              <div className="text-2xl font-bold" style={{ color: 'oklch(0.3755 0.0700 176.3952)' }}>
                 ${mockStats.potentialProfit.toFixed(2)}
               </div>
-              <p className="text-xs text-secondary-text">
+              <p className="text-xs" style={{ color: 'oklch(0.7161 0.0091 56.2590)' }}>
                 From current inventory
               </p>
             </CardContent>
           </Card>
 
-          <Card className="glass">
+          <Card className="glass-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Active Listings</CardTitle>
-              <BarChart3 className="h-4 w-4 text-primary-500" />
+              <BarChart3 className="h-4 w-4" style={{ color: 'oklch(0.7161 0.0091 56.2590)' }} />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-primary-text">
+              <div className="text-2xl font-bold" style={{ color: 'oklch(0.9816 0.0017 247.8390)' }}>
                 {mockStats.activeListing}
               </div>
-              <p className="text-xs text-secondary-text">
+              <p className="text-xs" style={{ color: 'oklch(0.7161 0.0091 56.2590)' }}>
                 Across all platforms
               </p>
             </CardContent>

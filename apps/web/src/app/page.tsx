@@ -31,7 +31,7 @@ export default function Home() {
     );
   }
   return (
-    <div className="from-background via-primary-50/20 to-accent-50/20 min-h-screen bg-gradient-to-br">
+    <div className="min-h-screen bg-gradient-to-br from-[oklch(0.1738_0.0026_67.6532)] via-[oklch(0.2161_0.0061_56.0434)] to-[oklch(0.1738_0.0026_67.6532)]" style={{ fontFamily: 'Figtree, ui-sans-serif, system-ui, sans-serif' }}>
       <div className="container mx-auto px-4 py-16">
         {/* Hero Section */}
         <div className="mb-16 text-center">
@@ -39,13 +39,13 @@ export default function Home() {
             <StackedAnimatedHeadline
               lines={["AI NATIVE", "CROSSLISTING"]}
               gradientLine={1}
-              className="text-5xl md:text-8xl font-bold"
+              className="text-5xl md:text-8xl font-bold text-gradient-primary"
             />
           </div>
-          <p className="text-muted-foreground mx-auto mb-8 max-w-3xl text-xl md:text-2xl">
+          <p className="mx-auto mb-8 max-w-3xl text-xl md:text-2xl" style={{ color: 'oklch(0.9816 0.0017 247.8390)' }}>
             AI-Native Reselling Assistant Platform
           </p>
-          <p className="text-muted-foreground mx-auto mb-12 max-w-2xl text-lg">
+          <p className="mx-auto mb-12 max-w-2xl text-lg" style={{ color: 'oklch(0.7161 0.0091 56.2590)' }}>
             Transform your reselling workflow with intelligent automation,
             cross-platform management, and data-driven insights.
           </p>

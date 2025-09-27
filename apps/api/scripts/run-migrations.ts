@@ -37,7 +37,7 @@ async function main() {
 
     default:
       console.log(`
-🗄️  NetPost V2 Database Migration Tool
+🗄️  NetPost Database Migration Tool
 
 Usage: tsx run-migrations.ts [command]
 

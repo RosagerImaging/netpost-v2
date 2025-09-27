@@ -1,7 +1,7 @@
 /**
  * Database Migration System
  *
- * Manages database schema versions and migrations for NetPost V2
+ * Manages database schema versions and migrations for NetPost
  * Provides rollback capabilities and migration tracking
  */
 

@@ -96,9 +96,9 @@ npm install <package> --save-dev
 
 NetPost V2 uses a custom design system built on Tailwind CSS with the following brand colors:
 
-- **Primary**: `#00BFFF` (DeepSkyBlue) - Used for primary actions and branding
-- **Accent**: `#FFD700` (Gold) - Used for highlights and secondary actions
-- **Typography**: Inter font family with deliberate sizing scale
+- **Primary**: `oklch(0.7161 0.0091 56.2590)` (Teal) - Used for primary actions and branding
+- **Accent**: `oklch(0.3755 0.0700 176.3952)` (Stone) - Used for highlights and secondary actions
+- **Typography**: Figtree font family with deliberate sizing scale
 - **Layout**: 8-point grid system for consistent spacing
 - **Components**: Built on Shadcn/ui for accessibility and consistency
 

@@ -230,7 +230,7 @@ export function Button({
 </Button>
 
 // Avoid - custom styles
-<Button style={{ backgroundColor: "#00BFFF", padding: "8px 16px" }}>
+<Button style={{ backgroundColor: "oklch(0.7161 0.0091 56.2590)", padding: "8px 16px" }}>
   Submit
 </Button>
 ```
