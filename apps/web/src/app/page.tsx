@@ -6,9 +6,35 @@ import Link from "next/link";
 import { useIsAuthenticated } from "../../lib/auth/auth-hooks";
 import { Button } from "@netpost/ui";
 
+// TypeScript declaration for Unicorn Studio
+declare global {
+  interface Window {
+    UnicornStudio: {
+      isInitialized: boolean;
+      init?: () => void;
+    };
+  }
+}
+
 export default function Home() {
   const { isAuthenticated, loading } = useIsAuthenticated();
   const router = useRouter();
+
+  // Load Unicorn Studio script
+  useEffect(() => {
+    if (!window.UnicornStudio) {
+      window.UnicornStudio = { isInitialized: false };
+      const script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.31/dist/unicornStudio.umd.js";
+      script.onload = function() {
+        if (!window.UnicornStudio.isInitialized && window.UnicornStudio.init) {
+          window.UnicornStudio.init();
+          window.UnicornStudio.isInitialized = true;
+        }
+      };
+      (document.head || document.body).appendChild(script);
+    }
+  }, []);
 
   // Allow authenticated users to view homepage
 
@@ -180,12 +206,6 @@ export default function Home() {
         {/* Unicorn Studio Shader Container */}
         <div id="unicorn-studio">
           <div data-us-project="7f0drgFbmWvRGUypjDmw" style={{width:'1440px', height: '900px'}}></div>
-          <script
-            type="text/javascript"
-            dangerouslySetInnerHTML={{
-              __html: `!function(){if(!window.UnicornStudio){window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.31/dist/unicornStudio.umd.js",i.onload=function(){window.UnicornStudio.isInitialized||(UnicornStudio.init(),window.UnicornStudio.isInitialized=!0)},(document.head || document.body).appendChild(i)}}();`
-            }}
-          />
         </div>
 
         {/* Hero Content */}
