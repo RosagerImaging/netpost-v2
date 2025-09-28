@@ -67,10 +67,27 @@ export default function Home() {
           position: absolute;
           top: 10%;
           right: 5%;
-          width: 50%;
-          height: 80%;
+          width: 1440px;
+          height: 900px;
           z-index: 1;
           pointer-events: none;
+          box-sizing: border-box;
+          mix-blend-mode: screen;
+        }
+
+        #unicorn-studio > div {
+          width: 100% !important;
+          height: 100% !important;
+          position: absolute;
+          top: 0;
+          left: 0;
+          box-sizing: border-box;
+          mix-blend-mode: screen;
+        }
+
+        #unicorn-studio canvas {
+          background: transparent !important;
+          mix-blend-mode: screen;
         }
 
         .hero-content {
@@ -162,7 +179,7 @@ export default function Home() {
       <section className="hero-section">
         {/* Unicorn Studio Shader Container */}
         <div id="unicorn-studio">
-          <div data-us-project="7f0drgFbmWvRGUypjDmw" style={{width:'720px', height: '720px'}}></div>
+          <div data-us-project="7f0drgFbmWvRGUypjDmw" style={{width:'1440px', height: '900px'}}></div>
           <script
             type="text/javascript"
             dangerouslySetInnerHTML={{
