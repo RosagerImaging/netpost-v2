@@ -1,0 +1,529 @@
+14:58:39.061 Running build in Washington, D.C., USA (East) – iad1
+14:58:39.062 Build machine configuration: 2 cores, 8 GB
+14:58:39.093 Cloning github.com/RosagerImaging/netpost-v2 (Branch: main, Commit: af74a7f)
+14:58:40.622 Warning: Failed to fetch one or more git submodules
+14:58:40.622 Cloning completed: 1.529s
+14:58:40.855 Restored build cache from previous deployment (6s4ZbPSBBHgGAaF3vmQiHhdgJRqZ)
+14:58:40.952 Running "git diff --quiet HEAD^ HEAD -- apps/web/src vercel.json package.json && exit 1 || exit 0"
+14:58:41.690 Running "vercel build"
+14:58:42.095 [90mVercel CLI 48.1.6[39m
+14:58:42.257 [90m>[39m Detected Turbo. Adjusting default settings...
+14:58:42.461 Running "install" command: `npm install --include=dev --legacy-peer-deps`...
+14:58:46.153 
+14:58:46.154 added 1 package, and audited 628 packages in 3s
+14:58:46.154 
+14:58:46.154 184 packages are looking for funding
+14:58:46.155   run `npm fund` for details
+14:58:46.155 
+14:58:46.155 found 0 vulnerabilities
+14:58:46.186 Detected Next.js version: 15.5.4
+14:58:46.186 Running "turbo build --filter=web"
+14:58:48.119 [2m• Packages in scope: web[0m
+14:58:48.119 [2m• Running [0m[1m[2mbuild[0m[2m in 1 packages
+14:58:48.120 [0m[2m• Remote caching enabled[0m
+14:58:48.273 [32m@netpost/shared-types:build: [0mcache miss, executing [2mf9d5aa06c986fc45[0m
+14:58:48.275 [35m@netpost/config:build: [0mcache miss, executing [2m274f192095973db5[0m
+14:58:48.303 [36m@netpost/ui:build: [0mcache miss, executing [2m64996888012242ab[0m
+14:58:48.515 [35m@netpost/config:build: [0m
+14:58:48.517 [35m@netpost/config:build: [0m> @netpost/config@0.1.0 build
+14:58:48.517 [35m@netpost/config:build: [0m> tsup
+14:58:48.518 [35m@netpost/config:build: [0m
+14:58:48.633 [32m@netpost/shared-types:build: [0m
+14:58:48.634 [32m@netpost/shared-types:build: [0m> @netpost/shared-types@0.1.0 build
+14:58:48.634 [32m@netpost/shared-types:build: [0m> tsup
+14:58:48.634 [32m@netpost/shared-types:build: [0m
+14:58:48.673 [36m@netpost/ui:build: [0m
+14:58:48.674 [36m@netpost/ui:build: [0m> @netpost/ui@0.1.0 build
+14:58:48.674 [36m@netpost/ui:build: [0m> tsup
+14:58:48.674 [36m@netpost/ui:build: [0m
+14:58:49.697 [35m@netpost/config:build: [0m[34mCLI[39m Building entry: src/index.ts
+14:58:49.700 [35m@netpost/config:build: [0m[34mCLI[39m Using tsconfig: tsconfig.json
+14:58:49.704 [35m@netpost/config:build: [0m[34mCLI[39m tsup v8.5.0
+14:58:49.704 [35m@netpost/config:build: [0m[34mCLI[39m Using tsup config: /vercel/path0/packages/config/tsup.config.ts
+14:58:49.723 [35m@netpost/config:build: [0m[34mCLI[39m Target: es2020
+14:58:49.725 [35m@netpost/config:build: [0m[34mCLI[39m Cleaning output folder
+14:58:49.727 [35m@netpost/config:build: [0m[34mCJS[39m Build start
+14:58:49.727 [35m@netpost/config:build: [0m[34mESM[39m Build start
+14:58:49.734 [36m@netpost/ui:build: [0m[34mCLI[39m Building entry: src/index.ts
+14:58:49.735 [36m@netpost/ui:build: [0m[34mCLI[39m Using tsconfig: tsconfig.json
+14:58:49.738 [36m@netpost/ui:build: [0m[34mCLI[39m tsup v8.5.0
+14:58:49.739 [36m@netpost/ui:build: [0m[34mCLI[39m Using tsup config: /vercel/path0/packages/ui/tsup.config.ts
+14:58:49.751 [36m@netpost/ui:build: [0m[34mCLI[39m Target: es2020
+14:58:49.761 [35m@netpost/config:build: [0m[32mCJS[39m [1mdist/index.cjs     [22m[32m6.69 KB[39m
+14:58:49.761 [35m@netpost/config:build: [0m[32mCJS[39m [1mdist/index.cjs.map [22m[32m9.22 KB[39m
+14:58:49.762 [35m@netpost/config:build: [0m[32mCJS[39m ⚡️ Build success in 34ms
+14:58:49.762 [35m@netpost/config:build: [0m[32mESM[39m [1mdist/index.js     [22m[32m5.47 KB[39m
+14:58:49.762 [35m@netpost/config:build: [0m[32mESM[39m [1mdist/index.js.map [22m[32m8.85 KB[39m
+14:58:49.764 [35m@netpost/config:build: [0m[32mESM[39m ⚡️ Build success in 33ms
+14:58:49.765 [36m@netpost/ui:build: [0m[34mCLI[39m Cleaning output folder
+14:58:49.766 [36m@netpost/ui:build: [0m[34mESM[39m Build start
+14:58:49.777 [32m@netpost/shared-types:build: [0m[34mCLI[39m Building entry: src/index.ts
+14:58:49.783 [32m@netpost/shared-types:build: [0m[34mCLI[39m Using tsconfig: tsconfig.json
+14:58:49.791 [32m@netpost/shared-types:build: [0m[34mCLI[39m tsup v8.5.0
+14:58:49.791 [32m@netpost/shared-types:build: [0m[34mCLI[39m Using tsup config: /vercel/path0/packages/shared-types/tsup.config.ts
+14:58:49.805 [32m@netpost/shared-types:build: [0m[34mCLI[39m Target: es2020
+14:58:49.823 [32m@netpost/shared-types:build: [0m[34mCLI[39m Cleaning output folder
+14:58:49.825 [32m@netpost/shared-types:build: [0m[34mCJS[39m Build start
+14:58:49.825 [32m@netpost/shared-types:build: [0m[34mESM[39m Build start
+14:58:49.832 [36m@netpost/ui:build: [0m[32mESM[39m [1mdist/index.js     [22m[32m25.61 KB[39m
+14:58:49.832 [36m@netpost/ui:build: [0m[32mESM[39m [1mdist/index.js.map [22m[32m42.14 KB[39m
+14:58:49.832 [36m@netpost/ui:build: [0m[32mESM[39m ⚡️ Build success in 64ms
+14:58:49.884 [32m@netpost/shared-types:build: [0m[32mCJS[39m [1mdist/index.cjs     [22m[32m6.45 KB[39m
+14:58:49.885 [32m@netpost/shared-types:build: [0m[32mCJS[39m [1mdist/index.cjs.map [22m[32m28.47 KB[39m
+14:58:49.885 [32m@netpost/shared-types:build: [0m[32mCJS[39m ⚡️ Build success in 60ms
+14:58:49.886 [32m@netpost/shared-types:build: [0m[32mESM[39m [1mdist/index.js     [22m[32m4.74 KB[39m
+14:58:49.886 [32m@netpost/shared-types:build: [0m[32mESM[39m [1mdist/index.js.map [22m[32m24.53 KB[39m
+14:58:49.886 [32m@netpost/shared-types:build: [0m[32mESM[39m ⚡️ Build success in 60ms
+14:58:50.662 [32m@netpost/shared-types:build: [0m[34mDTS[39m Build start
+14:58:50.665 [36m@netpost/ui:build: [0m[34mDTS[39m Build start
+14:58:50.722 [35m@netpost/config:build: [0m[34mDTS[39m Build start
+14:58:56.376 [35m@netpost/config:build: [0m[32mDTS[39m ⚡️ Build success in 5655ms
+14:58:56.382 [35m@netpost/config:build: [0m[32mDTS[39m [1mdist/index.d.cts [22m[32m2.86 KB[39m
+14:58:56.383 [35m@netpost/config:build: [0m[32mDTS[39m [1mdist/index.d.ts  [22m[32m2.86 KB[39m
+14:58:56.987 [32m@netpost/shared-types:build: [0m[32mDTS[39m ⚡️ Build success in 6326ms
+14:58:56.989 [32m@netpost/shared-types:build: [0m[32mDTS[39m [1mdist/index.d.cts [22m[32m66.56 KB[39m
+14:58:56.989 [32m@netpost/shared-types:build: [0m[32mDTS[39m [1mdist/index.d.ts  [22m[32m66.56 KB[39m
+14:58:58.269 [36m@netpost/ui:build: [0m[32mDTS[39m ⚡️ Build success in 7604ms
+14:58:58.270 [36m@netpost/ui:build: [0m[32mDTS[39m [1mdist/index.d.ts [22m[32m8.07 KB[39m
+14:58:58.420 [33mweb:build: [0mcache miss, executing [2m5f889b46a9ca7234[0m
+14:58:58.551 [33mweb:build: [0m
+14:58:58.552 [33mweb:build: [0m> web@0.1.0 build
+14:58:58.552 [33mweb:build: [0m> next build
+14:58:58.552 [33mweb:build: [0m
+14:58:59.600 [33mweb:build: [0m   [1m[38;2;173;127;168m▲ Next.js 15.5.4[39m[22m
+14:58:59.601 [33mweb:build: [0m   - Experiments (use with caution):
+14:58:59.601 [33mweb:build: [0m     · serverActions
+14:58:59.601 [33mweb:build: [0m     · optimizePackageImports
+14:58:59.601 [33mweb:build: [0m
+14:58:59.637 [33mweb:build: [0m [37m[1m [22m[39m Creating an optimized production build ...
+14:59:18.516 [33mweb:build: [0m [33m[1m⚠[22m[39m Compiled with warnings in 18.8s
+14:59:18.517 [33mweb:build: [0m
+14:59:18.518 [33mweb:build: [0m./src/app/(dashboard)/analytics/page.tsx
+14:59:18.518 [33mweb:build: [0mAttempted import error: 'Progress' is not exported from '@netpost/ui' (imported as 'Progress').
+14:59:18.518 [33mweb:build: [0m
+14:59:18.518 [33mweb:build: [0mImport trace for requested module:
+14:59:18.518 [33mweb:build: [0m./src/app/(dashboard)/analytics/page.tsx
+14:59:18.518 [33mweb:build: [0m
+14:59:18.518 [33mweb:build: [0m./src/app/(dashboard)/analytics/page.tsx
+14:59:18.519 [33mweb:build: [0mAttempted import error: 'Badge' is not exported from '@netpost/ui' (imported as 'Badge').
+14:59:18.519 [33mweb:build: [0m
+14:59:18.519 [33mweb:build: [0mImport trace for requested module:
+14:59:18.519 [33mweb:build: [0m./src/app/(dashboard)/analytics/page.tsx
+14:59:18.519 [33mweb:build: [0m
+14:59:18.519 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.519 [33mweb:build: [0mAttempted import error: 'Tabs' is not exported from '@netpost/ui' (imported as 'Tabs').
+14:59:18.519 [33mweb:build: [0m
+14:59:18.519 [33mweb:build: [0mImport trace for requested module:
+14:59:18.519 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.519 [33mweb:build: [0m
+14:59:18.520 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.520 [33mweb:build: [0mAttempted import error: 'TabsList' is not exported from '@netpost/ui' (imported as 'TabsList').
+14:59:18.520 [33mweb:build: [0m
+14:59:18.520 [33mweb:build: [0mImport trace for requested module:
+14:59:18.520 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.520 [33mweb:build: [0m
+14:59:18.520 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.520 [33mweb:build: [0mAttempted import error: 'TabsTrigger' is not exported from '@netpost/ui' (imported as 'TabsTrigger').
+14:59:18.520 [33mweb:build: [0m
+14:59:18.520 [33mweb:build: [0mImport trace for requested module:
+14:59:18.520 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.520 [33mweb:build: [0m
+14:59:18.520 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.520 [33mweb:build: [0mAttempted import error: 'TabsTrigger' is not exported from '@netpost/ui' (imported as 'TabsTrigger').
+14:59:18.520 [33mweb:build: [0m
+14:59:18.521 [33mweb:build: [0mImport trace for requested module:
+14:59:18.521 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.521 [33mweb:build: [0m
+14:59:18.521 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.521 [33mweb:build: [0mAttempted import error: 'TabsTrigger' is not exported from '@netpost/ui' (imported as 'TabsTrigger').
+14:59:18.521 [33mweb:build: [0m
+14:59:18.521 [33mweb:build: [0mImport trace for requested module:
+14:59:18.521 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.521 [33mweb:build: [0m
+14:59:18.521 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.521 [33mweb:build: [0mAttempted import error: 'TabsTrigger' is not exported from '@netpost/ui' (imported as 'TabsTrigger').
+14:59:18.521 [33mweb:build: [0m
+14:59:18.521 [33mweb:build: [0mImport trace for requested module:
+14:59:18.522 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.522 [33mweb:build: [0m
+14:59:18.522 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.522 [33mweb:build: [0mAttempted import error: 'TabsTrigger' is not exported from '@netpost/ui' (imported as 'TabsTrigger').
+14:59:18.522 [33mweb:build: [0m
+14:59:18.522 [33mweb:build: [0mImport trace for requested module:
+14:59:18.522 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.522 [33mweb:build: [0m
+14:59:18.522 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.522 [33mweb:build: [0mAttempted import error: 'TabsContent' is not exported from '@netpost/ui' (imported as 'TabsContent').
+14:59:18.522 [33mweb:build: [0m
+14:59:18.522 [33mweb:build: [0mImport trace for requested module:
+14:59:18.522 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.523 [33mweb:build: [0m
+14:59:18.523 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.523 [33mweb:build: [0mAttempted import error: 'Avatar' is not exported from '@netpost/ui' (imported as 'Avatar').
+14:59:18.523 [33mweb:build: [0m
+14:59:18.523 [33mweb:build: [0mImport trace for requested module:
+14:59:18.523 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.523 [33mweb:build: [0m
+14:59:18.523 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.523 [33mweb:build: [0mAttempted import error: 'AvatarImage' is not exported from '@netpost/ui' (imported as 'AvatarImage').
+14:59:18.523 [33mweb:build: [0m
+14:59:18.523 [33mweb:build: [0mImport trace for requested module:
+14:59:18.523 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.523 [33mweb:build: [0m
+14:59:18.523 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.523 [33mweb:build: [0mAttempted import error: 'AvatarFallback' is not exported from '@netpost/ui' (imported as 'AvatarFallback').
+14:59:18.524 [33mweb:build: [0m
+14:59:18.524 [33mweb:build: [0mImport trace for requested module:
+14:59:18.524 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.524 [33mweb:build: [0m
+14:59:18.524 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.524 [33mweb:build: [0mAttempted import error: 'Label' is not exported from '@netpost/ui' (imported as 'Label').
+14:59:18.524 [33mweb:build: [0m
+14:59:18.524 [33mweb:build: [0mImport trace for requested module:
+14:59:18.524 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.524 [33mweb:build: [0m
+14:59:18.524 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.524 [33mweb:build: [0mAttempted import error: 'Label' is not exported from '@netpost/ui' (imported as 'Label').
+14:59:18.524 [33mweb:build: [0m
+14:59:18.524 [33mweb:build: [0mImport trace for requested module:
+14:59:18.524 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.524 [33mweb:build: [0m
+14:59:18.524 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.524 [33mweb:build: [0mAttempted import error: 'Label' is not exported from '@netpost/ui' (imported as 'Label').
+14:59:18.524 [33mweb:build: [0m
+14:59:18.524 [33mweb:build: [0mImport trace for requested module:
+14:59:18.524 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.524 [33mweb:build: [0m
+14:59:18.524 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.524 [33mweb:build: [0mAttempted import error: 'Label' is not exported from '@netpost/ui' (imported as 'Label').
+14:59:18.524 [33mweb:build: [0m
+14:59:18.524 [33mweb:build: [0mImport trace for requested module:
+14:59:18.525 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.525 [33mweb:build: [0m
+14:59:18.525 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.525 [33mweb:build: [0mAttempted import error: 'TabsContent' is not exported from '@netpost/ui' (imported as 'TabsContent').
+14:59:18.525 [33mweb:build: [0m
+14:59:18.525 [33mweb:build: [0mImport trace for requested module:
+14:59:18.525 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.525 [33mweb:build: [0m
+14:59:18.525 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.525 [33mweb:build: [0mAttempted import error: 'Label' is not exported from '@netpost/ui' (imported as 'Label').
+14:59:18.525 [33mweb:build: [0m
+14:59:18.525 [33mweb:build: [0mImport trace for requested module:
+14:59:18.525 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.525 [33mweb:build: [0m
+14:59:18.525 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.525 [33mweb:build: [0mAttempted import error: 'Switch' is not exported from '@netpost/ui' (imported as 'Switch').
+14:59:18.525 [33mweb:build: [0m
+14:59:18.525 [33mweb:build: [0mImport trace for requested module:
+14:59:18.525 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.525 [33mweb:build: [0m
+14:59:18.525 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.525 [33mweb:build: [0mAttempted import error: 'Label' is not exported from '@netpost/ui' (imported as 'Label').
+14:59:18.525 [33mweb:build: [0m
+14:59:18.525 [33mweb:build: [0mImport trace for requested module:
+14:59:18.525 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.525 [33mweb:build: [0m
+14:59:18.526 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.526 [33mweb:build: [0mAttempted import error: 'Switch' is not exported from '@netpost/ui' (imported as 'Switch').
+14:59:18.526 [33mweb:build: [0m
+14:59:18.526 [33mweb:build: [0mImport trace for requested module:
+14:59:18.527 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.528 [33mweb:build: [0m
+14:59:18.528 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.528 [33mweb:build: [0mAttempted import error: 'Separator' is not exported from '@netpost/ui' (imported as 'Separator').
+14:59:18.528 [33mweb:build: [0m
+14:59:18.528 [33mweb:build: [0mImport trace for requested module:
+14:59:18.529 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.529 [33mweb:build: [0m
+14:59:18.529 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.529 [33mweb:build: [0mAttempted import error: 'Label' is not exported from '@netpost/ui' (imported as 'Label').
+14:59:18.529 [33mweb:build: [0m
+14:59:18.529 [33mweb:build: [0mImport trace for requested module:
+14:59:18.529 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.529 [33mweb:build: [0m
+14:59:18.529 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.530 [33mweb:build: [0mAttempted import error: 'Switch' is not exported from '@netpost/ui' (imported as 'Switch').
+14:59:18.530 [33mweb:build: [0m
+14:59:18.530 [33mweb:build: [0mImport trace for requested module:
+14:59:18.530 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.530 [33mweb:build: [0m
+14:59:18.530 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.530 [33mweb:build: [0mAttempted import error: 'TabsContent' is not exported from '@netpost/ui' (imported as 'TabsContent').
+14:59:18.530 [33mweb:build: [0m
+14:59:18.530 [33mweb:build: [0mImport trace for requested module:
+14:59:18.530 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.530 [33mweb:build: [0m
+14:59:18.530 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.530 [33mweb:build: [0mAttempted import error: 'Badge' is not exported from '@netpost/ui' (imported as 'Badge').
+14:59:18.531 [33mweb:build: [0m
+14:59:18.531 [33mweb:build: [0mImport trace for requested module:
+14:59:18.531 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.531 [33mweb:build: [0m
+14:59:18.531 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.531 [33mweb:build: [0mAttempted import error: 'TabsContent' is not exported from '@netpost/ui' (imported as 'TabsContent').
+14:59:18.531 [33mweb:build: [0m
+14:59:18.531 [33mweb:build: [0mImport trace for requested module:
+14:59:18.531 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.531 [33mweb:build: [0m
+14:59:18.531 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.531 [33mweb:build: [0mAttempted import error: 'Badge' is not exported from '@netpost/ui' (imported as 'Badge').
+14:59:18.532 [33mweb:build: [0m
+14:59:18.532 [33mweb:build: [0mImport trace for requested module:
+14:59:18.532 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.532 [33mweb:build: [0m
+14:59:18.532 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.532 [33mweb:build: [0mAttempted import error: 'TabsContent' is not exported from '@netpost/ui' (imported as 'TabsContent').
+14:59:18.532 [33mweb:build: [0m
+14:59:18.532 [33mweb:build: [0mImport trace for requested module:
+14:59:18.532 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.532 [33mweb:build: [0m
+14:59:18.532 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.532 [33mweb:build: [0mAttempted import error: 'Label' is not exported from '@netpost/ui' (imported as 'Label').
+14:59:18.532 [33mweb:build: [0m
+14:59:18.533 [33mweb:build: [0mImport trace for requested module:
+14:59:18.533 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.533 [33mweb:build: [0m
+14:59:18.533 [33mweb:build: [0m./src/app/(dashboard)/analytics/page.tsx
+14:59:18.533 [33mweb:build: [0mAttempted import error: 'Progress' is not exported from '@netpost/ui' (imported as 'Progress').
+14:59:18.533 [33mweb:build: [0m
+14:59:18.533 [33mweb:build: [0mImport trace for requested module:
+14:59:18.533 [33mweb:build: [0m./src/app/(dashboard)/analytics/page.tsx
+14:59:18.533 [33mweb:build: [0m
+14:59:18.533 [33mweb:build: [0m./src/app/(dashboard)/analytics/page.tsx
+14:59:18.533 [33mweb:build: [0mAttempted import error: 'Badge' is not exported from '@netpost/ui' (imported as 'Badge').
+14:59:18.533 [33mweb:build: [0m
+14:59:18.534 [33mweb:build: [0mImport trace for requested module:
+14:59:18.534 [33mweb:build: [0m./src/app/(dashboard)/analytics/page.tsx
+14:59:18.534 [33mweb:build: [0m
+14:59:18.534 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.534 [33mweb:build: [0mAttempted import error: 'Tabs' is not exported from '@netpost/ui' (imported as 'Tabs').
+14:59:18.534 [33mweb:build: [0m
+14:59:18.534 [33mweb:build: [0mImport trace for requested module:
+14:59:18.534 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.534 [33mweb:build: [0m
+14:59:18.534 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.534 [33mweb:build: [0mAttempted import error: 'TabsList' is not exported from '@netpost/ui' (imported as 'TabsList').
+14:59:18.534 [33mweb:build: [0m
+14:59:18.534 [33mweb:build: [0mImport trace for requested module:
+14:59:18.534 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.534 [33mweb:build: [0m
+14:59:18.534 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.534 [33mweb:build: [0mAttempted import error: 'TabsTrigger' is not exported from '@netpost/ui' (imported as 'TabsTrigger').
+14:59:18.534 [33mweb:build: [0m
+14:59:18.534 [33mweb:build: [0mImport trace for requested module:
+14:59:18.534 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.535 [33mweb:build: [0m
+14:59:18.535 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.535 [33mweb:build: [0mAttempted import error: 'TabsTrigger' is not exported from '@netpost/ui' (imported as 'TabsTrigger').
+14:59:18.535 [33mweb:build: [0m
+14:59:18.535 [33mweb:build: [0mImport trace for requested module:
+14:59:18.535 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.535 [33mweb:build: [0m
+14:59:18.535 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.535 [33mweb:build: [0mAttempted import error: 'TabsTrigger' is not exported from '@netpost/ui' (imported as 'TabsTrigger').
+14:59:18.535 [33mweb:build: [0m
+14:59:18.535 [33mweb:build: [0mImport trace for requested module:
+14:59:18.535 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.535 [33mweb:build: [0m
+14:59:18.535 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.535 [33mweb:build: [0mAttempted import error: 'TabsTrigger' is not exported from '@netpost/ui' (imported as 'TabsTrigger').
+14:59:18.535 [33mweb:build: [0m
+14:59:18.535 [33mweb:build: [0mImport trace for requested module:
+14:59:18.535 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.535 [33mweb:build: [0m
+14:59:18.535 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.535 [33mweb:build: [0mAttempted import error: 'TabsTrigger' is not exported from '@netpost/ui' (imported as 'TabsTrigger').
+14:59:18.535 [33mweb:build: [0m
+14:59:18.535 [33mweb:build: [0mImport trace for requested module:
+14:59:18.536 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.536 [33mweb:build: [0m
+14:59:18.536 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.536 [33mweb:build: [0mAttempted import error: 'TabsContent' is not exported from '@netpost/ui' (imported as 'TabsContent').
+14:59:18.536 [33mweb:build: [0m
+14:59:18.536 [33mweb:build: [0mImport trace for requested module:
+14:59:18.536 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.536 [33mweb:build: [0m
+14:59:18.536 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.536 [33mweb:build: [0mAttempted import error: 'Avatar' is not exported from '@netpost/ui' (imported as 'Avatar').
+14:59:18.536 [33mweb:build: [0m
+14:59:18.536 [33mweb:build: [0mImport trace for requested module:
+14:59:18.536 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.536 [33mweb:build: [0m
+14:59:18.537 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.537 [33mweb:build: [0mAttempted import error: 'AvatarImage' is not exported from '@netpost/ui' (imported as 'AvatarImage').
+14:59:18.537 [33mweb:build: [0m
+14:59:18.537 [33mweb:build: [0mImport trace for requested module:
+14:59:18.537 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.537 [33mweb:build: [0m
+14:59:18.537 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.537 [33mweb:build: [0mAttempted import error: 'AvatarFallback' is not exported from '@netpost/ui' (imported as 'AvatarFallback').
+14:59:18.537 [33mweb:build: [0m
+14:59:18.537 [33mweb:build: [0mImport trace for requested module:
+14:59:18.537 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.537 [33mweb:build: [0m
+14:59:18.537 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.537 [33mweb:build: [0mAttempted import error: 'Label' is not exported from '@netpost/ui' (imported as 'Label').
+14:59:18.537 [33mweb:build: [0m
+14:59:18.537 [33mweb:build: [0mImport trace for requested module:
+14:59:18.537 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.537 [33mweb:build: [0m
+14:59:18.537 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.538 [33mweb:build: [0mAttempted import error: 'Label' is not exported from '@netpost/ui' (imported as 'Label').
+14:59:18.538 [33mweb:build: [0m
+14:59:18.538 [33mweb:build: [0mImport trace for requested module:
+14:59:18.538 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.538 [33mweb:build: [0m
+14:59:18.538 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.538 [33mweb:build: [0mAttempted import error: 'Label' is not exported from '@netpost/ui' (imported as 'Label').
+14:59:18.538 [33mweb:build: [0m
+14:59:18.538 [33mweb:build: [0mImport trace for requested module:
+14:59:18.538 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.538 [33mweb:build: [0m
+14:59:18.538 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.538 [33mweb:build: [0mAttempted import error: 'Label' is not exported from '@netpost/ui' (imported as 'Label').
+14:59:18.539 [33mweb:build: [0m
+14:59:18.539 [33mweb:build: [0mImport trace for requested module:
+14:59:18.539 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.540 [33mweb:build: [0m
+14:59:18.540 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.546 [33mweb:build: [0mAttempted import error: 'TabsContent' is not exported from '@netpost/ui' (imported as 'TabsContent').
+14:59:18.546 [33mweb:build: [0m
+14:59:18.546 [33mweb:build: [0mImport trace for requested module:
+14:59:18.546 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.547 [33mweb:build: [0m
+14:59:18.547 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.547 [33mweb:build: [0mAttempted import error: 'Label' is not exported from '@netpost/ui' (imported as 'Label').
+14:59:18.547 [33mweb:build: [0m
+14:59:18.547 [33mweb:build: [0mImport trace for requested module:
+14:59:18.547 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.547 [33mweb:build: [0m
+14:59:18.547 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.547 [33mweb:build: [0mAttempted import error: 'Switch' is not exported from '@netpost/ui' (imported as 'Switch').
+14:59:18.547 [33mweb:build: [0m
+14:59:18.547 [33mweb:build: [0mImport trace for requested module:
+14:59:18.547 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.547 [33mweb:build: [0m
+14:59:18.547 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.547 [33mweb:build: [0mAttempted import error: 'Label' is not exported from '@netpost/ui' (imported as 'Label').
+14:59:18.547 [33mweb:build: [0m
+14:59:18.547 [33mweb:build: [0mImport trace for requested module:
+14:59:18.547 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.547 [33mweb:build: [0m
+14:59:18.547 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.547 [33mweb:build: [0mAttempted import error: 'Switch' is not exported from '@netpost/ui' (imported as 'Switch').
+14:59:18.547 [33mweb:build: [0m
+14:59:18.547 [33mweb:build: [0mImport trace for requested module:
+14:59:18.547 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.547 [33mweb:build: [0m
+14:59:18.547 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.547 [33mweb:build: [0mAttempted import error: 'Separator' is not exported from '@netpost/ui' (imported as 'Separator').
+14:59:18.548 [33mweb:build: [0m
+14:59:18.548 [33mweb:build: [0mImport trace for requested module:
+14:59:18.548 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.548 [33mweb:build: [0m
+14:59:18.548 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.548 [33mweb:build: [0mAttempted import error: 'Label' is not exported from '@netpost/ui' (imported as 'Label').
+14:59:18.548 [33mweb:build: [0m
+14:59:18.548 [33mweb:build: [0mImport trace for requested module:
+14:59:18.548 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.548 [33mweb:build: [0m
+14:59:18.548 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.548 [33mweb:build: [0mAttempted import error: 'Switch' is not exported from '@netpost/ui' (imported as 'Switch').
+14:59:18.548 [33mweb:build: [0m
+14:59:18.548 [33mweb:build: [0mImport trace for requested module:
+14:59:18.548 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.548 [33mweb:build: [0m
+14:59:18.548 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.548 [33mweb:build: [0mAttempted import error: 'TabsContent' is not exported from '@netpost/ui' (imported as 'TabsContent').
+14:59:18.548 [33mweb:build: [0m
+14:59:18.548 [33mweb:build: [0mImport trace for requested module:
+14:59:18.548 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.548 [33mweb:build: [0m
+14:59:18.548 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.548 [33mweb:build: [0mAttempted import error: 'Badge' is not exported from '@netpost/ui' (imported as 'Badge').
+14:59:18.548 [33mweb:build: [0m
+14:59:18.548 [33mweb:build: [0mImport trace for requested module:
+14:59:18.549 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.549 [33mweb:build: [0m
+14:59:18.549 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.549 [33mweb:build: [0mAttempted import error: 'TabsContent' is not exported from '@netpost/ui' (imported as 'TabsContent').
+14:59:18.549 [33mweb:build: [0m
+14:59:18.549 [33mweb:build: [0mImport trace for requested module:
+14:59:18.549 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.549 [33mweb:build: [0m
+14:59:18.549 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.549 [33mweb:build: [0mAttempted import error: 'Badge' is not exported from '@netpost/ui' (imported as 'Badge').
+14:59:18.549 [33mweb:build: [0m
+14:59:18.550 [33mweb:build: [0mImport trace for requested module:
+14:59:18.550 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.550 [33mweb:build: [0m
+14:59:18.550 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.550 [33mweb:build: [0mAttempted import error: 'TabsContent' is not exported from '@netpost/ui' (imported as 'TabsContent').
+14:59:18.550 [33mweb:build: [0m
+14:59:18.550 [33mweb:build: [0mImport trace for requested module:
+14:59:18.550 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.550 [33mweb:build: [0m
+14:59:18.550 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.550 [33mweb:build: [0mAttempted import error: 'Label' is not exported from '@netpost/ui' (imported as 'Label').
+14:59:18.550 [33mweb:build: [0m
+14:59:18.550 [33mweb:build: [0mImport trace for requested module:
+14:59:18.550 [33mweb:build: [0m./src/app/(dashboard)/settings/page.tsx
+14:59:18.550 [33mweb:build: [0m
+14:59:18.550 [33mweb:build: [0m [37m[1m [22m[39m Skipping validation of types
+14:59:18.550 [33mweb:build: [0m [37m[1m [22m[39m Skipping linting
+14:59:18.877 [33mweb:build: [0m [37m[1m [22m[39m Collecting page data ...
+14:59:21.449 [33mweb:build: [0m [37m[1m [22m[39m Generating static pages (0/10) ...
+14:59:22.121 [33mweb:build: [0m [37m[1m [22m[39m Generating static pages (2/10) 
+14:59:22.121 [33mweb:build: [0m [37m[1m [22m[39m Generating static pages (4/10) 
+14:59:22.153 [33mweb:build: [0m [37m[1m [22m[39m Generating static pages (7/10) 
+14:59:22.235 [33mweb:build: [0m [32m[1m✓[22m[39m Generating static pages (10/10)
+14:59:22.998 [33mweb:build: [0m [37m[1m [22m[39m Finalizing page optimization ...
+14:59:23.000 [33mweb:build: [0m [37m[1m [22m[39m Collecting build traces ...
+14:59:31.166 [33mweb:build: [0m
+14:59:31.170 [33mweb:build: [0m[4mRoute (app)[24m                                 [4mSize[24m  [4mFirst Load JS[24m  [4m[24m  [4m[24m
+14:59:31.170 [33mweb:build: [0m┌ ƒ /                                    5.18 kB         [37m[1m195 kB[22m[39m
+14:59:31.170 [33mweb:build: [0m├ ƒ /_not-found                            156 B         [37m[1m102 kB[22m[39m
+14:59:31.170 [33mweb:build: [0m├ ƒ /analytics                           7.47 kB         [37m[1m197 kB[22m[39m
+14:59:31.171 [33mweb:build: [0m├ ƒ /api/delisting/process-job             156 B         [37m[1m102 kB[22m[39m
+14:59:31.171 [33mweb:build: [0m├ ƒ /api/delisting/test-sale-detection     156 B         [37m[1m102 kB[22m[39m
+14:59:31.171 [33mweb:build: [0m├ ƒ /api/notifications                     156 B         [37m[1m102 kB[22m[39m
+14:59:31.171 [33mweb:build: [0m├ ƒ /api/webhooks/ebay                     156 B         [37m[1m102 kB[22m[39m
+14:59:31.171 [33mweb:build: [0m├ ƒ /api/webhooks/facebook-marketplace     156 B         [37m[1m102 kB[22m[39m
+14:59:31.171 [33mweb:build: [0m├ ƒ /api/webhooks/poshmark                 156 B         [37m[1m102 kB[22m[39m
+14:59:31.171 [33mweb:build: [0m├ ƒ /api/webhooks/stripe                   156 B         [37m[1m102 kB[22m[39m
+14:59:31.172 [33mweb:build: [0m├ ƒ /auth/callback                         156 B         [37m[1m102 kB[22m[39m
+14:59:31.172 [33mweb:build: [0m├ ƒ /connections                         37.6 kB         [37m[1m246 kB[22m[39m
+14:59:31.172 [33mweb:build: [0m├ ƒ /dashboard                           5.98 kB         [37m[1m196 kB[22m[39m
+14:59:31.172 [33mweb:build: [0m├ ƒ /delisting                           15.6 kB         [37m[1m220 kB[22m[39m
+14:59:31.172 [33mweb:build: [0m├ ƒ /forgot-password                     2.88 kB         [37m[1m193 kB[22m[39m
+14:59:31.172 [33mweb:build: [0m├ ƒ /inventory                           8.83 kB         [37m[1m199 kB[22m[39m
+14:59:31.172 [33mweb:build: [0m├ ƒ /listings                            10.9 kB         [37m[1m201 kB[22m[39m
+14:59:31.172 [33mweb:build: [0m├ ƒ /listings/create                       15 kB         [37m[1m239 kB[22m[39m
+14:59:31.172 [33mweb:build: [0m├ ƒ /login                               3.48 kB         [37m[1m193 kB[22m[39m
+14:59:31.172 [33mweb:build: [0m├ ƒ /register                            3.85 kB         [37m[1m194 kB[22m[39m
+14:59:31.173 [33mweb:build: [0m├ ƒ /reset-password                      3.14 kB         [37m[1m193 kB[22m[39m
+14:59:31.173 [33mweb:build: [0m├ ƒ /settings                            4.29 kB         [37m[1m152 kB[22m[39m
+14:59:31.173 [33mweb:build: [0m├ ƒ /sourcing                            7.96 kB         [37m[1m198 kB[22m[39m
+14:59:31.173 [33mweb:build: [0m└ ƒ /subscription                        2.21 kB         [37m[1m204 kB[22m[39m
+14:59:31.173 [33mweb:build: [0m+ First Load JS shared by all             [37m[1m102 kB[22m[39m
+14:59:31.173 [33mweb:build: [0m  ├ chunks/1255-0612bff108b83301.js      45.8 kB
+14:59:31.173 [33mweb:build: [0m  ├ chunks/4bd1b696-f785427dddbba9fb.js  54.2 kB
+14:59:31.173 [33mweb:build: [0m  └ other shared chunks (total)          2.04 kB
+14:59:31.173 [33mweb:build: [0m
+14:59:31.173 [33mweb:build: [0m
+14:59:31.173 [33mweb:build: [0mƒ  (Dynamic)  server-rendered on demand
+14:59:31.174 [33mweb:build: [0m
+14:59:31.245 
+14:59:31.245 [1m  Tasks:    [32m[1m4 successful[0m, 4 total[0m
+14:59:31.245 [1m Cached:    [1m0 cached[0m, 4 total[0m
+14:59:31.246 [1m   Time:    [1m43.186s[0m [0m
+14:59:31.246 [1mSummary:    /vercel/path0/.turbo/runs/33IhD9TUkWvAv27p8VoTWBpOKOk.json[0m
+14:59:31.246 
+14:59:31.662 Traced Next.js server files in: 96.778ms
+14:59:31.850 Created all serverless functions in: 188.107ms
+14:59:31.879 Collected static files (public/, static/, .next/static): 9.913ms
+14:59:31.958 Build Completed in [1m/vercel/output[22m [90m[90m[50s][39m[90m[39m
+14:59:32.134 Deploying outputs...
+14:59:40.242 Deployment completed
+14:59:41.107 Creating build cache...
