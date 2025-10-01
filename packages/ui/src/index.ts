@@ -1,5 +1,6 @@
 // Components
 export { Button, buttonVariants, type ButtonProps } from "./components/button";
+export { Badge, badgeVariants, type BadgeProps } from "./components/badge";
 export { Input, type InputProps } from "./components/input";
 export {
   Card,
@@ -9,6 +10,8 @@ export {
   CardDescription,
   CardContent,
 } from "./components/card";
+export { Label } from "./components/label";
+export { Progress } from "./components/progress";
 
 // Select Components
 export {
@@ -21,6 +24,7 @@ export {
   SelectItem,
   SelectSeparator,
 } from "./components/select";
+export { Separator } from "./components/separator";
 
 // Modal Components
 export {
@@ -33,6 +37,7 @@ export {
   ModalDescription,
   ModalClose,
 } from "./components/modal";
+export { Switch } from "./components/switch";
 
 // Toast Components
 export {
@@ -46,6 +51,12 @@ export {
   type ToastProps,
   type ToastActionElement,
 } from "./components/toast";
+
+// Avatar Components
+export { Avatar, AvatarImage, AvatarFallback } from "./components/avatar";
+
+// Tabs Components
+export { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/tabs";
 
 // Navigation Components
 export { Navigation, type NavigationItem } from "./components/navigation";

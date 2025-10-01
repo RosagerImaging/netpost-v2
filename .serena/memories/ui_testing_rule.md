@@ -1,0 +1,1 @@
+For every UI-impacting change, run lint/tests if available, ensure the dev server is running (start it if needed), capture Chrome DevTools MCP snapshots at desktop/tablet/mobile, inspect results, and iterate on code until visuals and functionality meet requirements before reporting.

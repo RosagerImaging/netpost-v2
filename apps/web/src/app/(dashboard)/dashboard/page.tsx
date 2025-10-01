@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
   Button,
+  Badge,
 } from "@netpost/ui";
 import {
   Package,
@@ -18,6 +19,7 @@ import {
   BarChart3,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { PageHeader } from "../../../components/ui/page-header";
 import { AnimatedHeadline } from "../../../components/ui/animated-headline";
 
 export default function DashboardPage() {
@@ -49,141 +51,117 @@ export default function DashboardPage() {
         subscription: subscriptionData
       } : undefined}
     >
-      <div className="p-6 space-y-6" data-testid="dashboard-welcome">
-        {/* Welcome Header */}
-        <div className="mb-8">
-          <AnimatedHeadline
-            text={`Welcome back${userName ? `, ${userName}` : ''}!`}
-            className="text-gradient-primary mb-2 text-3xl font-bold"
-          />
-          <p style={{ color: 'oklch(0.7161 0.0091 56.2590)' }}>
-            Here's what's happening with your reselling business today.
-          </p>
-        </div>
+      <div className="mx-auto max-w-7xl space-y-10 px-4 pb-12" data-testid="dashboard-welcome">
+        <PageHeader
+          eyebrow="Overview"
+          title={`Welcome back${userName ? `, ${userName}` : ""}!`}
+          subtitle="Here's what's happening across your resale business today."
+          icon={<BarChart3 className="h-7 w-7 text-primary" />}
+          actions={(
+            <div className="flex items-center gap-3">
+              <Badge variant="secondary" className="glass-card border border-white/10 px-3 py-1 text-xs uppercase tracking-[0.3em]">
+                {subscriptionData.tier} Plan
+              </Badge>
+              <Button variant="accent" onClick={() => router.push('/listings/create')}>
+                Add Listing
+              </Button>
+            </div>
+          )}
+        />
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="glass-card">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <Card className="glass-card border border-white/10">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Items</CardTitle>
-              <Package className="h-4 w-4" style={{ color: 'oklch(0.7161 0.0091 56.2590)' }} />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Items</CardTitle>
+              <Package className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold" style={{ color: 'oklch(0.9816 0.0017 247.8390)' }}>
-                {mockStats.totalItems}
-              </div>
-              <p className="text-xs" style={{ color: 'oklch(0.7161 0.0091 56.2590)' }}>
+              <div className="text-2xl font-bold text-foreground">{mockStats.totalItems}</div>
+              <p className="text-xs text-muted-foreground">
                 {subscriptionData.itemLimit - mockStats.totalItems} remaining in {subscriptionData.tier} plan
               </p>
             </CardContent>
           </Card>
 
-          <Card className="glass-card">
+          <Card className="glass-card border border-white/10">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Value</CardTitle>
-              <DollarSign className="h-4 w-4" style={{ color: 'oklch(0.7161 0.0091 56.2590)' }} />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Value</CardTitle>
+              <DollarSign className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold" style={{ color: 'oklch(0.9816 0.0017 247.8390)' }}>
-                ${mockStats.totalValue.toFixed(2)}
-              </div>
-              <p className="text-xs" style={{ color: 'oklch(0.7161 0.0091 56.2590)' }}>
-                Estimated inventory value
-              </p>
+              <div className="text-2xl font-bold text-foreground">${mockStats.totalValue.toFixed(2)}</div>
+              <p className="text-xs text-muted-foreground">Estimated inventory value</p>
             </CardContent>
           </Card>
 
-          <Card className="glass-card">
+          <Card className="glass-card border border-white/10">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Potential Profit</CardTitle>
-              <TrendingUp className="h-4 w-4" style={{ color: 'oklch(0.3755 0.0700 176.3952)' }} />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Potential Profit</CardTitle>
+              <TrendingUp className="h-4 w-4 text-accent" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold" style={{ color: 'oklch(0.3755 0.0700 176.3952)' }}>
+              <div className="text-2xl font-bold text-accent">
                 ${mockStats.potentialProfit.toFixed(2)}
               </div>
-              <p className="text-xs" style={{ color: 'oklch(0.7161 0.0091 56.2590)' }}>
-                From current inventory
-              </p>
+              <p className="text-xs text-muted-foreground">From current inventory</p>
             </CardContent>
           </Card>
 
-          <Card className="glass-card">
+          <Card className="glass-card border border-white/10">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Listings</CardTitle>
-              <BarChart3 className="h-4 w-4" style={{ color: 'oklch(0.7161 0.0091 56.2590)' }} />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Active Listings</CardTitle>
+              <BarChart3 className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold" style={{ color: 'oklch(0.9816 0.0017 247.8390)' }}>
-                {mockStats.activeListing}
-              </div>
-              <p className="text-xs" style={{ color: 'oklch(0.7161 0.0091 56.2590)' }}>
-                Across all platforms
-              </p>
+              <div className="text-2xl font-bold text-foreground">{mockStats.activeListing}</div>
+              <p className="text-xs text-muted-foreground">Across all platforms</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Quick Actions Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card className="glass hover:bg-white/5 transition-colors">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <Card className="glass-card border border-white/10 transition-colors hover:bg-white/10">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Search className="h-5 w-5 text-primary-500" />
+                <Search className="h-5 w-5 text-primary" />
                 Start Sourcing
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-secondary-text mb-4 text-sm">
-                Find new items to add to your inventory
-              </p>
-              <Button
-                className="w-full"
-                onClick={() => router.push('/sourcing')}
-              >
+              <p className="mb-4 text-sm text-muted-foreground">Find new items to add to your inventory</p>
+              <Button className="w-full" onClick={() => router.push('/sourcing')}>
                 Add New Items
               </Button>
             </CardContent>
           </Card>
 
-          <Card className="glass hover:bg-white/5 transition-colors">
+          <Card className="glass-card border border-white/10 transition-colors hover:bg-white/10">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Package className="h-5 w-5 text-primary-500" />
+                <Package className="h-5 w-5 text-primary" />
                 Manage Inventory
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-secondary-text mb-4 text-sm">
-                View and organize your current items
-              </p>
-              <Button
-                className="w-full"
-                onClick={() => router.push('/inventory')}
-                variant="outline"
-              >
+              <p className="mb-4 text-sm text-muted-foreground">View and organize your current items</p>
+              <Button className="w-full" onClick={() => router.push('/inventory')} variant="outline">
                 View Inventory
               </Button>
             </CardContent>
           </Card>
 
-          <Card className="glass hover:bg-white/5 transition-colors">
+          <Card className="glass-card border border-white/10 transition-colors hover:bg-white/10">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-primary-500" />
+                <TrendingUp className="h-5 w-5 text-primary" />
                 View Analytics
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-secondary-text mb-4 text-sm">
-                Track your performance and profits
-              </p>
-              <Button
-                className="w-full"
-                onClick={() => router.push('/analytics')}
-                variant="outline"
-                disabled
-              >
+              <p className="mb-4 text-sm text-muted-foreground">Track your performance and profits</p>
+              <Button className="w-full" onClick={() => router.push('/analytics')} variant="outline" disabled>
                 Coming Soon
               </Button>
             </CardContent>
@@ -192,46 +170,34 @@ export default function DashboardPage() {
 
         {/* Subscription Status Banner */}
         {subscriptionData.tier === "Free" && (
-          <Card className="glass border-primary-500/20 bg-primary-500/5">
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold text-primary-text mb-1">
-                    You're on the Free Plan
-                  </h3>
-                  <p className="text-secondary-text text-sm">
-                    Upgrade to unlock unlimited items and advanced features
-                  </p>
-                </div>
-                <Button
-                  className="bg-primary-500 hover:bg-primary-600"
-                  onClick={() => router.push('/pricing')}
-                >
-                  Upgrade Now
-                </Button>
+          <Card className="glass-card border border-primary/30 bg-primary/10">
+            <CardContent className="flex flex-col gap-4 pt-6 md:flex-row md:items-center md:justify-between">
+              <div className="space-y-1">
+                <h3 className="text-lg font-semibold text-foreground">You're on the Free Plan</h3>
+                <p className="text-sm text-muted-foreground">
+                  Upgrade to unlock unlimited items and advanced features
+                </p>
               </div>
+              <Button variant="accent" onClick={() => router.push('/pricing')} className="w-full md:w-auto">
+                Upgrade Now
+              </Button>
             </CardContent>
           </Card>
         )}
 
         {/* Recent Activity Placeholder */}
-        <Card className="glass">
+        <Card className="glass-card border border-white/10">
           <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
+            <CardTitle className="text-muted-foreground">Recent Activity</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-center py-8">
-              <BarChart3 className="h-12 w-12 text-secondary-text mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-primary-text mb-2">
-                No activity yet
-              </h3>
-              <p className="text-secondary-text mb-4">
+            <div className="flex flex-col items-center gap-4 py-10 text-center">
+              <BarChart3 className="h-12 w-12 text-primary" />
+              <AnimatedHeadline text="No activity yet" className="text-2xl font-semibold text-gradient-primary" />
+              <p className="text-sm text-muted-foreground">
                 Start sourcing items to see your activity here
               </p>
-              <Button
-                onClick={() => router.push('/sourcing')}
-                data-testid="get-started-button"
-              >
+              <Button onClick={() => router.push('/sourcing')} data-testid="get-started-button">
                 Get Started
               </Button>
             </div>

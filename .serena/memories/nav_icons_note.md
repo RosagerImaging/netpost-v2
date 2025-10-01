@@ -1,0 +1,1 @@
+Mobile navigation icons are sourced from lucide-react and the navLinks array in apps/web/src/app/page.tsx centralizes label/href/icon data for easy updates.

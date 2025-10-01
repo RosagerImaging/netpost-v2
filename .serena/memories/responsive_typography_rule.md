@@ -1,0 +1,1 @@
+All relevant components and text across the project should use clamp-based fluid typography to maintain consistent responsiveness on every page.

@@ -1,10 +1,45 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState, useRef, useCallback } from "react";
 import Link from "next/link";
-import { useIsAuthenticated } from "../../lib/auth/auth-hooks";
+import type { LucideIcon } from "lucide-react";
+import { Menu, Sparkles, Workflow, Layers, Star, BookOpen } from "lucide-react";
 import { Button } from "@netpost/ui";
+import { StackedAnimatedHeadline } from "../components/ui/stacked-animated-headline";
+import { Sheet, SheetTrigger, SheetContent, SheetClose } from "../components/ui/sheet";
+
+const navLinks: { label: string; href: string; icon: LucideIcon; description: string }[] = [
+  {
+    label: "Features",
+    href: "#features",
+    icon: Sparkles,
+    description: "Explore platform capabilities",
+  },
+  {
+    label: "How It Works",
+    href: "#how-it-works",
+    icon: Workflow,
+    description: "Understand our process",
+  },
+  {
+    label: "Pricing",
+    href: "#pricing",
+    icon: Layers,
+    description: "Plans for every seller",
+  },
+  {
+    label: "Testimonials",
+    href: "#testimonials",
+    icon: Star,
+    description: "Stories from top sellers",
+  },
+  {
+    label: "Resources",
+    href: "#resources",
+    icon: BookOpen,
+    description: "Guides, tips & support",
+  },
+];
 
 // TypeScript declaration for Unicorn Studio
 declare global {
@@ -17,8 +52,38 @@ declare global {
 }
 
 export default function Home() {
-  const { isAuthenticated, loading } = useIsAuthenticated();
-  const router = useRouter();
+  const sheetTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const hasOpenedRef = useRef(false);
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isSheetOpen) {
+        event.preventDefault();
+        setIsSheetOpen(false);
+        sheetTriggerRef.current?.focus();
+      }
+    },
+    [isSheetOpen]
+  );
+
+  useEffect(() => {
+    if (!isSheetOpen) return;
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown, isSheetOpen]);
+
+  useEffect(() => {
+    if (isSheetOpen) {
+      hasOpenedRef.current = true;
+      return;
+    }
+
+    if (hasOpenedRef.current) {
+      sheetTriggerRef.current?.focus();
+    }
+  }, [isSheetOpen]);
 
   // Load Unicorn Studio script
   useEffect(() => {
@@ -37,14 +102,7 @@ export default function Home() {
   }, []);
 
   // Allow authenticated users to view homepage
-
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="border-primary h-32 w-32 animate-spin rounded-full border-b-2"></div>
-      </div>
-    );
-  }
+  // Don't block homepage rendering with loading state - it should be accessible to everyone
 
   return (
     <div className="min-h-screen gradient-bg">
@@ -86,16 +144,64 @@ export default function Home() {
 
         .hero-section {
           position: relative;
-          min-height: 100vh;
+          z-index: 0;
+          min-height: clamp(110vh, 118vh, 132vh);
+          width: 100%;
+          display: flex;
+          align-items: flex-end;
+          overflow: visible;
+          padding-top: clamp(90px, 14vh, 140px);
+          padding-bottom: clamp(48px, 12vh, 160px);
+        }
+
+        .hero-shell {
+          width: 100%;
+          display: flex;
+          justify-content: flex-start;
+        }
+
+        .hero-content {
+          position: relative;
+          z-index: 10;
+          display: flex;
+          flex-direction: column;
+          gap: clamp(1.5rem, 2.5vw, 2.75rem);
+          width: min(620px, calc(100vw - clamp(3rem, 10vw, 120px)));
+          margin-left: clamp(1.25rem, 7vw, 8.5rem);
+          margin-bottom: clamp(2.75rem, 11vh, 6.5rem);
+        }
+
+        .hero-headline {
+          font-family: 'Figtree', sans-serif !important;
+          font-weight: 700 !important;
+          font-size: clamp(2.6rem, 4.6vw, 5rem) !important;
+          line-height: clamp(1.04, 1.4vw, 1.1) !important;
+          letter-spacing: clamp(-0.022em, -0.18vw, -0.008em) !important;
+          max-width: min(92vw, 48rem);
+          word-break: break-word;
+          text-wrap: balance;
+        }
+
+        .hero-subcopy {
+          color: var(--muted-foreground) !important;
+          max-width: clamp(22rem, 36vw, 34rem);
+          font-size: clamp(1rem, 0.9vw + 0.75rem, 1.35rem);
+          line-height: clamp(1.5, 2vw, 1.75);
+        }
+
+        .hero-actions {
+          display: flex;
+          align-items: center;
+          gap: clamp(0.75rem, 2vw, 1.25rem);
         }
 
         #unicorn-studio {
           position: absolute;
-          top: 10%;
-          right: 5%;
-          width: 1440px;
-          height: 900px;
-          z-index: 1;
+          top: clamp(6%, 16vh, 20%);
+          right: clamp(-2%, 6vw, 10%);
+          width: clamp(560px, 62vw, 1280px);
+          height: clamp(520px, 78vh, 1080px);
+          z-index: -1;
           pointer-events: none;
           box-sizing: border-box;
           mix-blend-mode: screen;
@@ -116,14 +222,6 @@ export default function Home() {
           mix-blend-mode: screen;
         }
 
-        .hero-content {
-          position: relative;
-          z-index: 10;
-          padding-top: 120px;
-          padding-left: 5%;
-          max-width: 50%;
-        }
-
         .glass {
           background: rgba(255, 255, 255, 0.05) !important;
           backdrop-filter: blur(10px) !important;
@@ -142,6 +240,25 @@ export default function Home() {
           -webkit-background-clip: text !important;
           background-clip: text !important;
           -webkit-text-fill-color: transparent !important;
+          color: var(--primary) !important; /* Fallback color */
+          display: block !important;
+          width: 100% !important;
+        }
+
+        .text-gradient-accent {
+          background: linear-gradient(135deg, var(--accent), var(--ring)) !important;
+          -webkit-background-clip: text !important;
+          background-clip: text !important;
+          -webkit-text-fill-color: transparent !important;
+          color: var(--accent) !important;
+          display: block !important;
+          width: 100% !important;
+        }
+
+        /* Ensure animated text is visible */
+        .stacked-animated-headline .text-gradient-primary {
+          min-height: 1.2em !important;
+          line-height: 1 !important;
         }
 
         .glow {
@@ -158,45 +275,170 @@ export default function Home() {
           border: none !important;
         }
 
-        .btn-ghost {
-          background: transparent !important;
+        .btn-stone {
+          background: linear-gradient(135deg, oklch(0.45 0.02 45), oklch(0.58 0.035 35)) !important;
           color: var(--foreground) !important;
-          border: 1px solid rgba(255, 255, 255, 0.2) !important;
+          border: 1px solid rgba(255, 255, 255, 0.14) !important;
+          box-shadow: 0 18px 36px -20px rgba(0, 0, 0, 0.65) !important;
+        }
+
+        .btn-stone:hover {
+          background: linear-gradient(135deg, oklch(0.48 0.025 45), oklch(0.61 0.04 35)) !important;
+        }
+
+        .btn-secondary {
+          background: linear-gradient(135deg, var(--secondary), var(--accent)) !important;
+          color: var(--foreground) !important;
+          border: none !important;
+        }
+
+        .logo-text-gradient {
+          background: linear-gradient(135deg, var(--primary), var(--ring)) !important;
+          -webkit-background-clip: text !important;
+          background-clip: text !important;
+          color: transparent !important;
+          display: inline-block !important;
+        }
+
+        @media (max-width: 1024px) {
+          .hero-content {
+            margin-left: clamp(1.5rem, 6vw, 6rem);
+            margin-bottom: clamp(2.5rem, 10vh, 6rem);
+          }
+
+          #unicorn-studio {
+            top: clamp(8%, 18vh, 24%);
+            right: clamp(-4%, 4vw, 8%);
+            width: clamp(520px, 70vw, 1100px);
+            height: clamp(420px, 60vh, 820px);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .hero-content {
+            margin-left: 1.5rem;
+            margin-right: 1.5rem;
+            width: calc(100% - 3rem);
+          }
+
+          .hero-actions {
+            justify-content: flex-start;
+          }
+
+          #unicorn-studio {
+            top: 25%;
+            right: -30%;
+            width: 120vw;
+            height: clamp(380px, 70vh, 680px);
+            opacity: 0.6;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .hero-content {
+            margin-left: 1.25rem;
+            margin-right: 1.25rem;
+            margin-bottom: clamp(2rem, 12vh, 4.5rem);
+          }
+
+          .hero-actions {
+            width: 100%;
+          }
         }
       `}</style>
 
       {/* Navigation */}
-      <nav className="glass fixed w-full z-50 px-6 py-4">
-        <div className="container mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 feature-icon-primary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">N</span>
+      <nav className="glass fixed top-0 w-full z-50">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4">
+          <div className="flex items-center gap-3">
+            <div className="h-12 w-12 feature-icon-primary rounded-2xl flex items-center justify-center shadow-[0_18px_32px_-20px_rgba(0,0,0,0.65)]">
+              <span className="text-white font-semibold text-2xl">N</span>
             </div>
-            <span className="font-bold text-xl" style={{color: 'var(--foreground)'}}>NetPost</span>
+            <span className="font-bold text-xl md:text-2xl logo-text-gradient">
+              NetPost
+            </span>
           </div>
 
-          <div className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="hover:opacity-100 opacity-70 transition" style={{color: 'var(--foreground)'}}>Features</a>
-            <a href="#how-it-works" className="hover:opacity-100 opacity-70 transition" style={{color: 'var(--foreground)'}}>How It Works</a>
-            <a href="#pricing" className="hover:opacity-100 opacity-70 transition" style={{color: 'var(--foreground)'}}>Pricing</a>
-            <a href="#about" className="hover:opacity-100 opacity-70 transition" style={{color: 'var(--foreground)'}}>About</a>
+          <div className="hidden lg:flex flex-1 items-center justify-center">
+            <ul className="flex items-center gap-8 text-sm font-medium" style={{ color: 'var(--foreground)' }}>
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <a className="opacity-75 transition hover:opacity-100" href={link.href}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          <div className="flex items-center space-x-4">
-            {isAuthenticated ? (
-              <Button className="btn-primary px-6 py-2 rounded-lg font-semibold" asChild>
-                <Link href="/dashboard">Go to Dashboard</Link>
-              </Button>
-            ) : (
-              <>
-                <Button className="btn-ghost px-6 py-2 rounded-lg font-medium" asChild>
-                  <Link href="/login">Sign In</Link>
-                </Button>
-                <Button className="btn-primary px-6 py-2 rounded-lg font-semibold" asChild>
-                  <Link href="/register">Get Started</Link>
-                </Button>
-              </>
-            )}
+          <div className="hidden sm:flex items-center gap-3">
+            <Button className="btn-stone px-6 py-2 rounded-lg font-medium" asChild>
+              <Link href="/login">Login</Link>
+            </Button>
+            <Button className="btn-primary px-6 py-2 rounded-lg font-semibold" asChild>
+              <Link href="/register">Sign Up</Link>
+            </Button>
+          </div>
+
+          <div className="flex items-center gap-3 lg:hidden">
+            <Button className="btn-stone px-5 py-2 rounded-lg font-medium hidden sm:flex" asChild>
+              <Link href="/login">Login</Link>
+            </Button>
+            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+              <SheetTrigger asChild>
+                <button
+                  ref={sheetTriggerRef}
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/15 bg-white/5 text-[var(--foreground)] transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
+                  aria-label="Open navigation menu"
+                >
+                  <Menu className="h-5 w-5" />
+                </button>
+              </SheetTrigger>
+              <SheetContent className="w-full max-w-xs bg-[var(--background)]">
+                <div className="flex items-center justify-between pb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 feature-icon-primary rounded-xl flex items-center justify-center">
+                      <span className="text-white font-semibold text-lg">N</span>
+                    </div>
+                    <span className="font-semibold text-lg" style={{ color: 'var(--foreground)' }}>
+                      NetPost
+                    </span>
+                  </div>
+                </div>
+
+                <nav className="flex flex-col gap-4 text-base font-medium" style={{ color: 'var(--foreground)' }}>
+                  {navLinks.map(({ href, label, icon: Icon, description }) => (
+                    <SheetClose asChild key={href}>
+                      <Link
+                        className="group flex items-start gap-3 rounded-xl border border-transparent px-3 py-2 transition hover:border-white/10 hover:bg-white/5"
+                        href={href}
+                      >
+                        <span className="mt-0.5 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-[var(--foreground)] transition group-hover:bg-white/10">
+                          <Icon className="h-4 w-4" />
+                        </span>
+                        <span className="flex flex-col">
+                          <span className="font-semibold">{label}</span>
+                          <span className="text-sm opacity-70">{description}</span>
+                        </span>
+                      </Link>
+                    </SheetClose>
+                  ))}
+                </nav>
+
+                <div className="mt-8 flex flex-col gap-3">
+                  <SheetClose asChild>
+                    <Button className="btn-stone w-full px-6 py-3 rounded-lg font-medium" asChild>
+                      <Link href="/login">Login</Link>
+                    </Button>
+                  </SheetClose>
+                  <SheetClose asChild>
+                    <Button className="btn-primary w-full px-6 py-3 rounded-lg font-semibold" asChild>
+                      <Link href="/register">Sign Up</Link>
+                    </Button>
+                  </SheetClose>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </nav>
@@ -209,36 +451,26 @@ export default function Home() {
         </div>
 
         {/* Hero Content */}
-        <div className="hero-content">
-          <h1 className="text-6xl md:text-8xl font-bold leading-none tracking-tight mb-8">
-            <div className="text-gradient-primary">AI NATIVE</div>
-            <div className="text-gradient-primary glow">CROSSLISTING</div>
-          </h1>
+        <div className="hero-shell">
+          <div className="hero-content">
+            <h1 className="hero-headline overflow-hidden">
+              <StackedAnimatedHeadline
+                lines={["AI DRIVEN", "CROSSLISTING"]}
+                gradientLine={-1}
+                lineClassNames={["text-gradient-primary glow", "text-gradient-accent"]}
+                className="hero-headline"
+              />
+            </h1>
 
-          <p className="text-lg md:text-xl opacity-90 mb-10 max-w-2xl" style={{color: 'var(--muted-foreground)'}}>
-            Transform your reselling workflow with intelligent automation. List once, sell everywhere with NetPost's AI-native platform.
-          </p>
+            <p className="hero-subcopy">
+              AI-native workflows save you hours every week.<br />
+              Less busywork means more listings and more sales.
+            </p>
 
-          <div className="mb-16">
-            <Button className="btn-primary px-10 py-4 rounded-xl text-lg font-semibold">
-              Start Free Trial →
-            </Button>
-          </div>
-
-          <div className="flex items-center space-x-8">
-            <div className="text-center">
-              <p className="text-3xl font-bold text-gradient-primary">15+</p>
-              <p className="text-sm opacity-70">Marketplaces</p>
-            </div>
-            <div className="h-8 w-px bg-gray-600"></div>
-            <div className="text-center">
-              <p className="text-3xl font-bold text-gradient-primary">Optimized</p>
-              <p className="text-sm opacity-70">Auto Listing</p>
-            </div>
-            <div className="h-8 w-px bg-gray-600"></div>
-            <div className="text-center">
-              <p className="text-3xl font-bold text-gradient-primary">AI Powered</p>
-              <p className="text-sm opacity-70">Customer Response</p>
+            <div className="hero-actions">
+              <Button className="btn-primary px-8 py-3 rounded-xl text-base md:text-lg font-semibold">
+                Start Free Trial
+              </Button>
             </div>
           </div>
         </div>

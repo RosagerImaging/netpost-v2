@@ -7,11 +7,21 @@
 import React, { useState, useEffect } from 'react';
 import { DashboardLayout } from '../../../components/layout/dashboard-layout';
 import { useAuth } from '../../../lib/auth/auth-context';
-import { AnimatedHeadline } from '../../../components/ui/animated-headline';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { PageHeader } from '../../../components/ui/page-header';
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  cn,
+} from '@netpost/ui';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
   CheckCircle,
@@ -21,7 +31,6 @@ import {
   Loader2,
   Settings,
   Play,
-  Pause,
   RefreshCw,
   Filter,
   Search,
@@ -90,15 +99,6 @@ export default function DelistingDashboard() {
   };
 
   const getStatusBadge = (status: string) => {
-    const variants: Record<string, 'default' | 'outline' | 'destructive' | 'secondary'> = {
-      completed: 'default',
-      processing: 'secondary',
-      failed: 'destructive',
-      partially_failed: 'outline',
-      pending: 'outline',
-      cancelled: 'secondary',
-    };
-
     const icons = {
       completed: CheckCircle,
       processing: Loader2,
@@ -109,11 +109,25 @@ export default function DelistingDashboard() {
     };
 
     const Icon = icons[status as keyof typeof icons] || Clock;
-    const variant = variants[status] || 'outline';
+
+    const badgeClasses: Record<string, string> = {
+      completed: 'border-emerald-500/30 bg-emerald-500/15 text-emerald-200',
+      processing: 'border-amber-500/30 bg-amber-500/15 text-amber-200',
+      failed: 'border-red-500/30 bg-red-500/15 text-red-200',
+      partially_failed: 'border-orange-500/30 bg-orange-500/15 text-orange-200',
+      pending: 'border-white/10 bg-white/10 text-muted-foreground',
+      cancelled: 'border-cyan-500/30 bg-cyan-500/15 text-cyan-200',
+    };
 
     return (
-      <Badge variant={variant} className="flex items-center gap-1">
-        <Icon className={`h-3 w-3 ${status === 'processing' ? 'animate-spin' : ''}`} />
+      <Badge
+        variant="secondary"
+        className={cn(
+          'glass-card flex items-center gap-1 border px-2 py-1 text-[11px] font-medium uppercase tracking-[0.25em] text-white/90',
+          badgeClasses[status] ?? 'border-white/10 bg-white/10 text-muted-foreground'
+        )}
+      >
+        <Icon className={cn('h-3 w-3', { 'animate-spin': status === 'processing' })} />
         {status.replace('_', ' ')}
       </Badge>
     );
@@ -128,8 +142,8 @@ export default function DelistingDashboard() {
           subscription: subscriptionData
         } : undefined}
       >
-        <div className="p-6">
-          <Alert variant="destructive">
+        <div className="mx-auto max-w-3xl space-y-6 px-4 pb-12">
+          <Alert variant="destructive" className="glass-card border border-destructive/40 bg-destructive/10">
             <AlertTriangle className="h-4 w-4" />
             <AlertDescription>
               Failed to load delisting dashboard. {jobsError || statsError}
@@ -148,154 +162,150 @@ export default function DelistingDashboard() {
         subscription: subscriptionData
       } : undefined}
     >
-      <div className="p-6 space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <AnimatedHeadline
-              text="De-listing Dashboard"
-              className="from-primary-600 to-accent-600 bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
-            />
-            <p className="text-secondary-text mt-2">
-              Monitor and manage your automated and manual de-listing activities
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleRefreshAll}
-              disabled={jobsLoading || statsLoading}
-            >
-              <RefreshCw className={`h-4 w-4 mr-2 ${(jobsLoading || statsLoading) ? 'animate-spin' : ''}`} />
-              Refresh
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowPreferences(true)}
-            >
-              <Settings className="h-4 w-4 mr-2" />
-              Preferences
-            </Button>
-          </div>
-        </div>
+      <div className="mx-auto max-w-7xl space-y-10 px-4 pb-12">
+        <PageHeader
+          eyebrow="Automation"
+          title="Delisting"
+          subtitle="Monitor job queues, resolve failures, and fine-tune automation for every marketplace."
+          icon={<AlertTriangle className="h-7 w-7 text-primary" />}
+          actions={(
+            <div className="flex items-center gap-3">
+              <Button
+                variant="outline"
+                size="sm"
+                className="glass-button inline-flex items-center gap-2"
+                onClick={handleRefreshAll}
+                disabled={jobsLoading || statsLoading}
+              >
+                <RefreshCw className={cn('h-4 w-4', { 'animate-spin': jobsLoading || statsLoading })} />
+                Refresh
+              </Button>
+              <Button
+                variant="accent"
+                size="sm"
+                className="inline-flex items-center gap-2"
+                onClick={() => setShowPreferences(true)}
+              >
+                <Settings className="h-4 w-4" />
+                Preferences
+              </Button>
+            </div>
+          )}
+        />
 
-      {/* Quick Stats */}
-      <DelistingStats stats={stats} loading={statsLoading} />
+        <DelistingStats stats={stats} loading={statsLoading} />
 
-      {/* Main Content Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="jobs">Delisting Jobs</TabsTrigger>
-          <TabsTrigger value="manual">Manual Delisting</TabsTrigger>
-          <TabsTrigger value="activity">Recent Activity</TabsTrigger>
-        </TabsList>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="glass-card grid w-full grid-cols-4 border border-white/10 bg-white/5/40">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="jobs">Delisting Jobs</TabsTrigger>
+            <TabsTrigger value="manual">Manual Delisting</TabsTrigger>
+            <TabsTrigger value="activity">Recent Activity</TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="overview" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Recent Jobs Summary */}
-            <Card className="glass">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Clock className="h-5 w-5" />
-                  Recent Jobs
-                </CardTitle>
-                <CardDescription>
-                  Latest delisting jobs and their status
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {jobsLoading ? (
-                  <div className="flex items-center justify-center py-8">
-                    <Loader2 className="h-6 w-6 animate-spin" />
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <Card className="glass-card border border-white/10">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Clock className="h-5 w-5" />
+                    Recent Jobs
+                  </CardTitle>
+                  <CardDescription>
+                    Latest delisting jobs and their status
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {jobsLoading ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Loader2 className="h-6 w-6 animate-spin" />
+                    </div>
+                  ) : jobs.length === 0 ? (
+                  <div className="flex flex-col items-center gap-3 py-10 text-center">
+                    <Loader2 className="h-10 w-10 animate-spin text-muted-foreground" />
+                    <p className="text-sm text-muted-foreground">
+                      No delisting jobs yet. Processed listings will appear here.
+                    </p>
                   </div>
-                ) : jobs.length === 0 ? (
-                  <p className="text-muted-foreground text-center py-8">
-                    No delisting jobs found
-                  </p>
-                ) : (
-                  <div className="space-y-3">
-                    {jobs.slice(0, 5).map((job) => (
-                      <div key={job.id} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div className="flex-1">
-                          <p className="font-medium text-sm">{job.item_title}</p>
+                  ) : (
+                    <div className="space-y-3">
+                      {jobs.slice(0, 5).map((job) => (
+                        <div key={job.id} className="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-3">
+                          <div className="flex-1">
+                          <p className="text-sm font-semibold text-foreground">{job.item_title}</p>
                           <p className="text-xs text-muted-foreground">
                             Sold on {job.sold_on_marketplace} • {job.marketplaces_targeted.length} targets
                           </p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {getStatusBadge(job.status)}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {getStatusBadge(job.status)}
                         </div>
                       </div>
                     ))}
                   </div>
-                )}
-              </CardContent>
-            </Card>
+                  )}
+                </CardContent>
+              </Card>
 
-            {/* Quick Actions */}
-            <Card className="glass">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Play className="h-5 w-5" />
-                  Quick Actions
-                </CardTitle>
-                <CardDescription>
-                  Common delisting operations
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button
-                  className="w-full justify-start"
-                  variant="outline"
-                  onClick={() => setActiveTab('manual')}
-                >
-                  <Play className="h-4 w-4 mr-2" />
-                  Manual De-listing
-                </Button>
-                <Button
-                  className="w-full justify-start"
-                  variant="outline"
-                  onClick={() => setShowPreferences(true)}
-                >
-                  <Settings className="h-4 w-4 mr-2" />
-                  Configure Preferences
-                </Button>
-                <Button
-                  className="w-full justify-start"
-                  variant="outline"
-                  onClick={handleRefreshAll}
-                >
-                  <RefreshCw className="h-4 w-4 mr-2" />
-                  Refresh All Data
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
+              <Card className="glass-card border border-white/10">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Play className="h-5 w-5" />
+                    Quick Actions
+                  </CardTitle>
+                  <CardDescription>
+                    Common delisting operations
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Button
+                    className="glass-button w-full justify-start"
+                    variant="outline"
+                    onClick={() => setActiveTab('manual')}
+                  >
+                    <Play className="h-4 w-4 mr-2" />
+                    Manual De-listing
+                  </Button>
+                  <Button
+                    className="glass-button w-full justify-start"
+                    variant="outline"
+                    onClick={() => setShowPreferences(true)}
+                  >
+                    <Settings className="h-4 w-4 mr-2" />
+                    Configure Preferences
+                  </Button>
+                  <Button
+                    className="glass-button w-full justify-start"
+                    variant="outline"
+                    onClick={handleRefreshAll}
+                  >
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Refresh All Data
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
 
-        <TabsContent value="jobs" className="space-y-4">
-          <DelistingJobsTable
-            jobs={jobs}
-            loading={jobsLoading}
-            onRetry={retryJob}
-            onCancel={cancelJob}
-            onConfirm={confirmJob}
-            onRefresh={refreshJobs}
-          />
-        </TabsContent>
+          <TabsContent value="jobs" className="space-y-4">
+            <DelistingJobsTable
+              jobs={jobs}
+              loading={jobsLoading}
+              onRetry={retryJob}
+              onCancel={cancelJob}
+              onConfirm={confirmJob}
+              onRefresh={refreshJobs}
+            />
+          </TabsContent>
 
-        <TabsContent value="manual" className="space-y-4">
-          <ManualDelistingPanel onJobCreated={refreshJobs} />
-        </TabsContent>
+          <TabsContent value="manual" className="space-y-4">
+            <ManualDelistingPanel onJobCreated={refreshJobs} />
+          </TabsContent>
 
-        <TabsContent value="activity" className="space-y-4">
-          <RecentActivity />
-        </TabsContent>
-      </Tabs>
-
+          <TabsContent value="activity" className="space-y-4">
+            <RecentActivity />
+          </TabsContent>
+        </Tabs>
       {/* Preferences Modal */}
       {showPreferences && (
         <DelistingPreferences
@@ -306,8 +316,8 @@ export default function DelistingDashboard() {
             refreshStats();
           }}
         />
-        )}
-      </div>
-    </DashboardLayout>
-  );
+      )}
+    </div>
+  </DashboardLayout>
+);
 }

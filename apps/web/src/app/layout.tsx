@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "../styles/app-theme.css";
 import { AuthProvider } from "../../lib/auth/auth-context";
 import { QueryProvider } from "../../lib/providers/query-provider";
 
@@ -24,8 +25,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased`}>
+    // suppressHydrationWarning prevents hydration warnings from browser extensions
+    // like Moat/Drawbridge that add attributes to the html element
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.variable} font-sans antialiased netpost-theme gradient-bg`}>
         <QueryProvider>
           <AuthProvider>{children}</AuthProvider>
         </QueryProvider>

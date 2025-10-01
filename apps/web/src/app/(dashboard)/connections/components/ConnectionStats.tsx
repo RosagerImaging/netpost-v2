@@ -6,7 +6,17 @@
 
 'use client';
 
-import { PlusIcon } from '@heroicons/react/24/outline';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Badge,
+  Separator,
+  cn,
+} from '@netpost/ui';
+import { Plus } from 'lucide-react';
 import { getMarketplaceDisplayInfo } from '@/lib/marketplaces';
 import type { MarketplaceType } from '@netpost/shared-types';
 
@@ -31,22 +41,21 @@ export function ConnectionStats({
     {
       name: 'Total Connections',
       value: total,
-      color: 'text-gray-900',
-      bgColor: 'bg-white',
+      accent: 'from-primary/40 via-primary/10 to-transparent',
       change: null,
     },
     {
       name: 'Active',
       value: active,
-      color: 'text-green-700',
-      bgColor: 'bg-green-50',
+      accent: 'from-emerald-500/40 via-emerald-500/10 to-transparent',
       change: null,
     },
     {
-      name: 'Need Attention',
+      name: 'Needs Attention',
       value: expired + errors,
-      color: expired + errors > 0 ? 'text-yellow-700' : 'text-gray-700',
-      bgColor: expired + errors > 0 ? 'bg-yellow-50' : 'bg-gray-50',
+      accent: expired + errors > 0
+        ? 'from-amber-500/40 via-amber-500/10 to-transparent'
+        : 'from-muted/40 via-muted/10 to-transparent',
       change: null,
     },
   ];
@@ -58,145 +67,141 @@ export function ConnectionStats({
 
   return (
     <div className="space-y-6">
-      {/* Main Stats */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {stats.map((stat) => (
-          <div
-            key={stat.name}
-            className={`overflow-hidden rounded-lg ${stat.bgColor} px-4 py-5 shadow sm:p-6`}
-          >
-            <dt className="truncate text-sm font-medium text-gray-500">{stat.name}</dt>
-            <dd className={`mt-1 text-3xl font-semibold tracking-tight ${stat.color}`}>
-              {stat.value}
-            </dd>
-          </div>
+          <Card key={stat.name} className="glass-card border border-white/10">
+            <CardContent className="space-y-3 p-5">
+              <div className="flex flex-col gap-2">
+                <span className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                  {stat.name}
+                </span>
+                <span className="text-3xl font-semibold text-foreground">
+                  {stat.value}
+                </span>
+              </div>
+              <div
+                className="h-1.5 w-full rounded-full bg-white/10"
+                style={{
+                  backgroundImage: `linear-gradient(90deg, var(--glass-start, rgba(255,255,255,0.05)), rgba(255,255,255,0))`,
+                  boxShadow: '0 0 12px rgba(255,255,255,0.12)',
+                }}
+              />
+            </CardContent>
+          </Card>
         ))}
       </div>
 
-      {/* Marketplace Breakdown */}
       {total > 0 && (
-        <div className="rounded-lg bg-white shadow">
-          <div className="px-4 py-5 sm:p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-medium text-gray-900">
-                Connected Marketplaces
-              </h3>
-              <button
-                type="button"
-                onClick={() => onAddConnection()}
-                className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
-              >
-                <PlusIcon className="h-4 w-4 mr-1" />
-                Add More
-              </button>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <Card className="glass-card border border-white/10">
+          <CardHeader className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <CardTitle className="text-lg font-semibold text-foreground">
+              Connected Marketplaces
+            </CardTitle>
+            <Button variant="accent" size="sm" className="inline-flex items-center gap-2" onClick={() => onAddConnection()}>
+              <Plus className="h-4 w-4" />
+              Add Marketplace
+            </Button>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {topMarketplaces.map(([marketplace, count]) => {
                 const info = getMarketplaceDisplayInfo(marketplace as MarketplaceType);
                 return (
-                  <div
+                  <button
                     key={marketplace}
-                    className="flex items-center space-x-3 p-3 rounded-lg border border-gray-200 hover:border-gray-300 cursor-pointer transition-colors"
                     onClick={() => onAddConnection(marketplace as MarketplaceType)}
+                    className="glass-card flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-left transition hover:bg-white/10"
                   >
                     <div
-                      className="h-8 w-8 rounded-md flex items-center justify-center text-white font-bold text-xs"
+                      className="flex h-9 w-9 items-center justify-center rounded-md text-xs font-semibold text-white"
                       style={{ backgroundColor: info.color }}
                     >
                       {info.name.slice(0, 2).toUpperCase()}
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium text-foreground">
                         {info.name}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-muted-foreground">
                         {count} connection{count !== 1 ? 's' : ''}
                       </p>
                     </div>
-                  </div>
+                    <Separator orientation="vertical" className="h-6 bg-white/10" />
+                    <Badge variant="secondary" className="glass-card border border-white/10 px-2 py-0.5 text-[10px] uppercase tracking-[0.2em]">
+                      View
+                    </Badge>
+                  </button>
                 );
               })}
 
-              {/* Add more button if we have less than 4 marketplace types */}
               {topMarketplaces.length < 4 && (
-                <div
-                  className="flex items-center justify-center p-3 rounded-lg border-2 border-dashed border-gray-300 hover:border-gray-400 cursor-pointer transition-colors"
+                <button
+                  className="glass-card flex items-center justify-center rounded-lg border border-dashed border-white/20 bg-white/5 px-4 py-6 text-sm text-muted-foreground transition hover:border-white/40 hover:text-foreground"
                   onClick={() => onAddConnection()}
                 >
-                  <div className="text-center">
-                    <PlusIcon className="h-6 w-6 mx-auto text-gray-400" />
-                    <p className="mt-1 text-xs text-gray-500">Add marketplace</p>
+                  <div className="flex flex-col items-center gap-2">
+                    <Plus className="h-5 w-5" />
+                    <span className="text-xs uppercase tracking-[0.3em]">Add marketplace</span>
                   </div>
-                </div>
+                </button>
               )}
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       )}
 
-      {/* Empty State for New Users */}
       {total === 0 && (
-        <div className="rounded-lg bg-blue-50 p-6">
-          <div className="flex items-center space-x-4">
-            <div className="flex-shrink-0">
-              <div className="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center">
-                <PlusIcon className="h-6 w-6 text-blue-600" />
-              </div>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-lg font-medium text-blue-900">
-                Start Cross-Listing Today
-              </h3>
-              <p className="mt-1 text-sm text-blue-700">
-                Connect your marketplace accounts to begin cross-listing your inventory across
-                multiple platforms. Start with the most popular marketplaces for your niche.
+        <Card className="glass-card border border-primary/30 bg-primary/10">
+          <CardContent className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold text-foreground">Start cross-listing today</h3>
+              <p className="text-sm text-muted-foreground">
+                Connect your marketplace accounts to begin syncing inventory everywhere you sell.
               </p>
             </div>
-            <div className="flex-shrink-0">
-              <button
-                type="button"
-                onClick={() => onAddConnection()}
-                className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
-              >
-                Get Started
-              </button>
-            </div>
-          </div>
-        </div>
+            <Button variant="accent" className="inline-flex items-center gap-2" onClick={() => onAddConnection()}>
+              <Plus className="h-4 w-4" />
+              Connect marketplace
+            </Button>
+          </CardContent>
+        </Card>
       )}
 
-      {/* Popular Marketplaces Suggestion */}
       {total > 0 && total < 3 && (
-        <div className="rounded-lg bg-gray-50 p-4">
-          <h4 className="text-sm font-medium text-gray-900 mb-3">
-            📈 Maximize Your Reach
-          </h4>
-          <p className="text-sm text-gray-600 mb-3">
-            Consider connecting to these popular marketplaces to increase your sales potential:
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {['ebay', 'poshmark', 'facebook_marketplace'].filter(
-              marketplace => !byMarketplace[marketplace as MarketplaceType]
-            ).map((marketplace) => {
-              const info = getMarketplaceDisplayInfo(marketplace as MarketplaceType);
-              return (
-                <button
-                  key={marketplace}
-                  type="button"
-                  onClick={() => onAddConnection(marketplace as MarketplaceType)}
-                  className="inline-flex items-center rounded-full bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                >
-                  <div
-                    className="h-4 w-4 rounded-full mr-2"
-                    style={{ backgroundColor: info.color }}
-                  />
-                  {info.name}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+        <Card className="glass-card border border-white/10">
+          <CardHeader>
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Maximize your reach
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Consider connecting these popular marketplaces to expand your presence.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {['ebay', 'poshmark', 'facebook_marketplace'].filter(
+                marketplace => !byMarketplace[marketplace as MarketplaceType]
+              ).map((marketplace) => {
+                const info = getMarketplaceDisplayInfo(marketplace as MarketplaceType);
+                return (
+                  <Button
+                    key={marketplace}
+                    variant="outline"
+                    size="sm"
+                    className="glass-button inline-flex items-center gap-2"
+                    onClick={() => onAddConnection(marketplace as MarketplaceType)}
+                  >
+                    <span
+                      className="h-2 w-2 rounded-full"
+                      style={{ backgroundColor: info.color }}
+                    />
+                    {info.name}
+                  </Button>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
       )}
     </div>
   );

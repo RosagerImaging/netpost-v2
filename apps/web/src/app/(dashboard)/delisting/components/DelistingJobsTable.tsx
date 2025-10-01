@@ -5,14 +5,31 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  cn,
+} from '@netpost/ui';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import {
   CheckCircle,
   XCircle,
@@ -20,13 +37,9 @@ import {
   AlertTriangle,
   Loader2,
   Search,
-  Filter,
   RefreshCw,
-  Play,
   X,
   RotateCcw,
-  ExternalLink,
-  Download,
   MoreHorizontal
 } from 'lucide-react';
 
@@ -117,30 +130,35 @@ export function DelistingJobsTable({
   }, [jobs, searchQuery, statusFilter, marketplaceFilter, triggerTypeFilter])
 
   const getStatusBadge = (status: string) => {
-    const variants: Record<string, 'default' | 'outline' | 'destructive' | 'secondary'> = {
-      completed: 'default',
-      processing: 'secondary',
-      failed: 'destructive',
-      partially_failed: 'outline',
-      pending: 'outline',
-      cancelled: 'secondary',
+    const pills: Record<string, { tone: 'positive' | 'warning' | 'negative' | 'info' | 'neutral'; icon: React.ElementType }> = {
+      completed: { tone: 'positive', icon: CheckCircle },
+      processing: { tone: 'info', icon: Loader2 },
+      failed: { tone: 'negative', icon: XCircle },
+      partially_failed: { tone: 'warning', icon: AlertTriangle },
+      pending: { tone: 'neutral', icon: Clock },
+      cancelled: { tone: 'neutral', icon: X },
     }
 
-    const icons = {
-      completed: CheckCircle,
-      processing: Loader2,
-      failed: XCircle,
-      partially_failed: AlertTriangle,
-      pending: Clock,
-      cancelled: X,
-    }
+    const pill = pills[status] || pills.pending
+    const Icon = pill.icon
 
-    const Icon = icons[status as keyof typeof icons] || Clock
-    const variant = variants[status] || 'outline'
+    const toneClasses: Record<typeof pill.tone, string> = {
+      positive: 'border-emerald-500/30 bg-emerald-500/15 text-emerald-200',
+      warning: 'border-amber-500/30 bg-amber-500/15 text-amber-100',
+      negative: 'border-red-500/30 bg-red-500/15 text-red-200',
+      info: 'border-sky-500/30 bg-sky-500/15 text-sky-200',
+      neutral: 'border-white/15 bg-white/10 text-muted-foreground',
+    }
 
     return (
-      <Badge variant={variant} className="flex items-center gap-1">
-        <Icon className={`h-3 w-3 ${status === 'processing' ? 'animate-spin' : ''}`} />
+      <Badge
+        variant="secondary"
+        className={cn(
+          'glass-card flex items-center gap-1 border px-2 py-1 text-[11px] font-medium uppercase tracking-[0.25em]',
+          toneClasses[pill.tone]
+        )}
+      >
+        <Icon className={cn('h-3 w-3', status === 'processing' && 'animate-spin')} />
         {status.replace('_', ' ')}
       </Badge>
     )
@@ -196,60 +214,43 @@ export function DelistingJobsTable({
     return Array.from(marketplaces)
   }
 
-  if (loading && jobs.length === 0) {
-    return (
-      <Card>
-        <CardContent className="p-6">
-          <div className="flex items-center justify-center py-8">
-            <Loader2 className="h-6 w-6 animate-spin mr-2" />
-            Loading delisting jobs...
-          </div>
-        </CardContent>
-      </Card>
-    )
-  }
-
   return (
     <div className="space-y-4">
-      {/* Header and Controls */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle>Delisting Jobs</CardTitle>
-              <CardDescription>
-                Monitor and manage all delisting operations ({filteredJobs.length} of {jobs.length} jobs)
-              </CardDescription>
-            </div>
-            <Button onClick={onRefresh} disabled={loading} size="sm" variant="outline">
-              <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-              Refresh
-            </Button>
+      <Card className="glass-card border border-white/10">
+        <CardHeader className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div className="space-y-1">
+            <CardTitle className="text-muted-foreground">Delisting Jobs</CardTitle>
+            <CardDescription>
+              Monitor and manage all delisting operations · {filteredJobs.length} of {jobs.length} jobs visible
+            </CardDescription>
           </div>
+          <Button onClick={onRefresh} disabled={loading} size="sm" variant="accent" className="glass-button inline-flex items-center gap-2">
+            <RefreshCw className={cn('h-4 w-4', loading && 'animate-spin')} />
+            Refresh
+          </Button>
         </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Filters */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div>
-              <Label htmlFor="search">Search</Label>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+            <div className="space-y-2">
+              <Label htmlFor="search" className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Search</Label>
               <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="search"
                   placeholder="Search jobs..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
+                  className="glass-input pl-10"
                 />
               </div>
             </div>
-            <div>
-              <Label>Status</Label>
+            <div className="space-y-2">
+              <Label className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Status</Label>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger>
+                <SelectTrigger className="glass-input">
                   <SelectValue placeholder="All statuses" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="glass-card border border-white/10">
                   <SelectItem value="all">All Statuses</SelectItem>
                   <SelectItem value="pending">Pending</SelectItem>
                   <SelectItem value="processing">Processing</SelectItem>
@@ -260,13 +261,13 @@ export function DelistingJobsTable({
                 </SelectContent>
               </Select>
             </div>
-            <div>
-              <Label>Marketplace</Label>
+            <div className="space-y-2">
+              <Label className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Marketplace</Label>
               <Select value={marketplaceFilter} onValueChange={setMarketplaceFilter}>
-                <SelectTrigger>
+                <SelectTrigger className="glass-input">
                   <SelectValue placeholder="All marketplaces" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="glass-card border border-white/10">
                   <SelectItem value="all">All Marketplaces</SelectItem>
                   {getAvailableMarketplaces().map(marketplace => (
                     <SelectItem key={marketplace} value={marketplace}>
@@ -276,13 +277,13 @@ export function DelistingJobsTable({
                 </SelectContent>
               </Select>
             </div>
-            <div>
-              <Label>Trigger Type</Label>
+            <div className="space-y-2">
+              <Label className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Trigger Type</Label>
               <Select value={triggerTypeFilter} onValueChange={setTriggerTypeFilter}>
-                <SelectTrigger>
+                <SelectTrigger className="glass-input">
                   <SelectValue placeholder="All types" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="glass-card border border-white/10">
                   <SelectItem value="all">All Types</SelectItem>
                   <SelectItem value="automatic">Automatic</SelectItem>
                   <SelectItem value="manual">Manual</SelectItem>
@@ -291,188 +292,197 @@ export function DelistingJobsTable({
               </Select>
             </div>
           </div>
-        </CardContent>
-      </Card>
 
-      {/* Jobs Table */}
-      <Card>
-        <CardContent className="p-0">
-          {filteredJobs.length === 0 ? (
-            <div className="text-center py-8">
-              <AlertTriangle className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p className="text-muted-foreground">No delisting jobs found</p>
-              <p className="text-sm text-muted-foreground">Try adjusting your search filters</p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="border-b">
-                  <tr className="text-left">
-                    <th className="p-4 font-medium">Item</th>
-                    <th className="p-4 font-medium">Status</th>
-                    <th className="p-4 font-medium">Sold On</th>
-                    <th className="p-4 font-medium">Targets</th>
-                    <th className="p-4 font-medium">Type</th>
-                    <th className="p-4 font-medium">Scheduled</th>
-                    <th className="p-4 font-medium">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredJobs.map((job) => (
-                    <tr key={job.id} className="border-b hover:bg-muted/50">
-                      <td className="p-4">
-                        <div>
-                          <p className="font-medium text-sm">{job.item_title}</p>
-                          <p className="text-xs text-muted-foreground">ID: {job.id.slice(0, 8)}...</p>
-                        </div>
-                      </td>
-                      <td className="p-4">
-                        {getStatusBadge(job.status)}
-                        {job.requires_user_confirmation && job.status === 'pending' && (
-                          <Badge variant="outline" className="ml-2 text-xs">
-                            Needs Confirmation
-                          </Badge>
-                        )}
-                      </td>
-                      <td className="p-4">
-                        <Badge variant="outline">
-                          {formatMarketplaceName(job.sold_on_marketplace)}
-                        </Badge>
-                      </td>
-                      <td className="p-4">
-                        <div className="flex flex-wrap gap-1">
-                          {job.marketplaces_targeted.map((marketplace) => (
-                            <Badge key={marketplace} variant="secondary" className="text-xs">
-                              {formatMarketplaceName(marketplace)}
+          <Card className="glass-card border border-white/10">
+            <CardContent className="p-0">
+              {loading && jobs.length === 0 ? (
+                <div className="flex items-center justify-center gap-3 py-10 text-muted-foreground">
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Loading delisting jobs...
+                </div>
+              ) : filteredJobs.length === 0 ? (
+                <div className="flex flex-col items-center gap-3 py-10 text-muted-foreground">
+                  <AlertTriangle className="h-10 w-10" />
+                  <p className="text-sm">No delisting jobs found</p>
+                  <p className="text-xs">Try adjusting your search filters</p>
+                </div>
+              ) : (
+                <div className="max-h-[480px] overflow-y-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-white/10 text-left text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                        <th className="p-4">Item</th>
+                        <th className="p-4">Status</th>
+                        <th className="p-4">Sold On</th>
+                        <th className="p-4">Targets</th>
+                        <th className="p-4">Type</th>
+                        <th className="p-4">Scheduled</th>
+                        <th className="p-4">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredJobs.map((job) => (
+                        <tr key={job.id} className="border-b border-white/5 hover:bg-white/5">
+                          <td className="p-4 align-top">
+                            <div className="space-y-1">
+                              <p className="text-sm font-medium text-foreground">{job.item_title}</p>
+                              <p className="text-xs text-muted-foreground">ID: {job.id.slice(0, 8)}...</p>
+                            </div>
+                          </td>
+                          <td className="p-4 align-top">
+                            <div className="flex flex-wrap items-center gap-2">
+                              {getStatusBadge(job.status)}
+                              {job.requires_user_confirmation && job.status === 'pending' && (
+                                <Badge variant="secondary" className="glass-card border border-white/10 px-2 py-1 text-[10px] uppercase tracking-[0.2em]">
+                                  Needs confirmation
+                                </Badge>
+                              )}
+                            </div>
+                          </td>
+                          <td className="p-4 align-top">
+                            <Badge variant="outline" className="glass-card border border-white/10 px-2 py-1 text-[11px] uppercase tracking-[0.2em]">
+                              {formatMarketplaceName(job.sold_on_marketplace)}
                             </Badge>
-                          ))}
-                        </div>
-                      </td>
-                      <td className="p-4">
-                        <Badge variant="outline" className="capitalize">
-                          {job.trigger_type}
-                        </Badge>
-                      </td>
-                      <td className="p-4">
-                        <div className="text-sm">
-                          <p>{formatDate(job.scheduled_for)}</p>
-                          {job.started_at && (
-                            <p className="text-xs text-muted-foreground">
-                              Started: {formatDate(job.started_at)}
-                            </p>
-                          )}
-                        </div>
-                      </td>
-                      <td className="p-4">
-                        <div className="flex items-center gap-2">
-                          {job.status === 'pending' && job.requires_user_confirmation && (
-                            <Button
-                              size="sm"
-                              onClick={() => handleAction('confirm', job.id)}
-                              disabled={actionInProgress === job.id}
-                            >
-                              {actionInProgress === job.id ? (
-                                <Loader2 className="h-3 w-3 animate-spin" />
-                              ) : (
-                                <CheckCircle className="h-3 w-3" />
+                          </td>
+                          <td className="p-4 align-top">
+                            <div className="flex flex-wrap gap-1">
+                              {job.marketplaces_targeted.map((marketplace) => (
+                                <Badge key={marketplace} variant="secondary" className="glass-card border border-white/10 px-2 py-1 text-[10px] uppercase tracking-[0.2em]">
+                                  {formatMarketplaceName(marketplace)}
+                                </Badge>
+                              ))}
+                            </div>
+                          </td>
+                          <td className="p-4 align-top">
+                            <Badge variant="outline" className="glass-card border border-white/10 px-2 py-1 text-[11px] capitalize tracking-[0.2em]">
+                              {job.trigger_type}
+                            </Badge>
+                          </td>
+                          <td className="p-4 align-top">
+                            <div className="space-y-1 text-xs text-muted-foreground">
+                              <p className="text-foreground">{formatDate(job.scheduled_for)}</p>
+                              {job.started_at && <p>Started: {formatDate(job.started_at)}</p>}
+                            </div>
+                          </td>
+                          <td className="p-4 align-top">
+                            <div className="flex flex-wrap items-center gap-2">
+                              {job.status === 'pending' && job.requires_user_confirmation && (
+                                <Button
+                                  size="icon-sm"
+                                  variant="accent"
+                                  className="glass-button"
+                                  onClick={() => handleAction('confirm', job.id)}
+                                  disabled={actionInProgress === job.id}
+                                >
+                                  {actionInProgress === job.id ? (
+                                    <Loader2 className="h-3 w-3 animate-spin" />
+                                  ) : (
+                                    <CheckCircle className="h-3 w-3" />
+                                  )}
+                                </Button>
                               )}
-                            </Button>
-                          )}
-                          {(job.status === 'failed' || job.status === 'partially_failed') && (
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => handleAction('retry', job.id)}
-                              disabled={actionInProgress === job.id}
-                            >
-                              {actionInProgress === job.id ? (
-                                <Loader2 className="h-3 w-3 animate-spin" />
-                              ) : (
-                                <RotateCcw className="h-3 w-3" />
+                              {(job.status === 'failed' || job.status === 'partially_failed') && (
+                                <Button
+                                  size="icon-sm"
+                                  variant="outline"
+                                  className="glass-button"
+                                  onClick={() => handleAction('retry', job.id)}
+                                  disabled={actionInProgress === job.id}
+                                >
+                                  {actionInProgress === job.id ? (
+                                    <Loader2 className="h-3 w-3 animate-spin" />
+                                  ) : (
+                                    <RotateCcw className="h-3 w-3" />
+                                  )}
+                                </Button>
                               )}
-                            </Button>
-                          )}
-                          {(job.status === 'pending' || job.status === 'processing') && (
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => handleAction('cancel', job.id)}
-                              disabled={actionInProgress === job.id}
-                            >
-                              {actionInProgress === job.id ? (
-                                <Loader2 className="h-3 w-3 animate-spin" />
-                              ) : (
-                                <X className="h-3 w-3" />
+                              {(job.status === 'pending' || job.status === 'processing') && (
+                                <Button
+                                  size="icon-sm"
+                                  variant="outline"
+                                  className="glass-button"
+                                  onClick={() => handleAction('cancel', job.id)}
+                                  disabled={actionInProgress === job.id}
+                                >
+                                  {actionInProgress === job.id ? (
+                                    <Loader2 className="h-3 w-3 animate-spin" />
+                                  ) : (
+                                    <X className="h-3 w-3" />
+                                  )}
+                                </Button>
                               )}
-                            </Button>
-                          )}
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => setSelectedJob(job)}
-                          >
-                            <MoreHorizontal className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                              <Button
+                                size="icon-sm"
+                                variant="ghost"
+                                className="glass-button"
+                                onClick={() => setSelectedJob(job)}
+                              >
+                                <MoreHorizontal className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </CardContent>
       </Card>
 
-      {/* Job Details Dialog */}
       {selectedJob && (
         <Dialog open={!!selectedJob} onOpenChange={() => setSelectedJob(null)}>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="glass-card max-w-2xl border border-white/10">
             <DialogHeader>
-              <DialogTitle>Job Details</DialogTitle>
+              <DialogTitle className="text-muted-foreground">Job Details</DialogTitle>
               <DialogDescription>
-                Detailed information for delisting job {selectedJob.id}
+                Delisting job {selectedJob.id}: status {selectedJob.status.replace('_', ' ')} targeting {formatMarketplaceName(selectedJob.sold_on_marketplace)}. Scheduled for {formatDate(selectedJob.scheduled_for)}.
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <Label className="text-sm font-medium">Item</Label>
-                  <p className="text-sm">{selectedJob.item_title}</p>
+                  <Label className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Item</Label>
+                  <p className="text-sm text-foreground">{selectedJob.item_title}</p>
                 </div>
                 <div>
-                  <Label className="text-sm font-medium">Status</Label>
-                  <div className="mt-1">
+                  <Label className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Status</Label>
+                  <div className="mt-2">
                     {getStatusBadge(selectedJob.status)}
                   </div>
                 </div>
                 <div>
-                  <Label className="text-sm font-medium">Sold On</Label>
-                  <p className="text-sm">{formatMarketplaceName(selectedJob.sold_on_marketplace)}</p>
+                  <Label className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Sold On</Label>
+                  <p className="text-sm text-foreground">{formatMarketplaceName(selectedJob.sold_on_marketplace)}</p>
                 </div>
                 <div>
-                  <Label className="text-sm font-medium">Trigger Type</Label>
-                  <p className="text-sm capitalize">{selectedJob.trigger_type}</p>
+                  <Label className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Trigger Type</Label>
+                  <p className="text-sm capitalize text-foreground">{selectedJob.trigger_type}</p>
                 </div>
                 <div>
-                  <Label className="text-sm font-medium">Scheduled For</Label>
-                  <p className="text-sm">{formatDate(selectedJob.scheduled_for)}</p>
+                  <Label className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Scheduled For</Label>
+                  <p className="text-sm text-foreground">{formatDate(selectedJob.scheduled_for)}</p>
                 </div>
                 <div>
-                  <Label className="text-sm font-medium">Created</Label>
-                  <p className="text-sm">{formatDate(selectedJob.created_at)}</p>
+                  <Label className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Created</Label>
+                  <p className="text-sm text-foreground">{formatDate(selectedJob.created_at)}</p>
                 </div>
               </div>
 
               {selectedJob.results && selectedJob.results.length > 0 && (
                 <div>
-                  <Label className="text-sm font-medium">Results</Label>
-                  <div className="mt-2 space-y-2">
+                  <Label className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Results</Label>
+                  <div className="mt-3 space-y-2">
                     {selectedJob.results.map((result, index) => (
-                      <div key={index} className="flex items-center justify-between p-2 border rounded">
-                        <span className="text-sm">{formatMarketplaceName(result.marketplace)}</span>
+                      <div key={index} className="glass-card flex items-center justify-between rounded-lg border border-white/10 bg-white/5 px-3 py-2">
+                        <span className="text-sm text-foreground">{formatMarketplaceName(result.marketplace)}</span>
                         <div className="flex items-center gap-2">
-                          <Badge variant={result.status === 'success' ? 'default' : result.status === 'failed' ? 'destructive' : 'secondary'}>
+                          <Badge
+                            variant={result.status === 'success' ? 'secondary' : result.status === 'failed' ? 'destructive' : 'outline'}
+                            className="glass-pill text-xs uppercase tracking-[0.2em]"
+                          >
                             {result.status}
                           </Badge>
                           {result.message && (
@@ -486,7 +496,7 @@ export function DelistingJobsTable({
               )}
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setSelectedJob(null)}>
+              <Button variant="outline" className="glass-button" onClick={() => setSelectedJob(null)}>
                 Close
               </Button>
             </DialogFooter>

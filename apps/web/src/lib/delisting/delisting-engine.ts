@@ -354,7 +354,7 @@ class DelistingEngine {
     listing: any
   ): DelistingError {
     let code: DelistingErrorCode = DELISTING_ERROR_CODES.UNKNOWN_ERROR;
-    let message = error.message || 'Unknown error';
+    const message = error.message || 'Unknown error';
     let permanent = false;
     let retryAfter: number | undefined;
 

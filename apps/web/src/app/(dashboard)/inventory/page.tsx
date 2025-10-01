@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { DashboardLayout } from "../../../components/layout/dashboard-layout";
 import { useAuth } from "../../../../lib/auth/auth-hooks";
-import { AnimatedHeadline } from "../../../components/ui/animated-headline";
+import { PageHeader } from "../../../components/ui/page-header";
 import {
   Card,
   CardContent,
@@ -16,6 +16,7 @@ import {
   ModalHeader,
   ModalTitle,
   ModalClose,
+  Badge,
 } from "@netpost/ui";
 import {
   Package,
@@ -28,6 +29,7 @@ import {
   Eye,
   Grid3X3,
   List,
+  TrendingUp,
 } from "lucide-react";
 
 interface InventoryItem {
@@ -116,66 +118,62 @@ export default function InventoryPage() {
         } : undefined
       } : undefined}
     >
-      <div className="p-6 space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <AnimatedHeadline
-              text="Inventory"
-              className="from-primary-600 to-accent-600 bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
-            />
-            <p className="text-secondary-text mt-2">
-              Manage your sourced items and track their status
-            </p>
-          </div>
-          <div className="flex items-center gap-4">
-            {/* View Mode Toggle */}
-            <div className="bg-white/5 rounded-lg p-1 border border-white/10">
-              <Button
-                variant={viewMode === 'grid' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => setViewMode('grid')}
-                className="h-8 w-8 p-0"
-              >
-                <Grid3X3 className="h-4 w-4" />
-              </Button>
-              <Button
-                variant={viewMode === 'list' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => setViewMode('list')}
-                className="h-8 w-8 p-0"
-              >
-                <List className="h-4 w-4" />
+      <div className="mx-auto max-w-7xl space-y-10 px-4 pb-12">
+        <PageHeader
+          eyebrow="Operations"
+          title="Inventory"
+          subtitle="Manage your sourced items, monitor value, and stay on top of what needs to ship next."
+          icon={<Package className="h-7 w-7 text-primary" />}
+          actions={(
+            <div className="flex items-center gap-3">
+              <div className="flex items-center rounded-lg border border-white/10 bg-white/5 p-1">
+                <Button
+                  variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('grid')}
+                  className="h-8 w-8 p-0"
+                  aria-label="Grid view"
+                >
+                  <Grid3X3 className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant={viewMode === 'list' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('list')}
+                  className="h-8 w-8 p-0"
+                  aria-label="List view"
+                >
+                  <List className="h-4 w-4" />
+                </Button>
+              </div>
+              <Button variant="accent" data-testid="add-item-button" className="inline-flex items-center gap-2">
+                <Plus className="h-4 w-4" />
+                Add Item
               </Button>
             </div>
-
-            <Button data-testid="add-item-button" className="inline-flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              Add Item
-            </Button>
-          </div>
-        </div>
+          )}
+        />
 
         {/* Inventory Limit Display */}
-        <Card className="glass border-primary-500/20">
-          <CardContent className="pt-4">
+        <Card className="glass-card border border-primary/30 bg-primary/10">
+          <CardContent className="flex flex-col gap-4 pt-6 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-secondary-text">Inventory Usage</p>
-                <p className="text-lg font-semibold text-primary-text" data-testid="inventory-limit-display">
+                <p className="text-sm text-muted-foreground">Inventory Usage</p>
+                <p className="text-lg font-semibold text-foreground" data-testid="inventory-limit-display">
                   {subscriptionData.currentItems} / {subscriptionData.itemLimit} items
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-sm text-secondary-text">Plan</p>
-                <p className="text-lg font-semibold text-primary-text">
+                <p className="text-sm text-muted-foreground">Plan</p>
+                <Badge variant="secondary" className="glass-card border border-white/10 px-3 py-1 text-xs uppercase tracking-[0.3em]">
                   {subscriptionData.tier}
-                </p>
+                </Badge>
               </div>
             </div>
-            <div className="mt-3 bg-white/10 rounded-full h-2">
+            <div className="h-2 w-full rounded-full bg-white/15">
               <div
-                className="bg-primary-500 h-2 rounded-full transition-all duration-300"
+                className="h-2 rounded-full bg-gradient-to-r from-primary to-ring transition-all duration-300"
                 style={{
                   width: `${(subscriptionData.currentItems / subscriptionData.itemLimit) * 100}%`
                 }}
@@ -185,45 +183,45 @@ export default function InventoryPage() {
         </Card>
 
         {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="glass">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <Card className="glass-card border border-white/10">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Items</CardTitle>
-              <Package className="h-4 w-4 text-primary-500" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Items</CardTitle>
+              <Package className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-primary-text">{items.length}</div>
-              <p className="text-xs text-secondary-text">
+              <div className="text-2xl font-bold text-foreground">{items.length}</div>
+              <p className="text-xs text-muted-foreground">
                 {subscriptionData.itemLimit - items.length} slots available
               </p>
             </CardContent>
           </Card>
 
-          <Card className="glass">
+          <Card className="glass-card border border-white/10">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Investment</CardTitle>
-              <Package className="h-4 w-4 text-primary-500" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Investment</CardTitle>
+              <Package className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-primary-text">
+              <div className="text-2xl font-bold text-foreground">
                 ${totalInvestment.toFixed(2)}
               </div>
-              <p className="text-xs text-secondary-text">
+              <p className="text-xs text-muted-foreground">
                 ${totalValue.toFixed(2)} estimated value
               </p>
             </CardContent>
           </Card>
 
-          <Card className="glass">
+          <Card className="glass-card border border-white/10">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Potential Profit</CardTitle>
-              <Package className="h-4 w-4 text-green-400" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Potential Profit</CardTitle>
+              <TrendingUp className="h-4 w-4 text-accent" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-400" data-testid="potential-profit">
+              <div className="text-2xl font-bold text-accent" data-testid="potential-profit">
                 ${potentialProfit.toFixed(2)}
               </div>
-              <p className="text-xs text-secondary-text">
+              <p className="text-xs text-muted-foreground">
                 {totalInvestment > 0 ? ((potentialProfit / totalInvestment) * 100).toFixed(1) : 0}% margin
               </p>
             </CardContent>
@@ -231,7 +229,7 @@ export default function InventoryPage() {
         </div>
 
         {/* Filters and Controls */}
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col gap-4 sm:flex-row">
           <FormSelect
             placeholder="Filter by category"
             testId="category-filter"
@@ -252,21 +250,21 @@ export default function InventoryPage() {
         </div>
 
         {/* Items Grid */}
-        <Card className="glass">
+        <Card className="glass-card border border-white/10">
           <CardHeader>
-            <CardTitle>Items ({filteredItems.length})</CardTitle>
+            <CardTitle className="text-muted-foreground">Items ({filteredItems.length})</CardTitle>
           </CardHeader>
           <CardContent>
             {filteredItems.length === 0 ? (
-              <div className="text-center py-12">
-                <Package className="h-12 w-12 text-secondary-text mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-primary-text mb-2">
+              <div className="flex flex-col items-center gap-3 py-12 text-center">
+                <Package className="h-12 w-12 text-primary" />
+                <h3 className="text-lg font-medium text-foreground">
                   No items in inventory
                 </h3>
-                <p className="text-secondary-text mb-4">
+                <p className="text-sm text-muted-foreground">
                   Start by adding items from your sourcing workflow
                 </p>
-                <Button data-testid="add-item-button">
+                <Button data-testid="add-item-button" variant="accent">
                   <Plus className="h-4 w-4 mr-2" />
                   Add Your First Item
                 </Button>
@@ -279,7 +277,7 @@ export default function InventoryPage() {
                 {filteredItems.map((item) => (
                   <Card
                     key={item.id}
-                    className="glass relative cursor-pointer hover:bg-white/5 transition-colors"
+                    className="glass-card relative cursor-pointer border border-white/10 transition-colors hover:bg-white/10"
                     onClick={() => handleItemClick(item)}
                     data-testid="inventory-item"
                   >
@@ -289,11 +287,11 @@ export default function InventoryPage() {
                         <CardHeader>
                           <div className="flex items-start justify-between">
                             <div className="flex-1">
-                              <CardTitle className="text-lg" data-testid="item-title-display">
+                              <CardTitle className="text-lg text-foreground" data-testid="item-title-display">
                                 {item.title}
                               </CardTitle>
                               <div className="flex items-center gap-2 mt-2">
-                                <span className="px-2 py-1 text-xs bg-primary-500/20 text-primary-500 rounded-full">
+                                <span className="rounded-full bg-primary/20 px-2 py-1 text-xs text-primary" data-testid="item-category-chip">
                                   {item.category}
                                 </span>
                                 <span className={`px-2 py-1 text-xs rounded-full ${
@@ -313,14 +311,14 @@ export default function InventoryPage() {
                         <CardContent className="space-y-3">
                           <div className="space-y-2">
                             <div className="flex justify-between text-sm">
-                              <span className="text-secondary-text">Purchase Price:</span>
-                              <span className="text-primary-text font-medium" data-testid="purchase-price-display">
+                              <span className="text-muted-foreground">Purchase Price:</span>
+                              <span className="text-foreground font-medium" data-testid="purchase-price-display">
                                 ${item.purchasePrice.toFixed(2)}
                               </span>
                             </div>
                             <div className="flex justify-between text-sm">
-                              <span className="text-secondary-text">Estimated Value:</span>
-                              <span className="text-primary-text font-medium" data-testid="estimated-value-display">
+                              <span className="text-muted-foreground">Estimated Value:</span>
+                              <span className="text-foreground font-medium" data-testid="estimated-value-display">
                                 ${item.estimatedValue.toFixed(2)}
                               </span>
                             </div>
@@ -332,11 +330,11 @@ export default function InventoryPage() {
                             </div>
                           </div>
 
-                          <div className="text-xs text-secondary-text">
-                            <strong>Condition:</strong> {item.condition}
+                          <div className="text-xs text-muted-foreground">
+                            <strong className="text-foreground">Condition:</strong> {item.condition}
                           </div>
 
-                          <div className="text-xs text-secondary-text">
+                          <div className="text-xs text-muted-foreground">
                             Added: {item.dateAdded.toLocaleDateString()}
                           </div>
                         </CardContent>
@@ -346,27 +344,27 @@ export default function InventoryPage() {
                       <CardContent className="p-4">
                         <div className="flex items-center justify-between">
                           <div className="flex-1">
-                            <h3 className="font-medium text-primary-text" data-testid="item-title-display">
+                            <h3 className="font-medium text-foreground" data-testid="item-title-display">
                               {item.title}
                             </h3>
-                            <p className="text-sm text-secondary-text">{item.category}</p>
+                            <p className="text-sm text-muted-foreground">{item.category}</p>
                           </div>
                           <div className="flex items-center gap-6 text-sm">
                             <div className="text-right">
-                              <p className="text-secondary-text">Purchase</p>
+                              <p className="text-muted-foreground">Purchase</p>
                               <p className="font-medium" data-testid="purchase-price-display">
                                 ${item.purchasePrice.toFixed(2)}
                               </p>
                             </div>
                             <div className="text-right">
-                              <p className="text-secondary-text">Estimated</p>
+                              <p className="text-muted-foreground">Estimated</p>
                               <p className="font-medium" data-testid="estimated-value-display">
                                 ${item.estimatedValue.toFixed(2)}
                               </p>
                             </div>
                             <div className="text-right">
-                              <p className="text-secondary-text">Profit</p>
-                              <p className="font-medium text-green-400">
+                              <p className="text-muted-foreground">Profit</p>
+                              <p className="font-medium text-accent">
                                 ${(item.estimatedValue - item.purchasePrice).toFixed(2)}
                               </p>
                             </div>
@@ -384,7 +382,6 @@ export default function InventoryPage() {
           </CardContent>
         </Card>
       </div>
-
       {/* Item Detail Modal */}
       <Modal open={isDetailModalOpen} onOpenChange={setIsDetailModalOpen}>
         <ModalContent className="max-w-2xl" data-testid="item-detail-modal">

@@ -115,6 +115,12 @@ export class AuthService {
       } = await supabase.auth.getSession();
 
       if (error) {
+        // Don't throw error for common "no session" scenarios
+        if (error.message?.includes('session_not_found') ||
+            error.message?.includes('No active session') ||
+            error.message?.includes('Auth session missing')) {
+          return null;
+        }
         throw new Error(this.formatAuthError(error));
       }
 
@@ -133,6 +139,12 @@ export class AuthService {
       } = await supabase.auth.getUser();
 
       if (error) {
+        // Don't throw error for common "no user" scenarios
+        if (error.message?.includes('session_not_found') ||
+            error.message?.includes('No user found') ||
+            error.message?.includes('Auth session missing')) {
+          return null;
+        }
         throw new Error(this.formatAuthError(error));
       }
 

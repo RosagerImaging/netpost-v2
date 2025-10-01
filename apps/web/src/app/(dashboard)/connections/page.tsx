@@ -7,27 +7,38 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '../../../components/layout/dashboard-layout';
 import { useAuth } from '../../../lib/auth/auth-context';
-import { AnimatedHeadline } from '../../../components/ui/animated-headline';
-import { PlusIcon, ArrowPathIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { PageHeader } from '../../../components/ui/page-header';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Badge,
+  cn,
+} from '@netpost/ui';
+import { Plus, RefreshCw, Plug, AlertCircle, ExternalLink } from 'lucide-react';
 import { ConnectionSetup } from './components/ConnectionSetup';
 import { ConnectionCard } from './components/ConnectionCard';
 import { ConnectionStats } from './components/ConnectionStats';
 import { useMarketplaceConnections, useConnectionStatistics } from '@/lib/hooks/useMarketplaceConnections';
 import type { MarketplaceType, ConnectionStatus } from '@netpost/shared-types';
 
-const statusFilters: { value: ConnectionStatus | 'all'; label: string; color: string }[] = [
-  { value: 'all', label: 'All Connections', color: 'gray' },
-  { value: 'active', label: 'Active', color: 'green' },
-  { value: 'expired', label: 'Expired', color: 'yellow' },
-  { value: 'error', label: 'Error', color: 'red' },
-  { value: 'connecting', label: 'Connecting', color: 'blue' },
-  { value: 'disconnected', label: 'Disconnected', color: 'gray' },
+const statusFilters: { value: ConnectionStatus | 'all'; label: string; description: string }[] = [
+  { value: 'all', label: 'All', description: 'Every connection' },
+  { value: 'active', label: 'Active', description: 'Healthy and synced' },
+  { value: 'expired', label: 'Expired', description: 'Needs attention' },
+  { value: 'error', label: 'Error', description: 'Failing sync jobs' },
+  { value: 'connecting', label: 'Connecting', description: 'In progress' },
+  { value: 'disconnected', label: 'Disconnected', description: 'Manually removed' },
 ];
 
 export default function ConnectionsPage() {
   const { user } = useAuth();
+  const router = useRouter();
   const [showSetup, setShowSetup] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<ConnectionStatus | 'all'>('all');
   const [preselectedMarketplace, setPreselectedMarketplace] = useState<MarketplaceType | undefined>();
@@ -69,106 +80,103 @@ export default function ConnectionsPage() {
         subscription: subscriptionData
       } : undefined}
     >
-      <div className="p-6 space-y-6">
-        {/* Header */}
-        <div className="sm:flex sm:items-center sm:justify-between">
-          <div>
-            <AnimatedHeadline
-              text="Marketplace Connections"
-              className="from-primary-600 to-accent-600 bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
-            />
-            <p className="mt-2 text-secondary-text">
-              Connect your marketplace accounts to start cross-listing your inventory
-            </p>
-          </div>
-          <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-            <button
-              type="button"
-              onClick={() => handleAddConnection()}
-              className="inline-flex items-center justify-center rounded-md bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
-            >
-              <PlusIcon className="h-4 w-4 mr-2" />
-              Connect Marketplace
-            </button>
-          </div>
-        </div>
-
-      {/* Stats */}
-      <ConnectionStats
-        total={total}
-        active={active}
-        expired={expired}
-        errors={errors}
-        byMarketplace={byMarketplace}
-        onAddConnection={handleAddConnection}
-      />
-
-      {/* Filters and Actions */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          {statusFilters.map((filter) => (
-            <button
-              key={filter.value}
-              onClick={() => setSelectedStatus(filter.value)}
-              className={`inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
-                selectedStatus === filter.value
-                  ? 'bg-indigo-100 text-indigo-700'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {filter.label}
-              {filter.value !== 'all' && (
-                <span className="ml-1.5 inline-block h-2 w-2 rounded-full bg-current opacity-75" />
-              )}
-            </button>
-          ))}
-        </div>
-
-        <button
-          type="button"
-          onClick={handleRefresh}
-          disabled={isLoading}
-          className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:opacity-50"
-        >
-          <ArrowPathIcon className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-          Refresh
-        </button>
-      </div>
-
-        {/* Error State */}
-        {error && (
-          <div className="glass rounded-md bg-red-50/10 border border-red-200/20 p-4">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <ExclamationTriangleIcon className="h-5 w-5 text-red-400" />
-              </div>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-red-300">
-                  Error loading connections
-                </h3>
-                <div className="mt-2 text-sm text-red-200">
-                  <p>{error.message}</p>
-                </div>
-                <div className="mt-4">
-                  <button
-                    type="button"
-                    onClick={handleRefresh}
-                    className="rounded-md bg-red-500/20 px-2 py-1.5 text-sm font-medium text-red-300 hover:bg-red-500/30"
-                  >
-                    Try again
-                  </button>
-                </div>
-              </div>
+      <div className="mx-auto max-w-7xl space-y-10 px-4 pb-12">
+        <PageHeader
+          eyebrow="Integrations"
+          title="Marketplace Connections"
+          subtitle="Connect, monitor, and troubleshoot your marketplace integrations to keep listings in sync."
+          icon={<Plug className="h-7 w-7 text-primary" />}
+          actions={(
+            <div className="flex items-center gap-3">
+              <Button
+                variant="accent"
+                className="inline-flex items-center gap-2"
+                onClick={() => handleAddConnection()}
+              >
+                <Plus className="h-4 w-4" />
+                Connect Marketplace
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="glass-button"
+                onClick={handleRefresh}
+                disabled={isLoading}
+                aria-label="Refresh connections"
+              >
+                <RefreshCw className={cn('h-4 w-4', { 'animate-spin': isLoading })} />
+              </Button>
             </div>
+          )}
+        />
+
+        {error && (
+          <div className="glass-card flex items-center gap-3 border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive-foreground">
+            <AlertCircle className="h-4 w-4" />
+            <span>{error.message}</span>
           </div>
         )}
 
+        <ConnectionStats
+          total={total}
+          active={active}
+          expired={expired}
+          errors={errors}
+          byMarketplace={byMarketplace}
+          onAddConnection={handleAddConnection}
+        />
+
+        <Card className="glass-card border border-white/10">
+          <CardHeader className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Filter by status</CardTitle>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="glass-button inline-flex items-center gap-2"
+              onClick={() => setSelectedStatus('all')}
+              disabled={selectedStatus === 'all'}
+            >
+              <ExternalLink className="h-4 w-4" />
+              View all connections
+            </Button>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-wrap gap-2">
+              {statusFilters.map((filter) => (
+                <Button
+                  key={filter.value}
+                  size="sm"
+                  variant={selectedStatus === filter.value ? 'accent' : 'ghost'}
+                  className={cn(
+                    'glass-button border border-transparent px-3 py-2 text-xs uppercase tracking-[0.25em]',
+                    selectedStatus === filter.value
+                      ? 'border-white/10 bg-white/10 text-foreground'
+                      : 'text-muted-foreground hover:border-white/10 hover:bg-white/5'
+                  )}
+                  onClick={() => setSelectedStatus(filter.value)}
+                >
+                  <span className="flex flex-col items-start gap-0.5 text-left">
+                    <span>{filter.label}</span>
+                    <span className="text-[10px] font-normal tracking-[0.2em] text-muted-foreground">
+                      {filter.description}
+                    </span>
+                  </span>
+                </Button>
+              ))}
+            </div>
+            <Badge variant="secondary" className="glass-card border border-white/10 px-3 py-1 text-xs uppercase tracking-[0.3em]">
+              {connections.length} Results
+            </Badge>
+          </CardContent>
+        </Card>
+
+        {/* Error State */}
         {/* Loading State */}
         {isLoading && (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="animate-pulse">
-                <div className="glass rounded-lg border border-white/10 p-6">
+                <div className="glass-card rounded-lg border border-white/10 p-6">
                   <div className="flex items-center space-x-4">
                     <div className="h-12 w-12 rounded-lg bg-white/10" />
                     <div className="flex-1 space-y-2">
@@ -196,36 +204,25 @@ export default function ConnectionsPage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12">
-                <div className="mx-auto h-24 w-24 text-secondary-text">
-                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1}
-                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="mt-4 text-lg font-medium text-primary-text">
+              <div className="glass-card border border-white/10 px-6 py-12 text-center">
+                <Plug className="mx-auto h-12 w-12 text-muted-foreground" />
+                <h3 className="mt-4 text-lg font-semibold text-foreground">
                   {selectedStatus === 'all' ? 'No connections yet' : `No ${selectedStatus} connections`}
                 </h3>
-                <p className="mt-2 text-sm text-secondary-text">
+                <p className="mt-2 text-sm text-muted-foreground">
                   {selectedStatus === 'all'
-                    ? 'Get started by connecting your first marketplace account'
-                    : `You don't have any ${selectedStatus} connections at the moment`}
+                    ? 'Get started by connecting your first marketplace account.'
+                    : `You don't have any ${selectedStatus} connections at the moment.`}
                 </p>
                 {selectedStatus === 'all' && (
-                  <div className="mt-6">
-                    <button
-                      type="button"
-                      onClick={() => handleAddConnection()}
-                      className="inline-flex items-center rounded-md bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500"
-                    >
-                      <PlusIcon className="h-4 w-4 mr-2" />
-                      Connect Your First Marketplace
-                    </button>
-                  </div>
+                  <Button
+                    variant="accent"
+                    className="mt-6 inline-flex items-center gap-2"
+                    onClick={() => handleAddConnection()}
+                  >
+                    <Plus className="h-4 w-4" />
+                    Connect your first marketplace
+                  </Button>
                 )}
               </div>
             )}
@@ -234,33 +231,35 @@ export default function ConnectionsPage() {
 
         {/* Quick Actions */}
         {connections.length > 0 && (
-          <div className="glass rounded-lg p-6">
-            <h3 className="text-lg font-medium text-primary-text mb-4">Quick Actions</h3>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <button
-                type="button"
+          <Card className="glass-card border border-white/10">
+            <CardHeader>
+              <CardTitle className="text-muted-foreground">Quick Actions</CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <Button
+                variant="outline"
+                className="glass-button inline-flex items-center justify-center gap-2"
                 onClick={() => handleAddConnection()}
-                className="flex items-center justify-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-primary-text shadow-sm hover:bg-white/10"
               >
-                <PlusIcon className="h-4 w-4 mr-2" />
-                Add Another Marketplace
-              </button>
-              <button
-                type="button"
-                onClick={() => window.location.href = '/dashboard/inventory'}
-                className="flex items-center justify-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-primary-text shadow-sm hover:bg-white/10"
+                <Plus className="h-4 w-4" />
+                Add Marketplace
+              </Button>
+              <Button
+                variant="outline"
+                className="glass-button inline-flex items-center justify-center gap-2"
+                onClick={() => router.push('/inventory')}
               >
-                Start Cross-Listing
-              </button>
-              <button
-                type="button"
-                onClick={() => window.location.href = '/dashboard/listings'}
-                className="flex items-center justify-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-primary-text shadow-sm hover:bg-white/10"
+                Manage Inventory
+              </Button>
+              <Button
+                variant="outline"
+                className="glass-button inline-flex items-center justify-center gap-2"
+                onClick={() => router.push('/listings')}
               >
-                View All Listings
-              </button>
-            </div>
-          </div>
+                View Listings
+              </Button>
+            </CardContent>
+          </Card>
         )}
 
         {/* Connection Setup Modal */}

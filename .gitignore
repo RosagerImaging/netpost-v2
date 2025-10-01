@@ -127,3 +127,9 @@ $RECYCLE.BIN/
 *.msp
 *.lnk
 .vercel
+
+# Moat task system
+.moat/
+
+# windsurf rules
+.windsurfrules

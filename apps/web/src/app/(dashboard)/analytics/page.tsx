@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   BarChart3,
   TrendingUp,
@@ -19,7 +19,8 @@ import {
   Target,
   Clock,
   Award,
-  Zap
+  Zap,
+  AlertCircle
 } from "lucide-react";
 import {
   Card,
@@ -43,6 +44,7 @@ import {
 import { cn } from "@netpost/ui";
 import { useAuth } from "../../../lib/auth/auth-context";
 import { DashboardLayout } from "../../../components/layout/dashboard-layout";
+import { PageHeader } from "../../../components/ui/page-header";
 
 // Mock data for demonstration
 const metrics = {
@@ -144,17 +146,21 @@ export default function AnalyticsPage() {
     return `${value > 0 ? '+' : ''}${value.toFixed(1)}%`;
   };
 
-  const getChangeIcon = (change: number) => {
-    return change > 0 ? (
-      <ArrowUpRight className="h-4 w-4 text-green-400" />
-    ) : (
-      <ArrowDownRight className="h-4 w-4 text-red-400" />
-    );
-  };
+  const changeMaps = useMemo(() => ({
+    positive: {
+      icon: <ArrowUpRight className="h-4 w-4 text-green-300" />,
+      textClass: "text-green-300",
+      pillClass: "bg-green-500/15 text-green-200 border border-green-500/30",
+    },
+    negative: {
+      icon: <ArrowDownRight className="h-4 w-4 text-red-300" />,
+      textClass: "text-red-300",
+      pillClass: "bg-red-500/15 text-red-200 border border-red-500/30",
+    }
+  }), []);
 
-  const getChangeColor = (change: number) => {
-    return change > 0 ? "text-green-400" : "text-red-400";
-  };
+  const getChangeIcon = (change: number) => change > 0 ? changeMaps.positive.icon : changeMaps.negative.icon;
+  const getChangeColor = (change: number) => change > 0 ? changeMaps.positive.textClass : changeMaps.negative.textClass;
 
   return (
     <DashboardLayout
@@ -164,45 +170,35 @@ export default function AnalyticsPage() {
         subscription: subscriptionData
       } : undefined}
     >
-      <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/5 p-6">
-        <div className="mx-auto max-w-7xl space-y-8">
-        {/* Header */}
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-r from-primary to-accent text-white">
-              <BarChart3 className="h-6 w-6" />
+      <div className="mx-auto max-w-7xl space-y-10 px-4 pb-10">
+        <PageHeader
+          eyebrow="Insights"
+          title="Analytics"
+          subtitle="Track performance, benchmark your growth, and understand exactly where to focus next."
+          icon={<BarChart3 className="h-7 w-7 text-primary" />}
+          actions={(
+            <div className="flex items-center gap-3">
+              <Select value={timeRange} onValueChange={setTimeRange}>
+                <SelectTrigger className="glass-input w-32">
+                  <SelectValue placeholder="Last 30 days" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="7d">Last 7 days</SelectItem>
+                  <SelectItem value="30d">Last 30 days</SelectItem>
+                  <SelectItem value="90d">Last 90 days</SelectItem>
+                  <SelectItem value="1y">Last year</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button variant="outline" size="sm" className="glass-button">
+                <Download className="mr-2 h-4 w-4" />
+                Export
+              </Button>
+              <Button variant="outline" size="sm" className="glass-button" onClick={() => setSelectedPlatform("all")}>
+                <RefreshCw className="h-4 w-4" />
+              </Button>
             </div>
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight">Analytics</h1>
-              <p className="text-muted-foreground">
-                Track your business performance and insights
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <Select value={timeRange} onValueChange={setTimeRange}>
-              <SelectTrigger className="glass-input w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="7d">Last 7 days</SelectItem>
-                <SelectItem value="30d">Last 30 days</SelectItem>
-                <SelectItem value="90d">Last 90 days</SelectItem>
-                <SelectItem value="1y">Last year</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Button variant="outline" size="sm">
-              <Download className="mr-2 h-4 w-4" />
-              Export
-            </Button>
-
-            <Button variant="outline" size="sm">
-              <RefreshCw className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
+          )}
+        />
 
         {/* Key Metrics Grid */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -219,7 +215,7 @@ export default function AnalyticsPage() {
                     {formatPercentage(metrics.revenueChange)} from last period
                   </p>
                 </div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-r from-green-500 to-green-600 text-white">
+                <div className="glass-card flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-primary/20">
                   <DollarSign className="h-6 w-6" />
                 </div>
               </div>
@@ -239,7 +235,7 @@ export default function AnalyticsPage() {
                     {formatPercentage(metrics.salesChange)} from last period
                   </p>
                 </div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+                <div className="glass-card flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-secondary/20">
                   <ShoppingCart className="h-6 w-6" />
                 </div>
               </div>
@@ -259,7 +255,7 @@ export default function AnalyticsPage() {
                     {formatPercentage(metrics.avgOrderChange)} from last period
                   </p>
                 </div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 text-white">
+                <div className="glass-card flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-accent/20">
                   <Target className="h-6 w-6" />
                 </div>
               </div>
@@ -279,7 +275,7 @@ export default function AnalyticsPage() {
                     {formatPercentage(metrics.conversionChange)} from last period
                   </p>
                 </div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+                <div className="glass-card flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-amber-500/20">
                   <TrendingUp className="h-6 w-6" />
                 </div>
               </div>
@@ -317,7 +313,7 @@ export default function AnalyticsPage() {
                       </div>
                       <div className="h-2 w-full rounded-full bg-white/10">
                         <div
-                          className="h-2 rounded-full bg-gradient-to-r from-primary to-accent"
+                          className="h-2 rounded-full bg-gradient-to-r from-primary to-ring"
                           style={{
                             width: `${(data.revenue / Math.max(...revenueData.map(d => d.revenue))) * 100}%`
                           }}
@@ -374,7 +370,7 @@ export default function AnalyticsPage() {
               {platformData.map((platform) => (
                 <div
                   key={platform.name}
-                  className="rounded-lg border border-white/10 bg-white/5 p-4 space-y-4"
+                  className="glass-card border border-white/5 bg-white/5/40 p-4 space-y-4"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -384,8 +380,8 @@ export default function AnalyticsPage() {
                         <Badge
                           variant="secondary"
                           className={cn(
-                            "text-xs",
-                            platform.change > 0 ? "bg-green-500/20 text-green-300" : "bg-red-500/20 text-red-300"
+                            "text-xs border",
+                            platform.change > 0 ? changeMaps.positive.pillClass : changeMaps.negative.pillClass
                           )}
                         >
                           {formatPercentage(platform.change)}
@@ -442,7 +438,7 @@ export default function AnalyticsPage() {
                     {formatPercentage(metrics.listingsChange)} from last period
                   </p>
                 </div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-r from-teal-500 to-teal-600 text-white">
+                <div className="glass-card flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-secondary/20">
                   <Package className="h-6 w-6" />
                 </div>
               </div>
@@ -462,32 +458,28 @@ export default function AnalyticsPage() {
                     {formatPercentage(metrics.viewsChange)} from last period
                   </p>
                 </div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-r from-indigo-500 to-indigo-600 text-white">
-                  <Eye className="h-6 w-6" />
-                </div>
               </div>
             </CardContent>
           </Card>
 
           <Card className="glass">
             <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Avg Response Time</p>
-                  <p className="text-2xl font-bold">2.4h</p>
-                  <p className="text-sm text-green-400">
-                    -15% from last period
-                  </p>
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">Goal Progress</p>
+                    <p className="text-2xl font-semibold">82%</p>
+                  </div>
+                  <div className="glass-card flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-ring/20">
+                    <Target className="h-6 w-6" />
+                  </div>
                 </div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white">
-                  <Clock className="h-6 w-6" />
-                </div>
+                <Progress value={82} />
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Performance Insights */}
         <Card className="glass">
           <CardHeader>
             <CardTitle>Performance Insights</CardTitle>
@@ -498,9 +490,9 @@ export default function AnalyticsPage() {
           <CardContent>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <TrendingUp className="h-4 w-4 text-green-400" />
-                  <span className="text-sm font-medium text-green-400">Strong Performance</span>
+                <div className="mb-2 flex items-center gap-2">
+                  <TrendingUp className="h-4 w-4 text-green-300" />
+                  <span className="text-sm font-medium text-green-200">Strong Performance</span>
                 </div>
                 <p className="text-sm text-muted-foreground">
                   eBay listings are performing 25% above average. Consider increasing inventory for electronics.
@@ -508,9 +500,9 @@ export default function AnalyticsPage() {
               </div>
 
               <div className="rounded-lg border border-yellow-500/20 bg-yellow-500/10 p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <AlertCircle className="h-4 w-4 text-yellow-400" />
-                  <span className="text-sm font-medium text-yellow-400">Opportunity</span>
+                <div className="mb-2 flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4 text-yellow-300" />
+                  <span className="text-sm font-medium text-yellow-200">Opportunity</span>
                 </div>
                 <p className="text-sm text-muted-foreground">
                   Mercari conversion rate could improve with better product photos and descriptions.
@@ -518,9 +510,9 @@ export default function AnalyticsPage() {
               </div>
 
               <div className="rounded-lg border border-blue-500/20 bg-blue-500/10 p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Users className="h-4 w-4 text-blue-400" />
-                  <span className="text-sm font-medium text-blue-400">Customer Insight</span>
+                <div className="mb-2 flex items-center gap-2">
+                  <Users className="h-4 w-4 text-blue-300" />
+                  <span className="text-sm font-medium text-blue-200">Customer Insight</span>
                 </div>
                 <p className="text-sm text-muted-foreground">
                   Fashion items sell best on weekends. Schedule listings for Friday evenings.
@@ -529,8 +521,8 @@ export default function AnalyticsPage() {
             </div>
           </CardContent>
         </Card>
-        </div>
       </div>
-    </DashboardLayout>
+    </div>
+  </DashboardLayout>
   );
 }

@@ -43,7 +43,7 @@ export default function MainTabNavigator() {
         component={SourcingNavigator}
         options={{
           tabBarLabel: 'Sourcing',
-          tabBarIcon: ({ focused }) => <TabIcon label="Sourcing" focused={focused} />,
+          tabBarIcon: ({ focused }: { focused: boolean }) => <TabIcon label="Sourcing" focused={focused} />,
         }}
       />
       <Tab.Screen
@@ -51,7 +51,7 @@ export default function MainTabNavigator() {
         component={InventoryScreen}
         options={{
           tabBarLabel: 'Inventory',
-          tabBarIcon: ({ focused }) => <TabIcon label="Inventory" focused={focused} />,
+          tabBarIcon: ({ focused }: { focused: boolean }) => <TabIcon label="Inventory" focused={focused} />,
         }}
       />
       <Tab.Screen
@@ -59,7 +59,7 @@ export default function MainTabNavigator() {
         component={ProfileScreen}
         options={{
           tabBarLabel: 'Profile',
-          tabBarIcon: ({ focused }) => <TabIcon label="Profile" focused={focused} />,
+          tabBarIcon: ({ focused }: { focused: boolean }) => <TabIcon label="Profile" focused={focused} />,
         }}
       />
     </Tab.Navigator>

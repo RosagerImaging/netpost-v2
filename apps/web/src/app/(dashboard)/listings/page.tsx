@@ -3,14 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '../../../components/layout/dashboard-layout';
+import { PageHeader } from '../../../components/ui/page-header';
 import { useAuth } from '../../../lib/auth/auth-context';
-import { AnimatedHeadline } from '../../../components/ui/animated-headline';
 import {
   Plus,
   Search,
-  Filter,
   ExternalLink,
-  MoreHorizontal,
   RefreshCw,
   TrendingUp,
   Eye,
@@ -24,37 +22,52 @@ import {
 import { supabase } from '@/lib/supabase/client';
 import { listingJobQueue, type ListingJob, type JobStats } from '@/lib/services/listing-job-queue';
 import type { Listing, ListingStatus, MarketplaceType } from '@netpost/shared-types';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  Button,
+  Badge,
+  Input,
+  FormSelect,
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+  cn
+} from '@netpost/ui';
 
 interface ListingWithJob extends Listing {
   job?: ListingJob;
 }
 
 const statusIcons = {
-  active: <CheckCircle className="h-4 w-4 text-green-500" />,
-  pending: <Clock className="h-4 w-4 text-yellow-500" />,
-  draft: <AlertCircle className="h-4 w-4 text-gray-500" />,
-  paused: <Pause className="h-4 w-4 text-blue-500" />,
-  sold: <CheckCircle className="h-4 w-4 text-emerald-500" />,
-  ended: <XCircle className="h-4 w-4 text-gray-500" />,
-  cancelled: <XCircle className="h-4 w-4 text-red-500" />,
-  rejected: <XCircle className="h-4 w-4 text-red-500" />,
-  under_review: <AlertCircle className="h-4 w-4 text-orange-500" />,
-  relisted: <RefreshCw className="h-4 w-4 text-blue-500" />,
-  deleted: <XCircle className="h-4 w-4 text-gray-400" />,
+  active: <CheckCircle className="h-4 w-4 text-emerald-300" />,
+  pending: <Clock className="h-4 w-4 text-amber-300" />,
+  draft: <AlertCircle className="h-4 w-4 text-muted-foreground" />,
+  paused: <Pause className="h-4 w-4 text-cyan-300" />,
+  sold: <CheckCircle className="h-4 w-4 text-accent" />,
+  ended: <XCircle className="h-4 w-4 text-muted-foreground" />,
+  cancelled: <XCircle className="h-4 w-4 text-red-300" />,
+  rejected: <XCircle className="h-4 w-4 text-red-300" />,
+  under_review: <AlertCircle className="h-4 w-4 text-orange-300" />,
+  relisted: <RefreshCw className="h-4 w-4 text-secondary" />,
+  deleted: <XCircle className="h-4 w-4 text-muted-foreground" />,
 };
 
-const statusColors = {
-  active: 'bg-green-100 text-green-800',
-  pending: 'bg-yellow-100 text-yellow-800',
-  draft: 'bg-gray-100 text-gray-800',
-  paused: 'bg-blue-100 text-blue-800',
-  sold: 'bg-emerald-100 text-emerald-800',
-  ended: 'bg-gray-100 text-gray-800',
-  cancelled: 'bg-red-100 text-red-800',
-  rejected: 'bg-red-100 text-red-800',
-  under_review: 'bg-orange-100 text-orange-800',
-  relisted: 'bg-blue-100 text-blue-800',
-  deleted: 'bg-gray-100 text-gray-800',
+const listingStatusStyles: Record<string, { label: string; className: string }> = {
+  active: { label: 'Active', className: 'border-emerald-500/30 bg-emerald-500/15 text-emerald-200' },
+  pending: { label: 'Pending', className: 'border-amber-500/30 bg-amber-500/15 text-amber-200' },
+  draft: { label: 'Draft', className: 'border-white/10 bg-white/10 text-muted-foreground' },
+  paused: { label: 'Paused', className: 'border-cyan-500/30 bg-cyan-500/15 text-cyan-200' },
+  sold: { label: 'Sold', className: 'border-teal-500/30 bg-teal-500/15 text-teal-200' },
+  ended: { label: 'Ended', className: 'border-white/10 bg-white/10 text-muted-foreground' },
+  cancelled: { label: 'Cancelled', className: 'border-red-500/30 bg-red-500/15 text-red-200' },
+  rejected: { label: 'Rejected', className: 'border-red-500/30 bg-red-500/15 text-red-200' },
+  under_review: { label: 'Under Review', className: 'border-orange-500/30 bg-orange-500/15 text-orange-200' },
+  relisted: { label: 'Relisted', className: 'border-sky-500/30 bg-sky-500/15 text-sky-200' },
+  deleted: { label: 'Deleted', className: 'border-white/10 bg-white/10 text-muted-foreground' },
 };
 
 const marketplaceLogos = {
@@ -73,6 +86,26 @@ const marketplaceLogos = {
   shopify: '🏪',
   custom: '🏬',
 };
+
+const statusOptions = [
+  { value: 'all', label: 'All statuses' },
+  { value: 'active', label: 'Active' },
+  { value: 'pending', label: 'Pending' },
+  { value: 'draft', label: 'Draft' },
+  { value: 'sold', label: 'Sold' },
+  { value: 'ended', label: 'Ended' },
+  { value: 'failed', label: 'Failed' },
+];
+
+const marketplaceOptions = [
+  { value: 'all', label: 'All marketplaces' },
+  { value: 'ebay', label: 'eBay' },
+  { value: 'poshmark', label: 'Poshmark' },
+  { value: 'facebook_marketplace', label: 'Facebook Marketplace' },
+  { value: 'mercari', label: 'Mercari' },
+  { value: 'depop', label: 'Depop' },
+  { value: 'etsy', label: 'Etsy' },
+];
 
 export default function ListingsPage() {
   const router = useRouter();
@@ -220,299 +253,300 @@ export default function ListingsPage() {
     });
   };
 
-  const getJobStatusBadge = (job: ListingJob) => {
-    const statusMap = {
-      pending: { label: 'Queued', color: 'bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs' },
-      processing: { label: 'Processing', color: 'bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs' },
-      completed: { label: 'Success', color: 'bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs' },
-      failed: { label: 'Failed', color: 'bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs' },
-      retrying: { label: 'Retrying', color: 'bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-xs' },
-    };
-
-    const { label, color } = statusMap[job.status] || { label: job.status, color: 'bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs' };
+  const getListingStatusBadge = (status: ListingStatus | string) => {
+    const fallback = { label: status, className: 'border-white/10 bg-white/10 text-muted-foreground' };
+    const statusInfo = listingStatusStyles[status] ?? fallback;
 
     return (
-      <span className={color}>
-        {label}
+      <Badge
+        variant="secondary"
+        className={cn(
+          'glass-card border px-2 py-1 text-[11px] font-medium uppercase tracking-[0.25em] text-white/90',
+          statusInfo.className
+        )}
+      >
+        {statusInfo.label}
+      </Badge>
+    );
+  };
+
+  const getJobStatusBadge = (job: ListingJob) => {
+    const statusMap = {
+      pending: { label: 'Queued', className: 'border-sky-500/30 bg-sky-500/15 text-sky-200' },
+      processing: { label: 'Processing', className: 'border-amber-500/30 bg-amber-500/15 text-amber-200' },
+      completed: { label: 'Success', className: 'border-emerald-500/30 bg-emerald-500/15 text-emerald-200' },
+      failed: { label: 'Failed', className: 'border-red-500/30 bg-red-500/15 text-red-200' },
+      retrying: { label: 'Retrying', className: 'border-orange-500/30 bg-orange-500/15 text-orange-200' },
+    } as const;
+
+    const status = statusMap[job.status] || { label: job.status, className: 'border-white/10 bg-white/10 text-muted-foreground' };
+
+    return (
+      <Badge
+        variant="secondary"
+        className={cn(
+          'glass-card border px-2 py-1 text-[11px] font-medium uppercase tracking-[0.25em] text-white/90',
+          status.className
+        )}
+      >
+        {status.label}
         {job.attempts > 0 && ` (${job.attempts}/${job.max_attempts})`}
-      </span>
+      </Badge>
     );
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex min-h-[400px] items-center justify-center">
         <div className="text-center">
-          <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-gray-400" />
-          <p className="text-gray-500">Loading listings...</p>
+          <RefreshCw className="mx-auto mb-4 h-8 w-8 animate-spin text-muted-foreground" />
+          <p className="text-sm text-muted-foreground">Loading listings...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <DashboardLayout user={user ? { email: user.email, name: user.user_metadata?.name } : undefined}>
-      <div className="space-y-6 p-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <AnimatedHeadline
-              text="Listings"
-              className="from-primary-600 to-accent-600 bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent tracking-tight"
-            />
-            <p className="text-muted-foreground">
-              Manage your cross-platform listings and monitor their status
-            </p>
-          </div>
-        <button
-          onClick={() => router.push('/listings/create')}
-          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-        >
-          <Plus className="h-4 w-4" />
-          Create Listing
-        </button>
-      </div>
+    <DashboardLayout
+      user={user?.email ? {
+        email: user.email,
+        name: user.user_metadata?.name,
+      } : undefined}
+    >
+      <div className="mx-auto max-w-7xl space-y-10 px-4 pb-12">
+        <PageHeader
+          eyebrow="Operations"
+          title="Listings"
+          subtitle="Manage your cross-platform listings, stay ahead of job queues, and keep marketplaces in sync."
+          icon={<Image className="h-7 w-7 text-primary" />}
+          actions={(
+            <div className="flex items-center gap-3">
+              <Button
+                variant="accent"
+                className="inline-flex items-center gap-2"
+                onClick={() => router.push('/listings/create')}
+              >
+                <Plus className="h-4 w-4" />
+                Create Listing
+              </Button>
+              <Button variant="outline" size="sm" className="glass-button" onClick={loadData} aria-label="Refresh listings">
+                <RefreshCw className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
+        />
 
         {error && (
-          <div className="glass bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-2">
-            <AlertCircle className="h-4 w-4 text-red-500" />
-            <span className="text-red-700">{error}</span>
+          <div className="glass-card flex items-center gap-3 border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive-foreground">
+            <AlertCircle className="h-4 w-4" />
+            <span>{error}</span>
           </div>
         )}
 
-      {/* Stats Cards */}
-      {jobStats && (
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          <div className="glass p-4 rounded-lg border shadow-sm">
-            <div className="flex items-center space-x-2">
-              <Clock className="h-4 w-4 text-blue-500" />
-              <div>
-                <p className="text-sm font-medium text-gray-500">Pending</p>
-                <p className="text-2xl font-bold">{jobStats.pending_jobs}</p>
-              </div>
-            </div>
+        {jobStats && (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
+            <Card className="glass-card border border-white/10">
+              <CardContent className="flex items-center justify-between gap-4 p-6">
+                <div className="glass-card flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-secondary/20">
+                  <Clock className="h-5 w-5" />
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-medium text-muted-foreground">Pending</p>
+                  <p className="text-2xl font-semibold text-foreground">{jobStats.pending_jobs}</p>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="glass-card border border-white/10">
+              <CardContent className="flex items-center justify-between gap-4 p-6">
+                <div className="glass-card flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-amber-500/20">
+                  <RefreshCw className="h-5 w-5" />
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-medium text-muted-foreground">Processing</p>
+                  <p className="text-2xl font-semibold text-foreground">{jobStats.processing_jobs}</p>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="glass-card border border-white/10">
+              <CardContent className="flex items-center justify-between gap-4 p-6">
+                <div className="glass-card flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-emerald-500/20">
+                  <CheckCircle className="h-5 w-5" />
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-medium text-muted-foreground">Completed</p>
+                  <p className="text-2xl font-semibold text-foreground">{jobStats.completed_jobs}</p>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="glass-card border border-white/10">
+              <CardContent className="flex items-center justify-between gap-4 p-6">
+                <div className="glass-card flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-red-500/20">
+                  <XCircle className="h-5 w-5" />
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-medium text-muted-foreground">Failed</p>
+                  <p className="text-2xl font-semibold text-foreground">{jobStats.failed_jobs}</p>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="glass-card border border-white/10">
+              <CardContent className="flex items-center justify-between gap-4 p-6">
+                <div className="glass-card flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-ring/20">
+                  <TrendingUp className="h-5 w-5" />
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-medium text-muted-foreground">Total</p>
+                  <p className="text-2xl font-semibold text-foreground">{jobStats.total_jobs}</p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
-          <div className="glass p-4 rounded-lg border shadow-sm">
-            <div className="flex items-center space-x-2">
-              <RefreshCw className="h-4 w-4 text-yellow-500" />
-              <div>
-                <p className="text-sm font-medium text-gray-500">Processing</p>
-                <p className="text-2xl font-bold">{jobStats.processing_jobs}</p>
+        )}
+
+        <Card className="glass-card border border-white/10">
+          <CardContent className="flex flex-col gap-4 p-4 md:flex-row md:items-center md:justify-between">
+            <div className="flex w-full flex-col gap-4 md:flex-row md:items-center">
+              <div className="relative w-full md:max-w-sm">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  type="search"
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  placeholder="Search listings"
+                  className="glass-input w-full pl-10"
+                />
               </div>
+              <FormSelect
+                value={statusFilter}
+                onValueChange={setStatusFilter}
+                options={statusOptions}
+                placeholder="Filter by status"
+                className="w-full md:w-48"
+              />
+              <FormSelect
+                value={marketplaceFilter}
+                onValueChange={setMarketplaceFilter}
+                options={marketplaceOptions}
+                placeholder="Filter by marketplace"
+                className="w-full md:w-56"
+              />
             </div>
-          </div>
-          <div className="glass p-4 rounded-lg border shadow-sm">
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="h-4 w-4 text-green-500" />
-              <div>
-                <p className="text-sm font-medium text-gray-500">Completed</p>
-                <p className="text-2xl font-bold">{jobStats.completed_jobs}</p>
-              </div>
+            <div className="flex w-full gap-3 md:w-auto md:justify-end">
+              <Button
+                variant="outline"
+                className="glass-button inline-flex items-center gap-2"
+                onClick={loadData}
+              >
+                <RefreshCw className="h-4 w-4" />
+                Refresh
+              </Button>
             </div>
-          </div>
-          <div className="glass p-4 rounded-lg border shadow-sm">
-            <div className="flex items-center space-x-2">
-              <XCircle className="h-4 w-4 text-red-500" />
-              <div>
-                <p className="text-sm font-medium text-gray-500">Failed</p>
-                <p className="text-2xl font-bold">{jobStats.failed_jobs}</p>
-              </div>
-            </div>
-          </div>
-          <div className="glass p-4 rounded-lg border shadow-sm">
-            <div className="flex items-center space-x-2">
-              <TrendingUp className="h-4 w-4 text-purple-500" />
-              <div>
-                <p className="text-sm font-medium text-gray-500">Total</p>
-                <p className="text-2xl font-bold">{jobStats.total_jobs}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+          </CardContent>
+        </Card>
 
-      {/* Filters */}
-      <div className="flex items-center space-x-4">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search listings..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-        </div>
-
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="all">All Statuses</option>
-          <option value="active">Active</option>
-          <option value="pending">Pending</option>
-          <option value="draft">Draft</option>
-          <option value="sold">Sold</option>
-          <option value="ended">Ended</option>
-          <option value="failed">Failed</option>
-        </select>
-
-        <select
-          value={marketplaceFilter}
-          onChange={(e) => setMarketplaceFilter(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="all">All Marketplaces</option>
-          <option value="ebay">eBay</option>
-          <option value="poshmark">Poshmark</option>
-          <option value="facebook_marketplace">Facebook</option>
-          <option value="mercari">Mercari</option>
-        </select>
-
-        <button
-          onClick={loadData}
-          className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-        >
-          <RefreshCw className="h-4 w-4" />
-          Refresh
-        </button>
-      </div>
-
-      {/* Tabs */}
-      <div>
-        <div className="border-b border-gray-200">
-          <nav className="-mb-px flex space-x-8">
-            <button
-              onClick={() => setActiveTab('listings')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'listings'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="glass-card grid w-full grid-cols-2 border border-white/10 bg-white/5/40">
+            <TabsTrigger value="listings" className="flex items-center justify-center gap-2">
+              <TrendingUp className="h-4 w-4" />
               Active Listings
-            </button>
-            <button
-              onClick={() => setActiveTab('jobs')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'jobs'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
+            </TabsTrigger>
+            <TabsTrigger value="jobs" className="flex items-center justify-center gap-2">
+              <RefreshCw className="h-4 w-4" />
               Job Queue
-            </button>
-          </nav>
-        </div>
+            </TabsTrigger>
+          </TabsList>
 
-        <div className="mt-6">
-          {activeTab === 'listings' && (
-            <div className="glass rounded-lg border shadow-sm">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg font-semibold">Active Listings</h3>
-                <p className="text-sm text-gray-500">Your listings across all connected marketplaces</p>
-              </div>
-              <div className="p-6">
+          <TabsContent value="listings" className="space-y-6">
+            <Card className="glass-card border border-white/10">
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between text-base font-medium text-muted-foreground">
+                  <span>Active Listings</span>
+                  <Badge variant="secondary" className="glass-card border border-white/10 px-3 py-1 text-xs uppercase tracking-[0.3em]">
+                    {filteredListings.length}
+                  </Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
                 {filteredListings.length === 0 ? (
-                  <div className="text-center py-8">
-                    <div className="text-gray-400 mb-4">
-                      <TrendingUp className="h-12 w-12 mx-auto" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">No listings found</h3>
-                    <p className="text-gray-500 mb-4">
-                      Start by creating your first cross-platform listing
+                  <div className="flex flex-col items-center gap-3 py-12 text-center">
+                    <TrendingUp className="h-12 w-12 text-muted-foreground" />
+                    <h3 className="text-lg font-semibold text-foreground">No listings found</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Start by creating your first cross-platform listing.
                     </p>
-                    <button
-                      onClick={() => router.push('/listings/create')}
-                      className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-                    >
-                      Create Your First Listing
-                    </button>
+                    <Button variant="accent" onClick={() => router.push('/listings/create')} className="inline-flex items-center gap-2">
+                      <Plus className="h-4 w-4" />
+                      Create your first listing
+                    </Button>
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-50">
+                    <table className="min-w-full divide-y divide-white/10 text-sm">
+                      <thead className="bg-white/5 text-xs uppercase tracking-[0.2em] text-muted-foreground">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Item
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Marketplace
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Price
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Status
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Views
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Created
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Actions
-                          </th>
+                          <th className="px-6 py-4 text-left">Item</th>
+                          <th className="px-6 py-4 text-left">Marketplace</th>
+                          <th className="px-6 py-4 text-left">Price</th>
+                          <th className="px-6 py-4 text-left">Status</th>
+                          <th className="px-6 py-4 text-left">Views</th>
+                          <th className="px-6 py-4 text-left">Created</th>
+                          <th className="px-6 py-4 text-left">Actions</th>
                         </tr>
                       </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
+                      <tbody className="divide-y divide-white/5">
                         {filteredListings.map((listing) => (
-                          <tr key={`${listing.id}-${listing.platform}`}>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="flex items-center space-x-3">
-                                <div className="h-10 w-10 rounded-md bg-gray-200 flex items-center justify-center">
-                                  <Image className="h-5 w-5 text-gray-400" />
+                          <tr key={`${listing.id}-${listing.platform}`} className="transition-colors hover:bg-white/5">
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-3">
+                                <div className="glass-card flex h-10 w-10 items-center justify-center rounded-md border border-white/10 bg-white/5">
+                                  <Image className="h-5 w-5 text-muted-foreground" />
                                 </div>
                                 <div>
-                                  <p className="font-medium">{listing.title}</p>
-                                  <p className="text-sm text-gray-500">
-                                    {listing.platform}
-                                  </p>
+                                  <p className="font-semibold text-foreground">{listing.title}</p>
+                                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{listing.platform}</p>
                                 </div>
                               </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="flex items-center space-x-2">
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-2">
                                 <span className="text-lg">
                                   {marketplaceLogos[listing.platform as keyof typeof marketplaceLogos] || '🏪'}
                                 </span>
-                                <span className="capitalize">
+                                <span className="capitalize text-foreground">
                                   {listing.platform.replace('_', ' ')}
                                 </span>
                               </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className="px-6 py-4 text-foreground">
                               {formatCurrency(listing.price, listing.currency)}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="flex items-center space-x-2">
-                                {statusIcons[listing.status as keyof typeof statusIcons] || <Clock className="h-4 w-4 text-gray-500" />}
-                                <span className={`px-2 py-1 rounded-full text-xs ${statusColors[listing.status as keyof typeof statusColors] || 'bg-gray-100 text-gray-800'}`}>
-                                  {listing.status}
-                                </span>
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-2">
+                                {statusIcons[listing.status as keyof typeof statusIcons] || <Clock className="h-4 w-4 text-muted-foreground" />}
+                                {getListingStatusBadge(listing.status)}
                               </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="flex items-center space-x-1">
-                                <Eye className="h-4 w-4 text-gray-400" />
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-1 text-foreground">
+                                <Eye className="h-4 w-4 text-muted-foreground" />
                                 <span>{listing.views || 0}</span>
                               </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 text-muted-foreground">
                               {formatDate(listing.createdAt)}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                              <div className="flex items-center space-x-2">
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-2">
                                 {listing.job && listing.job.status === 'failed' && (
-                                  <button
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="glass-button h-8 w-8"
                                     onClick={() => handleRetryJob(listing.job!.id)}
-                                    className="text-green-600 hover:text-green-900"
+                                    aria-label="Retry job"
                                   >
                                     <RefreshCw className="h-4 w-4" />
-                                  </button>
+                                  </Button>
                                 )}
                               </div>
                             </td>
@@ -522,115 +556,112 @@ export default function ListingsPage() {
                     </table>
                   </div>
                 )}
-              </div>
-            </div>
-          )}
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-          {activeTab === 'jobs' && (
-            <div className="glass rounded-lg border shadow-sm">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg font-semibold">Job Queue</h3>
-                <p className="text-sm text-gray-500">Monitor the status of your listing creation jobs</p>
-              </div>
-              <div className="p-6">
+          <TabsContent value="jobs" className="space-y-6">
+            <Card className="glass-card border border-white/10">
+              <CardHeader>
+                <CardTitle className="text-base font-medium text-muted-foreground">Job Queue</CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
                 {filteredJobs.length === 0 ? (
-                  <div className="text-center py-8">
-                    <div className="text-gray-400 mb-4">
-                      <Clock className="h-12 w-12 mx-auto" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">No jobs found</h3>
-                    <p className="text-gray-500">
-                      Jobs will appear here when you create new listings
+                  <div className="flex flex-col items-center gap-3 py-12 text-center">
+                    <Clock className="h-12 w-12 text-muted-foreground" />
+                    <h3 className="text-lg font-semibold text-foreground">No jobs yet</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Jobs will appear here when you create new listings.
                     </p>
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-50">
+                    <table className="min-w-full divide-y divide-white/10 text-sm">
+                      <thead className="bg-white/5 text-xs uppercase tracking-[0.2em] text-muted-foreground">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Job ID
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Item
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Marketplace
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Status
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Created
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Actions
-                          </th>
+                          <th className="px-6 py-4 text-left">Job ID</th>
+                          <th className="px-6 py-4 text-left">Item</th>
+                          <th className="px-6 py-4 text-left">Marketplace</th>
+                          <th className="px-6 py-4 text-left">Status</th>
+                          <th className="px-6 py-4 text-left">Created</th>
+                          <th className="px-6 py-4 text-left">Actions</th>
                         </tr>
                       </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
+                      <tbody className="divide-y divide-white/5">
                         {filteredJobs.map((job) => (
-                          <tr key={job.id}>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <code className="text-xs bg-gray-100 px-2 py-1 rounded">
+                          <tr key={job.id} className="transition-colors hover:bg-white/5">
+                            <td className="px-6 py-4">
+                              <code className="glass-card rounded bg-white/5 px-2 py-1 text-xs text-foreground">
                                 {job.id.slice(-8)}
                               </code>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <p className="font-medium">{job.listing_data.title}</p>
-                              <p className="text-sm text-gray-500">
+                            <td className="px-6 py-4">
+                              <p className="font-semibold text-foreground">{job.listing_data.title}</p>
+                              <p className="text-xs text-muted-foreground">
                                 {formatCurrency(job.listing_data.listing_price || 0)}
                               </p>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="flex items-center space-x-2">
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-2">
                                 <span className="text-lg">
                                   {marketplaceLogos[job.marketplace_type as keyof typeof marketplaceLogos] || '🏪'}
                                 </span>
-                                <span className="capitalize">
+                                <span className="capitalize text-foreground">
                                   {job.marketplace_type.replace('_', ' ')}
                                 </span>
                               </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              {getJobStatusBadge(job)}
-                              {job.error_message && (
-                                <p className="text-xs text-red-600 mt-1">{job.error_message}</p>
-                              )}
+                            <td className="px-6 py-4">
+                              <div className="flex flex-col gap-2">
+                                {getJobStatusBadge(job)}
+                                {job.error_message && (
+                                  <p className="text-xs text-destructive">{job.error_message}</p>
+                                )}
+                              </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-6 py-4 text-muted-foreground">
                               {formatDate(job.created_at)}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                              <div className="flex items-center space-x-2">
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-2">
                                 {job.status === 'failed' && (
-                                  <button
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="glass-button h-8 w-8"
                                     onClick={() => handleRetryJob(job.id)}
-                                    className="text-green-600 hover:text-green-900"
-                                    title="Retry"
+                                    aria-label="Retry job"
                                   >
                                     <RefreshCw className="h-4 w-4" />
-                                  </button>
+                                  </Button>
                                 )}
                                 {(job.status === 'pending' || job.status === 'retrying') && (
-                                  <button
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="glass-button h-8 w-8"
                                     onClick={() => handleCancelJob(job.id)}
-                                    className="text-red-600 hover:text-red-900"
-                                    title="Cancel"
+                                    aria-label="Cancel job"
                                   >
                                     <XCircle className="h-4 w-4" />
-                                  </button>
+                                  </Button>
                                 )}
                                 {job.result?.external_url && (
-                                  <a
-                                    href={job.result.external_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-blue-600 hover:text-blue-900"
-                                    title="View listing"
+                                  <Button
+                                    asChild
+                                    variant="ghost"
+                                    size="icon"
+                                    className="glass-button h-8 w-8"
                                   >
-                                    <ExternalLink className="h-4 w-4" />
-                                  </a>
+                                    <a
+                                      href={job.result.external_url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      aria-label="View listing"
+                                    >
+                                      <ExternalLink className="h-4 w-4" />
+                                    </a>
+                                  </Button>
                                 )}
                               </div>
                             </td>
@@ -640,11 +671,10 @@ export default function ListingsPage() {
                     </table>
                   </div>
                 )}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </DashboardLayout>
   );

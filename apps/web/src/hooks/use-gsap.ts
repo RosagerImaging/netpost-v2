@@ -14,7 +14,7 @@ export function useGsap() {
         const gsapModule = await import("gsap");
         const gsapInstance = gsapModule.gsap || gsapModule.default || gsapModule;
 
-        if (gsapInstance && gsapInstance.fromTo) {
+        if (gsapInstance && typeof gsapInstance.fromTo === 'function') {
           setGsap(gsapInstance);
           setIsLoaded(true);
           setError(null);

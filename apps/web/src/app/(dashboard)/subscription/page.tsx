@@ -8,11 +8,19 @@
 import { useState, useEffect } from 'react';
 import { DashboardLayout } from '../../../components/layout/dashboard-layout';
 import { useAuth } from '../../../lib/auth/auth-context';
-import { AnimatedHeadline } from '../../../components/ui/animated-headline';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
+import { PageHeader } from '../../../components/ui/page-header';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Button,
+  Badge,
+  Progress,
+  cn,
+} from '@netpost/ui';
+import { CreditCard, Loader2, Receipt } from 'lucide-react';
 
 interface SubscriptionData {
   tier: string;
@@ -86,9 +94,9 @@ export default function SubscriptionPage() {
   };
 
   const getUsageColor = (percentage: number) => {
-    if (percentage >= 90) return 'text-red-600';
-    if (percentage >= 75) return 'text-yellow-600';
-    return 'text-green-600';
+    if (percentage >= 90) return 'text-red-300';
+    if (percentage >= 75) return 'text-amber-300';
+    return 'text-emerald-200';
   };
 
   return (
@@ -99,109 +107,95 @@ export default function SubscriptionPage() {
         subscription: subscriptionData
       } : undefined}
     >
-      <div className="space-y-6 p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <AnimatedHeadline
-              text="Subscription"
-              className="from-primary-600 to-accent-600 bg-gradient-to-r bg-clip-text text-3xl font-bold text-transparent"
-            />
-            <p className="text-secondary-text mt-2">
-              Manage your subscription and track usage
-            </p>
-          </div>
-          <Button>Manage Billing</Button>
-        </div>
-
-        {/* Current Plan */}
-        <Card className="glass">
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            Current Plan
-            <Badge variant="secondary">{subscription.tier}</Badge>
-          </CardTitle>
-          <CardDescription>
-            Your subscription is {subscription.status} and renews on{' '}
-            {new Date(subscription.currentPeriodEnd).toLocaleDateString()}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-4">
-            <Button>Upgrade Plan</Button>
-            <Button variant="outline">Cancel Subscription</Button>
-          </div>
-        </CardContent>
-      </Card>
-
-        {/* Usage Statistics */}
-        <Card className="glass">
-        <CardHeader>
-          <CardTitle>Usage This Month</CardTitle>
-          <CardDescription>Track your usage across different features</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Inventory Items */}
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span>Inventory Items</span>
-              <span className={getUsageColor(getUsagePercentage(subscription.usage.inventoryItems.current, subscription.usage.inventoryItems.limit))}>
-                {subscription.usage.inventoryItems.current} / {subscription.usage.inventoryItems.limit}
-              </span>
+      <div className="mx-auto max-w-7xl space-y-10 px-4 pb-12">
+        <PageHeader
+          eyebrow="Account"
+          title="Subscription"
+          subtitle="Monitor plan limits, usage, and billing history to keep your business running smoothly."
+          icon={<CreditCard className="h-7 w-7 text-primary" />}
+          actions={(
+            <div className="flex items-center gap-3">
+              <Button variant="accent">Manage Billing</Button>
             </div>
-            <Progress
-              value={getUsagePercentage(subscription.usage.inventoryItems.current, subscription.usage.inventoryItems.limit)}
-              className="h-2"
-            />
-          </div>
+          )}
+        />
 
-          {/* API Calls */}
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span>API Calls</span>
-              <span className={getUsageColor(getUsagePercentage(subscription.usage.apiCalls.current, subscription.usage.apiCalls.limit))}>
-                {subscription.usage.apiCalls.current.toLocaleString()} / {subscription.usage.apiCalls.limit.toLocaleString()}
-              </span>
-            </div>
-            <Progress
-              value={getUsagePercentage(subscription.usage.apiCalls.current, subscription.usage.apiCalls.limit)}
-              className="h-2"
-            />
-          </div>
+        <Card className="glass-card border border-white/10">
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between text-muted-foreground">
+              <span>Current Plan</span>
+              <Badge variant="secondary" className="glass-card border border-white/10 px-3 py-1 text-xs uppercase tracking-[0.3em]">
+                {subscription.tier}
+              </Badge>
+            </CardTitle>
+            <CardDescription>
+              Your subscription is {subscription.status} • Renews on {new Date(subscription.currentPeriodEnd).toLocaleDateString()}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-3 md:flex-row md:items-center">
+            <Button variant="accent">Upgrade Plan</Button>
+            <Button variant="outline" className="glass-button md:ml-3">Cancel Subscription</Button>
+          </CardContent>
+        </Card>
 
-          {/* Storage */}
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span>Storage</span>
-              <span className={getUsageColor(getUsagePercentage(subscription.usage.storage.current, subscription.usage.storage.limit))}>
-                {subscription.usage.storage.current}MB / {subscription.usage.storage.limit}MB
-              </span>
+        <Card className="glass-card border border-white/10">
+          <CardHeader>
+            <CardTitle className="text-muted-foreground">Usage This Month</CardTitle>
+            <CardDescription>Track usage across different features</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <span>Inventory Items</span>
+                <span className={cn('font-medium', getUsageColor(getUsagePercentage(subscription.usage.inventoryItems.current, subscription.usage.inventoryItems.limit)))}>
+                  {subscription.usage.inventoryItems.current} / {subscription.usage.inventoryItems.limit}
+                </span>
+              </div>
+              <Progress value={getUsagePercentage(subscription.usage.inventoryItems.current, subscription.usage.inventoryItems.limit)} className="h-2" />
             </div>
-            <Progress
-              value={getUsagePercentage(subscription.usage.storage.current, subscription.usage.storage.limit)}
-              className="h-2"
-            />
-          </div>
-        </CardContent>
-      </Card>
 
-        {/* Billing History */}
-        <Card className="glass">
-        <CardHeader>
-          <CardTitle>Billing History</CardTitle>
-          <CardDescription>Your recent payments and invoices</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2 text-sm text-gray-600">
-            <div className="flex justify-between">
-              <span>September 2025</span>
-              <span>$9.99 - Paid</span>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <span>API Calls</span>
+                <span className={cn('font-medium', getUsageColor(getUsagePercentage(subscription.usage.apiCalls.current, subscription.usage.apiCalls.limit)))}>
+                  {subscription.usage.apiCalls.current.toLocaleString()} / {subscription.usage.apiCalls.limit.toLocaleString()}
+                </span>
+              </div>
+              <Progress value={getUsagePercentage(subscription.usage.apiCalls.current, subscription.usage.apiCalls.limit)} className="h-2" />
             </div>
-            <div className="flex justify-between">
-              <span>August 2025</span>
-              <span>$9.99 - Paid</span>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <span>Storage</span>
+                <span className={cn('font-medium', getUsageColor(getUsagePercentage(subscription.usage.storage.current, subscription.usage.storage.limit)))}>
+                  {subscription.usage.storage.current}MB / {subscription.usage.storage.limit}MB
+                </span>
+              </div>
+              <Progress value={getUsagePercentage(subscription.usage.storage.current, subscription.usage.storage.limit)} className="h-2" />
             </div>
-          </div>
-        </CardContent>
+          </CardContent>
+        </Card>
+
+        <Card className="glass-card border border-white/10">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-muted-foreground">
+              <Receipt className="h-5 w-5 text-primary" />
+              Billing History
+            </CardTitle>
+            <CardDescription>Your recent payments and invoices</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-muted-foreground">
+                <span>September 2025</span>
+                <span className="font-medium text-foreground">$9.99 • Paid</span>
+              </div>
+              <div className="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-muted-foreground">
+                <span>August 2025</span>
+                <span className="font-medium text-foreground">$9.99 • Paid</span>
+              </div>
+            </div>
+          </CardContent>
         </Card>
       </div>
     </DashboardLayout>

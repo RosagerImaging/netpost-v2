@@ -1,0 +1,1 @@
+Future megamenu support can extend the navLinks structure in apps/web/src/app/page.tsx to include nested items rendered conditionally in the mobile sheet and desktop nav.
