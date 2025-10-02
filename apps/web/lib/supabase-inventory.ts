@@ -382,6 +382,7 @@ export async function bulkUpdateInventoryItems(
 
 /**
  * Subscribe to real-time inventory changes
+ * Returns a subscription object with an unsubscribe method
  */
 export function subscribeToInventoryChanges(
   userId: string,
@@ -389,17 +390,8 @@ export function subscribeToInventoryChanges(
   onUpdate?: (payload: { old: InventoryItemRecord; new: InventoryItemRecord }) => void,
   onDelete?: (payload: { old: InventoryItemRecord }) => void
 ) {
-  // TODO: Fix supabase subscription typing issues in Next.js 15
-  // This is a non-critical real-time feature that can be re-enabled later
-  console.warn('Real-time inventory subscriptions temporarily disabled');
-  
-  return {
-    unsubscribe: () => console.log('Unsubscribed from inventory changes')
-  };
-  
-  /* Temporarily disabled due to typing conflicts
-  return supabase
-    .channel('inventory_changes')
+  const channel = supabase
+    .channel(`inventory_changes_${userId}`)
     .on(
       'postgres_changes',
       {
@@ -408,7 +400,13 @@ export function subscribeToInventoryChanges(
         table: 'inventory_items',
         filter: `user_id=eq.${userId}`,
       },
-      onInsert || (() => {})
+      (payload) => {
+        if (onInsert && payload.new) {
+          // Type assertion is safe here because Supabase guarantees the shape
+          // matches the table schema for insert events
+          onInsert({ new: payload.new as InventoryItemRecord });
+        }
+      }
     )
     .on(
       'postgres_changes',
@@ -418,7 +416,16 @@ export function subscribeToInventoryChanges(
         table: 'inventory_items',
         filter: `user_id=eq.${userId}`,
       },
-      onUpdate || (() => {})
+      (payload) => {
+        if (onUpdate && payload.old && payload.new) {
+          // Type assertion is safe here because Supabase guarantees the shape
+          // matches the table schema for update events
+          onUpdate({
+            old: payload.old as InventoryItemRecord,
+            new: payload.new as InventoryItemRecord
+          });
+        }
+      }
     )
     .on(
       'postgres_changes',
@@ -428,8 +435,20 @@ export function subscribeToInventoryChanges(
         table: 'inventory_items',
         filter: `user_id=eq.${userId}`,
       },
-      onDelete || (() => {})
+      (payload) => {
+        if (onDelete && payload.old) {
+          // Type assertion is safe here because Supabase guarantees the shape
+          // matches the table schema for delete events
+          onDelete({ old: payload.old as InventoryItemRecord });
+        }
+      }
     )
     .subscribe();
-  */
+
+  // Return subscription with proper cleanup
+  return {
+    unsubscribe: () => {
+      supabase.removeChannel(channel);
+    },
+  };
 }

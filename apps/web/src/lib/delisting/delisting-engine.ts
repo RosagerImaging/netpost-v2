@@ -38,8 +38,13 @@ interface DelistingJobResult {
 }
 
 class DelistingEngine {
-  private get supabase() {
-    return createClient();
+  private async getSupabase() {
+    return await createClient();
+  }
+
+  private async withSupabase<T>(callback: (supabase: Awaited<ReturnType<typeof createClient>>) => Promise<T>): Promise<T> {
+    const supabase = await this.getSupabase();
+    return await callback(supabase);
   }
 
   /**
@@ -50,7 +55,8 @@ class DelistingEngine {
 
     try {
       // Get the delisting job
-      const { data: job, error: jobError } = await this.supabase
+      const supabase = await this.getSupabase();
+      const { data: job, error: jobError } = await supabase
         .from('delisting_jobs')
         .select(`
           *,
@@ -82,7 +88,8 @@ class DelistingEngine {
       await this.updateJobStatus(jobId, 'processing', new Date().toISOString());
 
       // Get active listings for the inventory item on targeted marketplaces
-      const { data: listings } = await this.supabase
+      const supabaseForListings = await this.getSupabase();
+      const { data: listings } = await supabaseForListings
         .from('listings')
         .select('*')
         .eq('inventory_item_id', job.inventory_item_id)
@@ -185,7 +192,8 @@ class DelistingEngine {
       // Mark job as failed
       try {
         await this.updateJobStatus(jobId, 'failed');
-        await this.supabase
+        const supabaseForError = await this.getSupabase();
+        await supabaseForError
           .from('delisting_jobs')
           .update({
             error_log: {
@@ -226,7 +234,8 @@ class DelistingEngine {
       console.log(`Delisting from ${marketplace}: ${listing.external_listing_id}`);
 
       // Get marketplace connection
-      const { data: connection } = await this.supabase
+      const supabase = await this.getSupabase();
+      const { data: connection } = await supabase
         .from('marketplace_connections_safe')
         .select('*')
         .eq('user_id', job.user_id)
@@ -274,7 +283,7 @@ class DelistingEngine {
       }
 
       // Update our listing status
-      await this.supabase
+      await supabase
         .from('listings')
         .update({
           status: 'cancelled',
@@ -412,8 +421,10 @@ class DelistingEngine {
       updates.completed_at = completedAt;
     }
 
-    await this.supabase
-      .from('delisting_jobs')
+    const supabase = await this.getSupabase();
+
+
+    await supabase.from('delisting_jobs')
       .update(updates)
       .eq('id', jobId);
   }
@@ -451,8 +462,10 @@ class DelistingEngine {
       }
     }
 
-    await this.supabase
-      .from('delisting_jobs')
+    const supabase = await this.getSupabase();
+
+
+    await supabase.from('delisting_jobs')
       .update({
         success_log: successLog,
         error_log: errorLog,
@@ -478,8 +491,9 @@ class DelistingEngine {
     errorCode?: string
   ): Promise<void> {
     try {
-      await this.supabase
-        .from('delisting_audit_log')
+      const supabase = await this.getSupabase();
+
+      await supabase.from('delisting_audit_log')
         .insert({
           user_id: userId,
           delisting_job_id: jobId,
@@ -506,7 +520,8 @@ class DelistingEngine {
   }> {
     try {
       // Get failed jobs that can be retried
-      const { data: failedJobs } = await this.supabase
+      const supabase = await this.getSupabase();
+      const { data: failedJobs } = await supabase
         .from('delisting_jobs')
         .select('*')
         .in('status', ['failed', 'partially_failed'])
@@ -543,8 +558,9 @@ class DelistingEngine {
           }
 
           // Increment retry count and reset status
-          await this.supabase
-            .from('delisting_jobs')
+          const supabase = await this.getSupabase();
+
+          await supabase.from('delisting_jobs')
             .update({
               status: 'pending',
               retry_count: job.retry_count + 1,
@@ -582,7 +598,8 @@ class DelistingEngine {
    * Get pending delisting jobs ready for processing
    */
   async getPendingJobs(limit: number = 50): Promise<DelistingJob[]> {
-    const { data: jobs, error } = await this.supabase
+    const supabase = await this.getSupabase();
+    const { data: jobs, error } = await supabase
       .from('pending_delisting_jobs')
       .select('*')
       .eq('processing_status', 'ready_to_process')

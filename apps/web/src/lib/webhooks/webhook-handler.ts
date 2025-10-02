@@ -3,6 +3,8 @@
  * Processes incoming webhooks and creates sale events for de-listing
  * Author: BMad Development Agent (James) - Story 1.7
  * Date: 2025-09-18
+ *
+ * SECURITY: All webhook payloads are validated and typed
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -19,6 +21,20 @@ import {
   DELISTING_ERROR_CODES,
 } from '@netpost/shared-types';
 
+// ============================================================================
+// Webhook Payload Type Definitions
+// ============================================================================
+
+/**
+ * Generic marketplace webhook payload
+ * Union type of all supported marketplace payloads from shared-types
+ */
+type MarketplaceWebhookPayload =
+  | EBayWebhookPayload
+  | PoshmarkWebhookPayload
+  | FacebookWebhookPayload
+  | Record<string, unknown>;
+
 /**
  * Webhook signature verification
  */
@@ -28,67 +44,98 @@ interface WebhookConfig {
   signaturePrefix?: string;
 }
 
-const WEBHOOK_CONFIGS: Record<MarketplaceType, WebhookConfig> = {
-  ebay: {
-    secret: process.env.EBAY_WEBHOOK_SECRET!,
-    signatureHeader: 'x-ebay-signature',
-    signaturePrefix: 'sha256=',
-  },
-  poshmark: {
-    secret: process.env.POSHMARK_WEBHOOK_SECRET!,
-    signatureHeader: 'x-poshmark-signature',
-    signaturePrefix: 'sha256=',
-  },
-  facebook_marketplace: {
-    secret: process.env.FACEBOOK_WEBHOOK_SECRET!,
-    signatureHeader: 'x-hub-signature-256',
-    signaturePrefix: 'sha256=',
-  },
-  mercari: {
-    secret: process.env.MERCARI_WEBHOOK_SECRET!,
-    signatureHeader: 'x-mercari-signature',
-  },
-  depop: {
-    secret: process.env.DEPOP_WEBHOOK_SECRET!,
-    signatureHeader: 'x-depop-signature',
-  },
-  vinted: {
-    secret: process.env.VINTED_WEBHOOK_SECRET!,
-    signatureHeader: 'x-vinted-signature',
-  },
-  grailed: {
-    secret: process.env.GRAILED_WEBHOOK_SECRET!,
-    signatureHeader: 'x-grailed-signature',
-  },
-  the_realreal: {
-    secret: process.env.THE_REALREAL_WEBHOOK_SECRET!,
-    signatureHeader: 'x-realreal-signature',
-  },
-  vestiaire_collective: {
-    secret: process.env.VESTIAIRE_WEBHOOK_SECRET!,
-    signatureHeader: 'x-vestiaire-signature',
-  },
-  tradesy: {
-    secret: process.env.TRADESY_WEBHOOK_SECRET!,
-    signatureHeader: 'x-tradesy-signature',
-  },
-  etsy: {
-    secret: process.env.ETSY_WEBHOOK_SECRET!,
-    signatureHeader: 'x-etsy-signature',
-  },
-  amazon: {
-    secret: process.env.AMAZON_WEBHOOK_SECRET!,
-    signatureHeader: 'x-amzn-signature',
-  },
-  shopify: {
-    secret: process.env.SHOPIFY_WEBHOOK_SECRET!,
-    signatureHeader: 'x-shopify-hmac-sha256',
-  },
-  custom: {
-    secret: process.env.CUSTOM_WEBHOOK_SECRET!,
-    signatureHeader: 'x-signature',
-  },
-};
+/**
+ * Get webhook secret with validation
+ * Throws descriptive error if secret is missing
+ */
+function getWebhookSecret(marketplace: MarketplaceType, envVarName: string): string {
+  const secret = process.env[envVarName];
+
+  if (!secret) {
+    throw new Error(
+      `Missing webhook secret for ${marketplace}. ` +
+      `Please set ${envVarName} environment variable. ` +
+      `Webhooks for ${marketplace} will not work without this configuration.`
+    );
+  }
+
+  return secret;
+}
+
+/**
+ * Initialize webhook configs with runtime validation
+ * This function is called lazily to provide better error messages
+ */
+function getWebhookConfig(marketplace: MarketplaceType): WebhookConfig {
+  const configs: Record<MarketplaceType, () => WebhookConfig> = {
+    ebay: () => ({
+      secret: getWebhookSecret('ebay', 'EBAY_WEBHOOK_SECRET'),
+      signatureHeader: 'x-ebay-signature',
+      signaturePrefix: 'sha256=',
+    }),
+    poshmark: () => ({
+      secret: getWebhookSecret('poshmark', 'POSHMARK_WEBHOOK_SECRET'),
+      signatureHeader: 'x-poshmark-signature',
+      signaturePrefix: 'sha256=',
+    }),
+    facebook_marketplace: () => ({
+      secret: getWebhookSecret('facebook_marketplace', 'FACEBOOK_WEBHOOK_SECRET'),
+      signatureHeader: 'x-hub-signature-256',
+      signaturePrefix: 'sha256=',
+    }),
+    mercari: () => ({
+      secret: getWebhookSecret('mercari', 'MERCARI_WEBHOOK_SECRET'),
+      signatureHeader: 'x-mercari-signature',
+    }),
+    depop: () => ({
+      secret: getWebhookSecret('depop', 'DEPOP_WEBHOOK_SECRET'),
+      signatureHeader: 'x-depop-signature',
+    }),
+    vinted: () => ({
+      secret: getWebhookSecret('vinted', 'VINTED_WEBHOOK_SECRET'),
+      signatureHeader: 'x-vinted-signature',
+    }),
+    grailed: () => ({
+      secret: getWebhookSecret('grailed', 'GRAILED_WEBHOOK_SECRET'),
+      signatureHeader: 'x-grailed-signature',
+    }),
+    the_realreal: () => ({
+      secret: getWebhookSecret('the_realreal', 'THE_REALREAL_WEBHOOK_SECRET'),
+      signatureHeader: 'x-realreal-signature',
+    }),
+    vestiaire_collective: () => ({
+      secret: getWebhookSecret('vestiaire_collective', 'VESTIAIRE_WEBHOOK_SECRET'),
+      signatureHeader: 'x-vestiaire-signature',
+    }),
+    tradesy: () => ({
+      secret: getWebhookSecret('tradesy', 'TRADESY_WEBHOOK_SECRET'),
+      signatureHeader: 'x-tradesy-signature',
+    }),
+    etsy: () => ({
+      secret: getWebhookSecret('etsy', 'ETSY_WEBHOOK_SECRET'),
+      signatureHeader: 'x-etsy-signature',
+    }),
+    amazon: () => ({
+      secret: getWebhookSecret('amazon', 'AMAZON_WEBHOOK_SECRET'),
+      signatureHeader: 'x-amzn-signature',
+    }),
+    shopify: () => ({
+      secret: getWebhookSecret('shopify', 'SHOPIFY_WEBHOOK_SECRET'),
+      signatureHeader: 'x-shopify-hmac-sha256',
+    }),
+    custom: () => ({
+      secret: getWebhookSecret('custom', 'CUSTOM_WEBHOOK_SECRET'),
+      signatureHeader: 'x-signature',
+    }),
+  };
+
+  const configFactory = configs[marketplace];
+  if (!configFactory) {
+    throw new Error(`Unsupported marketplace: ${marketplace}`);
+  }
+
+  return configFactory();
+}
 
 /**
  * Verify webhook signature
@@ -127,7 +174,7 @@ async function getUserIdFromExternalListingId(
   marketplace: MarketplaceType,
   externalListingId: string
 ): Promise<string | null> {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: listing, error } = await supabase
     .from('listings')
@@ -237,7 +284,7 @@ async function saveSaleEvent(
   request: ProcessSaleEventRequest,
   userId: string
 ): Promise<ProcessSaleEventResponse> {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   try {
     // Generate event hash for deduplication
@@ -346,11 +393,17 @@ export async function handleWebhook(
   request: NextRequest
 ): Promise<NextResponse> {
   try {
-    // Get webhook config
-    const config = WEBHOOK_CONFIGS[marketplace];
-    if (!config || !config.secret) {
-      console.error(`Webhook config not found for marketplace: ${marketplace}`);
-      return NextResponse.json({ error: 'Webhook not configured' }, { status: 501 });
+    // Get webhook config with validation
+    let config: WebhookConfig;
+    try {
+      config = getWebhookConfig(marketplace);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error(`Webhook configuration error for ${marketplace}:`, errorMessage);
+      return NextResponse.json(
+        { error: 'Webhook not configured', details: errorMessage },
+        { status: 501 }
+      );
     }
 
     // Get request body and signature
@@ -375,10 +428,10 @@ export async function handleWebhook(
       return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
     }
 
-    // Parse payload
-    let parsedPayload: any;
+    // Parse payload with type safety
+    let parsedPayload: MarketplaceWebhookPayload;
     try {
-      parsedPayload = JSON.parse(payload);
+      parsedPayload = JSON.parse(payload) as MarketplaceWebhookPayload;
     } catch (error) {
       console.error('Invalid JSON payload:', error);
       return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
@@ -462,7 +515,16 @@ export async function validateWebhook(
       const token = searchParams.get('hub.verify_token');
       const challenge = searchParams.get('hub.challenge');
 
-      if (mode === 'subscribe' && token === process.env.FACEBOOK_WEBHOOK_VERIFY_TOKEN) {
+      const verifyToken = process.env.FACEBOOK_WEBHOOK_VERIFY_TOKEN;
+      if (!verifyToken) {
+        console.error('FACEBOOK_WEBHOOK_VERIFY_TOKEN not configured');
+        return NextResponse.json(
+          { error: 'Webhook verification not configured' },
+          { status: 501 }
+        );
+      }
+
+      if (mode === 'subscribe' && token === verifyToken) {
         console.log('Facebook webhook validated');
         return new NextResponse(challenge);
       }
@@ -480,45 +542,49 @@ export async function validateWebhook(
 }
 
 /**
- * Test webhook endpoint (for development)
+ * Test webhook endpoint (for development and testing only)
+ * This is a separate endpoint that should ONLY be accessible via the test API route
+ * NEVER use this in production webhook handlers
  */
 export async function testWebhook(
   marketplace: MarketplaceType,
-  testPayload: any
+  testPayload: MarketplaceWebhookPayload
 ): Promise<ProcessSaleEventResponse> {
+  // Strict environment check - only allow in development or test environments
+  if (process.env.NODE_ENV === 'production') {
+    console.error('Attempted to use testWebhook in production environment');
+    return {
+      success: false,
+      error: 'Test webhooks are not available in production',
+    };
+  }
+
   console.log(`Testing webhook for ${marketplace}:`, testPayload);
 
-  // This would simulate a webhook call for testing
-  const mockRequest = new Request('http://localhost:3000/api/webhooks/' + marketplace, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(testPayload),
-  });
+  // Process the test payload directly (no signature verification for tests)
+  let saleEventRequest: ProcessSaleEventRequest | null = null;
 
-  // In development, we can skip signature verification
-  if (process.env.NODE_ENV === 'development') {
-    // Process the payload directly
-    let saleEventRequest: ProcessSaleEventRequest | null = null;
+  switch (marketplace) {
+    case 'ebay':
+      saleEventRequest = await processEBayWebhook(testPayload as EBayWebhookPayload);
+      break;
+    case 'poshmark':
+      saleEventRequest = await processPoshmarkWebhook(testPayload as PoshmarkWebhookPayload);
+      break;
+    case 'facebook_marketplace':
+      saleEventRequest = await processFacebookWebhook(testPayload as FacebookWebhookPayload);
+      break;
+    default:
+      return {
+        success: false,
+        error: `Test webhook not implemented for ${marketplace}`,
+      };
+  }
 
-    switch (marketplace) {
-      case 'ebay':
-        saleEventRequest = await processEBayWebhook(testPayload as EBayWebhookPayload);
-        break;
-      case 'poshmark':
-        saleEventRequest = await processPoshmarkWebhook(testPayload as PoshmarkWebhookPayload);
-        break;
-      case 'facebook_marketplace':
-        saleEventRequest = await processFacebookWebhook(testPayload as FacebookWebhookPayload);
-        break;
-    }
-
-    if (saleEventRequest) {
-      // For testing, use a mock user ID
-      const mockUserId = testPayload.mockUserId || 'test-user-id';
-      return await saveSaleEvent(saleEventRequest, mockUserId);
-    }
+  if (saleEventRequest) {
+    // For testing, use a mock user ID
+    const mockUserId = (testPayload as Record<string, unknown>).mockUserId as string || 'test-user-id';
+    return await saveSaleEvent(saleEventRequest, mockUserId);
   }
 
   return {

@@ -10,6 +10,7 @@ import React, {
 import { AuthState, AuthUser } from "./types";
 import { AuthService } from "./auth-utils";
 import { Session } from "@supabase/supabase-js";
+import { toAuthUser } from "@/lib/utils/type-guards";
 
 const AuthContext = createContext<AuthState | undefined>(undefined);
 
@@ -30,9 +31,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const user = await AuthService.getCurrentUser();
 
         setSession(session);
-        setUser(user as AuthUser);
+        // SECURITY: Use type guard to validate user object before setting state
+        const validatedUser = toAuthUser(user);
+        setUser(validatedUser);
       } catch (error) {
         console.error("Error getting initial session:", error);
+        // SECURITY: Clear session on error to prevent invalid state
+        setSession(null);
+        setUser(null);
       } finally {
         setLoading(false);
       }
@@ -44,9 +50,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const {
       data: { subscription },
     } = AuthService.onAuthStateChange(async (event, session) => {
-      const typedSession = session as Session | null;
-      setSession(typedSession);
-      setUser((typedSession?.user as AuthUser) || null);
+      // SECURITY: Validate session and user with type guards
+      setSession(session as Session | null);
+
+      // Use type guard to safely convert user
+      const validatedUser = toAuthUser((session as Session | null)?.user);
+      setUser(validatedUser);
       setLoading(false);
     });
 

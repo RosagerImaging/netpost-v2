@@ -22,15 +22,18 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
   },
 
-  // For deployment readiness - avoid static generation issues
+  // TypeScript configuration - STRICT MODE for production safety
   typescript: {
-    // Ignore TypeScript errors during build to allow deployment
-    ignoreBuildErrors: true,
+    // SECURITY: Never ignore TypeScript errors in production
+    // This was a temporary workaround that must be removed
+    // All type errors should be fixed before deployment
+    ignoreBuildErrors: false,
   },
 
   eslint: {
-    // Allow build to continue with ESLint warnings
-    ignoreDuringBuilds: true,
+    // SECURITY: Enforce linting during builds
+    // ESLint catches security issues and code quality problems
+    ignoreDuringBuilds: false,
   },
 
   // Disable strict mode to avoid React version conflicts

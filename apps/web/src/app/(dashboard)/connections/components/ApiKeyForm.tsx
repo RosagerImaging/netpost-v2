@@ -40,7 +40,7 @@ export function ApiKeyForm({ marketplace, onSuccess, onError }: ApiKeyFormProps)
   const [isValidating, setIsValidating] = useState(false);
 
   const marketplaceInfo = getMarketplaceDisplayInfo(marketplace);
-  const marketplaceConfig = getMarketplaceConfig(marketplace);
+  const _marketplaceConfig = getMarketplaceConfig(marketplace);
 
   const storeCredentials = useStoreApiKeyCredentials();
 

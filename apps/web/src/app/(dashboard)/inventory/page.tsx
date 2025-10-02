@@ -21,8 +21,8 @@ import {
 import {
   Package,
   Plus,
-  Search,
-  Filter,
+  
+  
   MoreHorizontal,
   Edit,
   Trash2,

@@ -8,7 +8,6 @@ import { useAuth } from '../../../lib/auth/auth-context';
 import {
   Plus,
   Search,
-  ExternalLink,
   RefreshCw,
   TrendingUp,
   Eye,
@@ -17,7 +16,8 @@ import {
   XCircle,
   AlertCircle,
   Pause,
-  Image
+  Image,
+  ExternalLink
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import { listingJobQueue, type ListingJob, type JobStats } from '@/lib/services/listing-job-queue';

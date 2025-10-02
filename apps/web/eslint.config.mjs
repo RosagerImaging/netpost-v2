@@ -22,12 +22,21 @@ const eslintConfig = [
   },
   {
     rules: {
-      // Downgrade strict rules to warnings for builds
+      // Enforce strict type safety
+      // NOTE: Temporarily set to warn - Phase 4 cleanup in progress
       "@typescript-eslint/no-explicit-any": "warn",
-      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
+      "prefer-const": "warn",
+      // Keep some rules as warnings for gradual improvement
       "react/no-unescaped-entities": "warn",
       "@typescript-eslint/no-empty-object-type": "warn",
-      "prefer-const": "warn",
       "@next/next/no-img-element": "warn",
       "react-hooks/exhaustive-deps": "warn",
       // Disable problematic rules that block builds

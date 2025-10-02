@@ -15,7 +15,6 @@ import {
   Search,
   TrendingUp,
   DollarSign,
-  Users,
   BarChart3,
 } from "lucide-react";
 import { useRouter } from "next/navigation";

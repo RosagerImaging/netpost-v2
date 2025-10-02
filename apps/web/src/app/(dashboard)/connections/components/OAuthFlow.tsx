@@ -6,7 +6,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ArrowTopRightOnSquareIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { useInitiateOAuth, useCompleteOAuth } from '@/lib/hooks/useMarketplaceConnections';
 import { getMarketplaceDisplayInfo } from '@/lib/marketplaces';
@@ -31,6 +31,33 @@ export function OAuthFlow({ marketplace, onSuccess, onError }: OAuthFlowProps) {
   const initiateOAuth = useInitiateOAuth();
   const completeOAuth = useCompleteOAuth();
 
+  // Handle OAuth callback completion - defined before useEffect to avoid hoisting issues
+  const handleCompleteOAuth = useCallback(async (code: string, state: string) => {
+    if (!connectionId) {
+      onError('No connection ID available');
+      return;
+    }
+
+    try {
+      const result = await completeOAuth.mutateAsync({
+        connectionId,
+        code,
+        state,
+      });
+
+      if (!result.success || !result.data) {
+        throw new Error(result.error || 'Failed to complete OAuth');
+      }
+
+      setCurrentStep('completed');
+      onSuccess(result.data);
+    } catch (error) {
+      console.error('OAuth completion error:', error);
+      onError(error instanceof Error ? error.message : 'Failed to complete authentication');
+      setCurrentStep('ready');
+    }
+  }, [connectionId, completeOAuth, onError, onSuccess]);
+
   // Listen for OAuth callback from popup window
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -54,7 +81,7 @@ export function OAuthFlow({ marketplace, onSuccess, onError }: OAuthFlowProps) {
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [connectionId, onError]);
+  }, [connectionId, onError, handleCompleteOAuth]);
 
   const handleInitiateOAuth = async () => {
     setCurrentStep('initiating');
@@ -106,32 +133,6 @@ export function OAuthFlow({ marketplace, onSuccess, onError }: OAuthFlowProps) {
         }
       }
     }, 1000);
-  };
-
-  const handleCompleteOAuth = async (code: string, state: string) => {
-    if (!connectionId) {
-      onError('No connection ID available');
-      return;
-    }
-
-    try {
-      const result = await completeOAuth.mutateAsync({
-        connectionId,
-        code,
-        state,
-      });
-
-      if (!result.success || !result.data) {
-        throw new Error(result.error || 'Failed to complete OAuth');
-      }
-
-      setCurrentStep('completed');
-      onSuccess(result.data);
-    } catch (error) {
-      console.error('OAuth completion error:', error);
-      onError(error instanceof Error ? error.message : 'Failed to complete authentication');
-      setCurrentStep('ready');
-    }
   };
 
   const isLoading = ['initiating', 'completing'].includes(currentStep);

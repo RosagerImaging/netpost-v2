@@ -7,6 +7,7 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { createAdapter } from '@/lib/marketplaces';
+import { retryWithBackoff } from '@/lib/utils/concurrency';
 import {
   MarketplaceType,
   SaleEvent,
@@ -16,6 +17,21 @@ import {
 } from '@netpost/shared-types';
 import type { ListingRecord } from '@netpost/shared-types';
 import crypto from 'crypto';
+
+// Circuit breaker state for each marketplace
+interface CircuitBreakerState {
+  failures: number;
+  lastFailureTime: number;
+  state: 'closed' | 'open' | 'half-open';
+}
+
+const circuitBreakers = new Map<string, CircuitBreakerState>();
+
+const CIRCUIT_BREAKER_CONFIG = {
+  failureThreshold: 5, // Open circuit after 5 consecutive failures
+  resetTimeoutMs: 60000, // Try again after 1 minute
+  halfOpenMaxAttempts: 3, // Allow 3 attempts in half-open state
+};
 
 interface PollingConfig {
   enabled: boolean;
@@ -52,6 +68,68 @@ interface PollingState {
 }
 
 /**
+ * Get or initialize circuit breaker state
+ */
+function getCircuitBreakerState(key: string): CircuitBreakerState {
+  if (!circuitBreakers.has(key)) {
+    circuitBreakers.set(key, {
+      failures: 0,
+      lastFailureTime: 0,
+      state: 'closed',
+    });
+  }
+  return circuitBreakers.get(key)!;
+}
+
+/**
+ * Check if circuit breaker allows request
+ */
+function canExecute(key: string): boolean {
+  const breaker = getCircuitBreakerState(key);
+  const now = Date.now();
+
+  if (breaker.state === 'closed') {
+    return true;
+  }
+
+  if (breaker.state === 'open') {
+    // Check if enough time has passed to try again
+    if (now - breaker.lastFailureTime >= CIRCUIT_BREAKER_CONFIG.resetTimeoutMs) {
+      breaker.state = 'half-open';
+      breaker.failures = 0;
+      return true;
+    }
+    return false;
+  }
+
+  // half-open state - allow limited attempts
+  return breaker.failures < CIRCUIT_BREAKER_CONFIG.halfOpenMaxAttempts;
+}
+
+/**
+ * Record success for circuit breaker
+ */
+function recordSuccess(key: string): void {
+  const breaker = getCircuitBreakerState(key);
+  breaker.failures = 0;
+  breaker.state = 'closed';
+}
+
+/**
+ * Record failure for circuit breaker
+ */
+function recordFailure(key: string): void {
+  const breaker = getCircuitBreakerState(key);
+  breaker.failures++;
+  breaker.lastFailureTime = Date.now();
+
+  if (breaker.failures >= CIRCUIT_BREAKER_CONFIG.failureThreshold) {
+    breaker.state = 'open';
+    console.warn(`Circuit breaker opened for ${key} after ${breaker.failures} failures`);
+  }
+}
+
+/**
  * Generate event hash for deduplication (consistent with webhook handler)
  */
 function generateEventHash(
@@ -82,7 +160,7 @@ async function saveSaleEventFromPolling(
   inventoryItemId?: string,
   listingId?: string
 ): Promise<ProcessSaleEventResponse> {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   try {
     // Skip processing for custom marketplaces as they don't have standardized polling
@@ -271,7 +349,7 @@ async function pollUserListings(
   salesFound: number;
   error?: string;
 }> {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   try {
     console.log(`Polling ${marketplace} listings for user ${userId}`);
@@ -406,6 +484,7 @@ async function pollUserListings(
 
 /**
  * Poll all users for a specific marketplace
+ * Uses circuit breaker and exponential backoff for resilience
  */
 async function pollMarketplace(marketplace: MarketplaceType): Promise<{
   success: boolean;
@@ -423,7 +502,23 @@ async function pollMarketplace(marketplace: MarketplaceType): Promise<{
     };
   }
 
-  const supabase = createClient();
+  // Check circuit breaker
+  const circuitKey = `polling:${marketplace}`;
+  if (!canExecute(circuitKey)) {
+    const breaker = getCircuitBreakerState(circuitKey);
+    console.warn(
+      `Circuit breaker is ${breaker.state} for ${marketplace}. ` +
+      `Skipping poll. Will retry after ${CIRCUIT_BREAKER_CONFIG.resetTimeoutMs}ms`
+    );
+    return {
+      success: false,
+      usersPolled: 0,
+      totalSalesFound: 0,
+      error: `Circuit breaker ${breaker.state}`,
+    };
+  }
+
+  const supabase = await createClient();
 
   try {
     // Get all users with active connections to this marketplace
@@ -435,6 +530,7 @@ async function pollMarketplace(marketplace: MarketplaceType): Promise<{
       .is('deleted_at', null);
 
     if (!connections || connections.length === 0) {
+      recordSuccess(circuitKey);
       return {
         success: true,
         usersPolled: 0,
@@ -447,18 +543,40 @@ async function pollMarketplace(marketplace: MarketplaceType): Promise<{
 
     let totalSalesFound = 0;
     let usersPolled = 0;
+    let consecutiveFailures = 0;
 
-    // Poll each user
+    // Poll each user with exponential backoff on failures
     for (const connection of connections) {
       try {
-        const result = await pollUserListings(connection.user_id, marketplace);
+        // Use retry with exponential backoff for each user poll
+        const result = await retryWithBackoff(
+          () => pollUserListings(connection.user_id, marketplace),
+          {
+            maxRetries: 3,
+            initialDelayMs: 1000,
+            maxDelayMs: 10000,
+            backoffMultiplier: 2,
+            onRetry: (attempt, error) => {
+              console.warn(
+                `Retry ${attempt}/3 for user ${connection.user_id} on ${marketplace}: ${error.message}`
+              );
+            },
+          }
+        );
+
         if (result.success) {
           totalSalesFound += result.salesFound;
+          consecutiveFailures = 0; // Reset on success
+        } else {
+          consecutiveFailures++;
         }
         usersPolled++;
 
-        // Small delay between users to avoid rate limits
-        await new Promise(resolve => setTimeout(resolve, 500));
+        // Adaptive delay based on consecutive failures
+        const delay = consecutiveFailures > 0
+          ? Math.min(500 * Math.pow(2, consecutiveFailures), 5000)
+          : 500;
+        await new Promise(resolve => setTimeout(resolve, delay));
 
       } catch (error) {
         console.error(`Error polling user ${connection.user_id}:`, error);
@@ -468,6 +586,9 @@ async function pollMarketplace(marketplace: MarketplaceType): Promise<{
 
     console.log(`Marketplace polling complete: ${marketplace}, ${usersPolled} users, ${totalSalesFound} sales`);
 
+    // Record success in circuit breaker
+    recordSuccess(circuitKey);
+
     return {
       success: true,
       usersPolled,
@@ -476,6 +597,10 @@ async function pollMarketplace(marketplace: MarketplaceType): Promise<{
 
   } catch (error) {
     console.error(`Error polling marketplace ${marketplace}:`, error);
+
+    // Record failure in circuit breaker
+    recordFailure(circuitKey);
+
     return {
       success: false,
       usersPolled: 0,

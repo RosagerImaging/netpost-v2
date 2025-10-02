@@ -65,8 +65,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         }
 
         // If there's an onClick handler, call it
+        // Create a synthetic mouse event from keyboard event for onClick compatibility
         if (onClick && !props.disabled) {
-          onClick(event as any); // Cast since KeyboardEvent and MouseEvent are compatible for our use
+          const syntheticEvent = event as unknown as React.MouseEvent<HTMLButtonElement>;
+          onClick(syntheticEvent);
         }
       }
 

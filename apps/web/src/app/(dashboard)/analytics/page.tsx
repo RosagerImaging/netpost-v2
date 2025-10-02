@@ -4,20 +4,15 @@ import React, { useMemo, useState } from "react";
 import {
   BarChart3,
   TrendingUp,
-  TrendingDown,
   DollarSign,
   Package,
   ShoppingCart,
-  Eye,
   Users,
-  Calendar,
-  Filter,
   Download,
   RefreshCw,
   ArrowUpRight,
   ArrowDownRight,
   Target,
-  Clock,
   Award,
   Zap,
   AlertCircle
@@ -36,10 +31,6 @@ import {
   SelectTrigger,
   SelectValue,
   Progress,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
 } from "@netpost/ui";
 import { cn } from "@netpost/ui";
 import { useAuth } from "../../../lib/auth/auth-context";
@@ -125,7 +116,7 @@ const topCategories = [
 export default function AnalyticsPage() {
   const { user } = useAuth();
   const [timeRange, setTimeRange] = useState("30d");
-  const [selectedPlatform, setSelectedPlatform] = useState("all");
+  const [_selectedPlatform, setSelectedPlatform] = useState("all");
 
   // Mock subscription data - in real app, this would come from API
   const subscriptionData = {
@@ -302,7 +293,7 @@ export default function AnalyticsPage() {
 
                 {/* Simple bar chart visualization */}
                 <div className="space-y-3">
-                  {revenueData.map((data, index) => (
+                  {revenueData.map((data) => (
                     <div key={data.month} className="space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium">{data.month}</span>
@@ -336,7 +327,7 @@ export default function AnalyticsPage() {
               <CardDescription>Revenue breakdown by category</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {topCategories.map((category, index) => (
+              {topCategories.map((category, _index) => (
                 <div key={category.name} className="space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">{category.name}</span>
@@ -522,7 +513,6 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
-  </DashboardLayout>
+    </DashboardLayout>
   );
 }

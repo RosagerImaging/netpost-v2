@@ -87,7 +87,7 @@ export function DelistingJobsTable({
   const [marketplaceFilter, setMarketplaceFilter] = useState('all')
   const [triggerTypeFilter, setTriggerTypeFilter] = useState('all')
   const [selectedJob, setSelectedJob] = useState<DelistingJob | null>(null)
-  const [showConfirmDialog, setShowConfirmDialog] = useState(false)
+  const [_showConfirmDialog, _setShowConfirmDialog] = useState(false)
   const [actionInProgress, setActionInProgress] = useState<string | null>(null)
 
   // Filter and search jobs

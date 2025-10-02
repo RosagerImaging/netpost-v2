@@ -6,6 +6,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { MarketplaceConnectionService } from '../services/marketplace-connection-service';
+import { batchExecute } from '../utils/concurrency';
 import type {
   MarketplaceConnectionSafe,
   ConnectionFilters,
@@ -284,6 +285,7 @@ export function useConnectionHealthMonitoring() {
   const queryClient = useQueryClient();
 
   // Perform health checks every 5 minutes for active connections
+  // Uses concurrency limit to prevent API overload
   const performHealthChecks = useMutation({
     mutationFn: async () => {
       const connectionsResult = await MarketplaceConnectionService.getConnections({
@@ -291,14 +293,28 @@ export function useConnectionHealthMonitoring() {
       });
 
       if (!connectionsResult.success || !connectionsResult.data?.connections) {
-        return;
+        return { checked: 0, failed: 0 };
       }
 
-      const healthCheckPromises = connectionsResult.data.connections.map(connection =>
-        MarketplaceConnectionService.performHealthCheck(connection.id)
+      const connections = connectionsResult.data.connections;
+      console.log(`Performing health checks for ${connections.length} connections with concurrency limit of 5`);
+
+      // Execute health checks with concurrency limit of 5
+      const results = await batchExecute(
+        connections,
+        (connection) => MarketplaceConnectionService.performHealthCheck(connection.id),
+        {
+          concurrency: 5,
+          onProgress: (completed, total) => {
+            console.log(`Health check progress: ${completed}/${total}`);
+          },
+        }
       );
 
-      await Promise.allSettled(healthCheckPromises);
+      const failed = results.filter(r => !r?.success).length;
+      console.log(`Health checks complete: ${connections.length} checked, ${failed} failed`);
+
+      return { checked: connections.length, failed };
     },
     onSuccess: () => {
       // Invalidate all connection queries after health checks

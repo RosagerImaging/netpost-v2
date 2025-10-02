@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { useGsap } from "../../hooks/use-gsap";
 
 interface StackedAnimatedHeadlineProps {
@@ -18,7 +18,7 @@ export function StackedAnimatedHeadline({
   const { gsap, isLoaded, error } = useGsap();
 
   // First, let's render the static structure to ensure visibility
-  const renderStaticStructure = () => {
+  const renderStaticStructure = useCallback(() => {
     if (!containerRef.current) return;
 
     const container = containerRef.current;
@@ -32,7 +32,7 @@ export function StackedAnimatedHeadline({
       lineDiv.textContent = line;
       container.appendChild(lineDiv);
     });
-  };
+  }, [lines, gradientLine]);
 
   useEffect(() => {
     // First render static structure to ensure text is visible
@@ -131,7 +131,7 @@ export function StackedAnimatedHeadline({
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [lines, gradientLine, gsap, isLoaded, error]);
+  }, [lines, gradientLine, gsap, isLoaded, error, renderStaticStructure]);
 
   return (
     <div

@@ -456,8 +456,7 @@ export default function Home() {
             <h1 className="hero-headline overflow-hidden">
               <StackedAnimatedHeadline
                 lines={["AI DRIVEN", "CROSSLISTING"]}
-                gradientLine={-1}
-                lineClassNames={["text-gradient-primary glow", "text-gradient-accent"]}
+                gradientLine={0}
                 className="hero-headline"
               />
             </h1>

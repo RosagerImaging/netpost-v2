@@ -32,9 +32,6 @@ import {
   Settings,
   Play,
   RefreshCw,
-  Filter,
-  Search,
-  Download
 } from 'lucide-react';
 
 import { DelistingJobsTable } from './components/DelistingJobsTable';

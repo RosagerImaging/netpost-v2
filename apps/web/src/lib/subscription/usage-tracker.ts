@@ -453,19 +453,20 @@ export class UsageTracker {
 
   /**
    * Map database usage metric data to TypeScript interface
+   * SECURITY: Type-safe mapping from database records
    */
-  private static mapUsageMetricData(data: any): UsageMetric {
+  private static mapUsageMetricData(data: Record<string, unknown>): UsageMetric {
     return {
-      id: data.id,
-      userId: data.user_id,
-      subscriptionId: data.subscription_id,
+      id: data.id as string,
+      userId: data.user_id as string,
+      subscriptionId: data.subscription_id as string | undefined,
       metricType: data.metric_type as MetricType,
-      metricValue: data.metric_value,
-      periodStart: new Date(data.period_start),
-      periodEnd: new Date(data.period_end),
-      isDailyAggregate: data.is_daily_aggregate,
-      isMonthlyAggregate: data.is_monthly_aggregate,
-      recordedAt: new Date(data.recorded_at),
+      metricValue: data.metric_value as number,
+      periodStart: new Date(data.period_start as string),
+      periodEnd: new Date(data.period_end as string),
+      isDailyAggregate: data.is_daily_aggregate as boolean,
+      isMonthlyAggregate: data.is_monthly_aggregate as boolean,
+      recordedAt: new Date(data.recorded_at as string),
     };
   }
 }

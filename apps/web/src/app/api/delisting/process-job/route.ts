@@ -1,25 +1,30 @@
 /**
  * API Route for Processing Delisting Jobs
  * Handles manual triggering of delisting job processing
+ *
+ * SECURITY: Validates all input parameters before processing
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { DelistingEngine } from '@/lib/delisting/delisting-engine';
+import { z } from 'zod';
+
+const processJobSchema = z.object({
+  job_id: z.string().uuid('Invalid job ID format'),
+});
 
 /**
  * POST /api/delisting/process-job - Process a specific delisting job
  */
 export async function POST(request: NextRequest) {
   try {
+    // SECURITY: Validate request body
     const body = await request.json();
-    const { job_id } = body;
-
-    if (!job_id) {
-      return NextResponse.json({ error: 'job_id is required' }, { status: 400 });
-    }
+    const validatedData = processJobSchema.parse(body);
+    const { job_id } = validatedData;
 
     // Get current user for authorization
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -71,7 +76,7 @@ export async function POST(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // This endpoint is for system/admin use to process pending jobs
     // In production, this would be called by a background job processor
@@ -83,6 +88,16 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     console.error('Error processing pending jobs:', error);
+
+    // SECURITY: Handle validation errors separately
+    if (error instanceof z.ZodError) {
+      const errorMessage = error.issues.map(e => `${e.path.join('.')}: ${e.message}`).join(', ');
+      return NextResponse.json(
+        { error: `Validation failed: ${errorMessage}` },
+        { status: 400 }
+      );
+    }
+
     return NextResponse.json({
       error: 'Internal server error',
       details: error instanceof Error ? error.message : 'Unknown error',

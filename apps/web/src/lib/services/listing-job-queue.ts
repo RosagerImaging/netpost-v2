@@ -536,9 +536,20 @@ export class ListingJobQueue {
 // Export singleton instance
 export const listingJobQueue = ListingJobQueue.getInstance();
 
-// Auto-cleanup old jobs daily
+// Auto-cleanup old jobs daily (only in browser environment)
+// Store interval ID for potential cleanup
+let cleanupIntervalId: NodeJS.Timeout | null = null;
+
 if (typeof window !== 'undefined') {
-  setInterval(() => {
+  cleanupIntervalId = setInterval(() => {
     listingJobQueue.cleanupOldJobs();
   }, 24 * 60 * 60 * 1000); // 24 hours
+}
+
+// Export cleanup function for graceful shutdown
+export function stopAutoCleanup(): void {
+  if (cleanupIntervalId) {
+    clearInterval(cleanupIntervalId);
+    cleanupIntervalId = null;
+  }
 }

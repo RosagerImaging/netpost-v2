@@ -56,7 +56,7 @@ export function ManualDelistingPanel({ onJobCreated }: ManualDelistingPanelProps
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [marketplaceFilter, setMarketplaceFilter] = useState('all');
-  const [loading, setLoading] = useState(false);
+  const [_loading, _setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [delistingInProgress, setDelistingInProgress] = useState(false);

@@ -19,7 +19,7 @@ import {
   Activity,
   User,
   Bot,
-  Calendar,
+  
   ExternalLink,
   Settings
 } from 'lucide-react';
@@ -95,7 +95,7 @@ export function RecentActivity() {
     }
   };
 
-  const getActivityColor = (type: string, status?: string) => {
+  const getActivityColor = (type: string, _status?: string) => {
     if (type === 'delisting_job_completed') return 'text-green-600';
     if (type === 'delisting_job_failed') return 'text-red-600';
     if (type === 'delisting_job_created') return 'text-blue-600';

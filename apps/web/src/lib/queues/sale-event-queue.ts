@@ -26,6 +26,11 @@ const QUEUE_CONFIG: QueueConfig = {
   processingIntervalMs: 10000, // Process every 10 seconds
 };
 
+// Singleton state for queue processor
+let queueProcessorRunning = false;
+let processingLoopTimeout: NodeJS.Timeout | null = null;
+let cleanupLoopTimeout: NodeJS.Timeout | null = null;
+
 interface ProcessingStats {
   processed: number;
   failed: number;
@@ -47,7 +52,7 @@ async function processSaleEvent(saleEventId: string): Promise<{
   error?: string;
   retryable?: boolean;
 }> {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   try {
     console.log(`Processing sale event: ${saleEventId}`);
@@ -223,7 +228,7 @@ async function verifySaleEvent(saleEvent: SaleEvent): Promise<{
  * Get unprocessed sale events from the queue
  */
 async function getUnprocessedSaleEvents(limit: number = QUEUE_CONFIG.batchSize): Promise<SaleEvent[]> {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: events, error } = await supabase
     .from('sale_events')
@@ -346,7 +351,7 @@ export async function cleanupProcessedEvents(olderThanDays: number = 30): Promis
   deletedCount: number;
   error?: string;
 }> {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   try {
     const cutoffDate = new Date();
@@ -398,7 +403,7 @@ export async function getQueueStats(): Promise<{
     errors: number;
   }>;
 }> {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   try {
     // Get unprocessed events count
@@ -476,7 +481,7 @@ export async function getQueueStats(): Promise<{
  * Manual retry of failed sale events
  */
 export async function retryFailedEvents(maxRetries: number = 10): Promise<ProcessingStats> {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   try {
     // Get failed events that haven't exceeded max retry attempts
@@ -531,11 +536,25 @@ export async function retryFailedEvents(maxRetries: number = 10): Promise<Proces
 
 /**
  * Start continuous queue processing (for background jobs)
+ * Implements singleton pattern to prevent multiple instances
  */
 export function startQueueProcessor(): void {
+  // Check if already running
+  if (queueProcessorRunning) {
+    console.warn('Queue processor is already running. Ignoring duplicate start request.');
+    return;
+  }
+
   console.log('Starting continuous sale event queue processor');
+  queueProcessorRunning = true;
 
   const processLoop = async () => {
+    // Check if we should still be running
+    if (!queueProcessorRunning) {
+      console.log('Queue processor stopped');
+      return;
+    }
+
     try {
       await processSaleEventQueue();
     } catch (error) {
@@ -543,7 +562,7 @@ export function startQueueProcessor(): void {
     }
 
     // Schedule next processing
-    setTimeout(processLoop, QUEUE_CONFIG.processingIntervalMs);
+    processingLoopTimeout = setTimeout(processLoop, QUEUE_CONFIG.processingIntervalMs);
   };
 
   // Start the processing loop
@@ -551,6 +570,12 @@ export function startQueueProcessor(): void {
 
   // Also start cleanup process (once daily)
   const cleanupLoop = async () => {
+    // Check if we should still be running
+    if (!queueProcessorRunning) {
+      console.log('Cleanup loop stopped');
+      return;
+    }
+
     try {
       await cleanupProcessedEvents();
     } catch (error) {
@@ -558,9 +583,41 @@ export function startQueueProcessor(): void {
     }
 
     // Schedule next cleanup (24 hours)
-    setTimeout(cleanupLoop, 24 * 60 * 60 * 1000);
+    cleanupLoopTimeout = setTimeout(cleanupLoop, 24 * 60 * 60 * 1000);
   };
 
   // Start cleanup after 1 hour
-  setTimeout(cleanupLoop, 60 * 60 * 1000);
+  cleanupLoopTimeout = setTimeout(cleanupLoop, 60 * 60 * 1000);
+}
+
+/**
+ * Stop the queue processor
+ * Useful for graceful shutdown or testing
+ */
+export function stopQueueProcessor(): void {
+  if (!queueProcessorRunning) {
+    console.warn('Queue processor is not running');
+    return;
+  }
+
+  console.log('Stopping queue processor');
+  queueProcessorRunning = false;
+
+  // Clear any pending timeouts
+  if (processingLoopTimeout) {
+    clearTimeout(processingLoopTimeout);
+    processingLoopTimeout = null;
+  }
+
+  if (cleanupLoopTimeout) {
+    clearTimeout(cleanupLoopTimeout);
+    cleanupLoopTimeout = null;
+  }
+}
+
+/**
+ * Check if queue processor is running
+ */
+export function isQueueProcessorRunning(): boolean {
+  return queueProcessorRunning;
 }

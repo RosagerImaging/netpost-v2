@@ -93,7 +93,7 @@ export async function GET() {
   }
 
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // Get recent sale events
     const { data: recentEvents } = await supabase
@@ -136,7 +136,7 @@ export async function GET() {
  * Create a test sale event for development
  */
 async function createTestSaleEvent(params: any) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   try {
     const {
