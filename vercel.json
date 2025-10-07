@@ -29,14 +29,6 @@
       "SKIP_STATIC_GENERATION": "1"
     }
   },
-  "functions": {
-    "apps/web/src/app/api/**/*.ts": {
-      "maxDuration": 30
-    },
-    "apps/web/.next/server/app/**/*.js": {
-      "maxDuration": 30
-    }
-  },
   "rewrites": [
     {
       "source": "/api/:path*",
