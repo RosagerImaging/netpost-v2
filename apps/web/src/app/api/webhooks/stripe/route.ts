@@ -16,7 +16,7 @@ const webhookHandlers = {
   'customer.subscription.created': handleSubscriptionCreated,
   'customer.subscription.updated': handleSubscriptionUpdated,
   'customer.subscription.deleted': handleSubscriptionDeleted,
-  'invoice.payment_succeeded': handlePaymentSucceeded,
+  'invoice.paid': handlePaymentSucceeded,
   'invoice.payment_failed': handlePaymentFailed,
   'customer.created': handleCustomerCreated,
   'customer.updated': handleCustomerUpdated,
@@ -114,9 +114,9 @@ async function handleSubscriptionCreated(event: Stripe.Event) {
       tier,
       stripeSubscriptionId: subscription.id,
       stripeCustomerId: subscription.customer as string,
-      status: subscription.status as any,
-      currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
-      currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
+      status: subscription.status as import('@/lib/subscription/subscription-service').SubscriptionStatus,
+      currentPeriodStart: subscription.current_period_start ? new Date(subscription.current_period_start * 1000) : undefined,
+      currentPeriodEnd: subscription.current_period_end ? new Date(subscription.current_period_end * 1000) : undefined,
       trialStart: subscription.trial_start ? new Date(subscription.trial_start * 1000) : null,
       trialEnd: subscription.trial_end ? new Date(subscription.trial_end * 1000) : null,
     });
@@ -140,10 +140,10 @@ async function handleSubscriptionUpdated(event: Stripe.Event) {
 
     await SubscriptionService.updateSubscriptionFromStripe({
       stripeSubscriptionId: subscription.id,
-      status: subscription.status as any,
+      status: subscription.status as import('@/lib/subscription/subscription-service').SubscriptionStatus,
       tier: tier || undefined,
-      currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
-      currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
+      currentPeriodStart: subscription.current_period_start ? new Date(subscription.current_period_start * 1000) : undefined,
+      currentPeriodEnd: subscription.current_period_end ? new Date(subscription.current_period_end * 1000) : undefined,
       cancelAt: subscription.cancel_at ? new Date(subscription.cancel_at * 1000) : null,
       canceledAt: subscription.canceled_at ? new Date(subscription.canceled_at * 1000) : null,
     });
@@ -182,27 +182,28 @@ async function handlePaymentSucceeded(event: Stripe.Event) {
   const invoice = event.data.object as Stripe.Invoice;
 
   try {
-    if ((invoice as any).subscription) {
+    const subId = typeof invoice.subscription === 'string' ? invoice.subscription : invoice.subscription?.id;
+    if (subId) {
       // Record successful payment
       await SubscriptionService.recordPayment({
-        stripeSubscriptionId: ((invoice as any).subscription as string) || '',
+        stripeSubscriptionId: subId,
         stripeInvoiceId: invoice.id || '',
         amount: invoice.amount_paid,
         currency: invoice.currency,
-        paidAt: new Date(invoice.status_transitions.paid_at! * 1000),
+        paidAt: invoice.status_transitions.paid_at ? new Date(invoice.status_transitions.paid_at * 1000) : new Date(),
         success: true,
       });
 
       // Update subscription status if needed
       if (invoice.billing_reason === 'subscription_cycle') {
         await SubscriptionService.updateSubscriptionFromStripe({
-          stripeSubscriptionId: ((invoice as any).subscription as string) || '',
+          stripeSubscriptionId: subId,
           status: 'active',
           lastPaymentDate: new Date(invoice.status_transitions.paid_at! * 1000),
         });
       }
 
-      console.log(`✅ Recorded successful payment for subscription ${(invoice as any).subscription}`);
+      console.log(`✅ Recorded successful payment for subscription ${subId}`);
     }
   } catch (error) {
     console.error('❌ Failed to handle payment succeeded:', error);
@@ -217,10 +218,11 @@ async function handlePaymentFailed(event: Stripe.Event) {
   const invoice = event.data.object as Stripe.Invoice;
 
   try {
-    if ((invoice as any).subscription) {
+    const subId = typeof invoice.subscription === 'string' ? invoice.subscription : invoice.subscription?.id;
+    if (subId) {
       // Record failed payment
       await SubscriptionService.recordPayment({
-        stripeSubscriptionId: ((invoice as any).subscription as string) || '',
+        stripeSubscriptionId: subId,
         stripeInvoiceId: invoice.id || '',
         amount: invoice.amount_due,
         currency: invoice.currency,
@@ -231,14 +233,14 @@ async function handlePaymentFailed(event: Stripe.Event) {
 
       // Update subscription status
       await SubscriptionService.updateSubscriptionFromStripe({
-        stripeSubscriptionId: ((invoice as any).subscription as string) || '',
+        stripeSubscriptionId: subId,
         status: 'past_due',
       });
 
       // Send notification about failed payment
-      await SubscriptionService.notifyPaymentFailed((invoice as any).subscription as string);
+      await SubscriptionService.notifyPaymentFailed(subId);
 
-      console.log(`✅ Recorded failed payment for subscription ${(invoice as any).subscription}`);
+      console.log(`✅ Recorded failed payment for subscription ${subId}`);
     }
   } catch (error) {
     console.error('❌ Failed to handle payment failed:', error);

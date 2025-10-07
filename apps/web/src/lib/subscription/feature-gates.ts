@@ -7,7 +7,7 @@
 
 import { SubscriptionService, type UserSubscription } from './subscription-service';
 import { SUBSCRIPTION_TIERS, type SubscriptionTier } from './stripe-service';
-import { UsageTracker } from './usage-tracker';
+
 
 // Feature flags enum
 export enum Feature {
@@ -247,13 +247,13 @@ export class FeatureGates {
     userId: string,
     features: Feature[]
   ): Promise<Record<Feature, FeatureAccess>> {
-    const results: Record<Feature, FeatureAccess> = {} as any;
+    const results: Partial<Record<Feature, FeatureAccess>> = {};
 
     for (const feature of features) {
       results[feature] = await this.hasFeatureAccess(userId, feature);
     }
 
-    return results;
+    return results as Record<Feature, FeatureAccess>;
   }
 
   /**

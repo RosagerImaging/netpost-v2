@@ -5,7 +5,7 @@ import { PlusIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 interface EmptyStateProps {
   searchQuery?: string;
-  filters?: Record<string, any>;
+  filters?: Record<string, unknown>;
 }
 
 export function EmptyState({ searchQuery, filters }: EmptyStateProps) {

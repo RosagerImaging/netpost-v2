@@ -3,7 +3,7 @@
  * Handles email, in-app, and SMS notifications for delisting events
  */
 import { createClient } from '@/lib/supabase/client';
-import { DelistingJob, DelistingJobStatus, MarketplaceType } from '@netpost/shared-types';
+import { DelistingJobStatus } from '@netpost/shared-types';
 
 export interface NotificationPreferences {
   notification_email: boolean;
@@ -65,7 +65,7 @@ export class NotificationService {
       const template = this.getNotificationTemplate(notificationType, context);
 
       // Send notifications based on preferences
-      const promises: Promise<any>[] = [];
+      const promises: Promise<void>[] = [];// each sender returns Promise<void>
 
       if (preferences.notification_email) {
         promises.push(this.sendEmailNotification(context.userId, template, context));
@@ -213,7 +213,7 @@ export class NotificationService {
   private async sendEmailNotification(
     userId: string,
     template: NotificationTemplate,
-    context: NotificationContext
+    _context: NotificationContext
   ): Promise<void> {
     try {
       // Get user email from profile
@@ -284,7 +284,7 @@ export class NotificationService {
   private async sendSMSNotification(
     userId: string,
     template: NotificationTemplate,
-    context: NotificationContext
+    _context: NotificationContext
   ): Promise<void> {
     try {
       // Get user phone number from profile

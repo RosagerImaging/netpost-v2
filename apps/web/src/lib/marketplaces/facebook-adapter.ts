@@ -28,7 +28,7 @@ import type {
 } from '@netpost/shared-types';
 
 // Facebook specific types
-interface FacebookCategory {
+interface _FacebookCategory {
   id: string;
   name: string;
   parent_category?: string;
@@ -53,7 +53,7 @@ interface FacebookListingResponse {
   updated_time: string;
 }
 
-interface FacebookError {
+interface _FacebookError {
   error: {
     message: string;
     type: string;
@@ -130,7 +130,7 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
   /**
    * Complete OAuth flow
    */
-  async completeOAuthFlow(code: string, state: string): Promise<OAuth2Credentials> {
+  async completeOAuthFlow(code: string, _state: string): Promise<OAuth2Credentials> {
     const clientId = this.getClientId();
     const clientSecret = this.getClientSecret();
 
@@ -481,7 +481,7 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
   /**
    * Upload photo to Facebook
    */
-  async uploadPhoto(photoUrl: string, listingId?: string): Promise<string> {
+  async uploadPhoto(photoUrl: string, _listingId?: string): Promise<string> {
     await this.checkRateLimit();
 
     try {
@@ -562,7 +562,7 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
         );
       }
 
-      return response.data.data?.map((item: any) =>
+      return response.data.data?.map((item: Record<string, unknown>) =>
         this.mapFacebookDataToListingRecord(item)
       ) || [];
     } catch (error) {
@@ -589,8 +589,8 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
 
       if (response.success && response.data.data) {
         const insights = response.data.data;
-        const impressions = insights.find((i: any) => i.name === 'post_impressions')?.values[0]?.value || 0;
-        const engagements = insights.find((i: any) => i.name === 'post_engagements')?.values[0]?.value || 0;
+        const impressions = insights.find((i: { name?: string; values?: Array<{ value?: number }> }) => i.name === 'post_impressions')?.values?.[0]?.value || 0;
+        const engagements = insights.find((i: { name?: string; values?: Array<{ value?: number }> }) => i.name === 'post_engagements')?.values?.[0]?.value || 0;
 
         return {
           views: impressions,
@@ -608,7 +608,7 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
   }
 
   // Delisting operations
-  async endListing(externalId: string, options?: EndListingOptions): Promise<EndListingResult> {
+  async endListing(externalId: string, _options?: EndListingOptions): Promise<EndListingResult> {
     try {
       console.log(`Ending Facebook Marketplace listing: ${externalId}`);
       
@@ -752,10 +752,10 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
     }
   }
 
-  private async buildFacebookListingData(listing: CreateListingInput): Promise<any> {
+  private async buildFacebookListingData(listing: CreateListingInput): Promise<Record<string, unknown>> {
     const location = listing.marketplace_attributes?.location as FacebookLocation;
 
-    const listingData = {
+    const listingData: Record<string, unknown> = {
       name: listing.title,
       description: listing.description,
       price: {
@@ -776,14 +776,14 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
       const photoIds = await Promise.all(
         listing.photo_urls.map(url => this.uploadPhoto(url))
       );
-      (listingData as any).photos = photoIds;
+      (listingData as Record<string, unknown>).photos = photoIds;
     }
 
     return listingData;
   }
 
-  private buildFacebookUpdateData(updates: UpdateListingInput): any {
-    const updateData: any = {};
+  private buildFacebookUpdateData(updates: UpdateListingInput): Record<string, unknown> {
+    const updateData: Record<string, unknown> = {};
 
     if (updates.title) updateData.name = updates.title;
     if (updates.description) updateData.description = updates.description;
@@ -809,7 +809,7 @@ export class FacebookAdapter extends BaseMarketplaceAdapter {
     return statusMap[facebookStatus] || 'active';
   }
 
-  private mapFacebookDataToListingRecord(facebookData: any): ListingRecord {
+  private mapFacebookDataToListingRecord(facebookData: { id?: string; permalink_url?: string; name?: string; description?: string; price?: { amount?: number; currency?: string }; status?: string; photos?: FacebookPhoto[]; location?: FacebookLocation; category?: string; created_time?: string; updated_time?: string }): ListingRecord {
     return {
       id: '', // Internal ID
       user_id: this.connection.user_id,

@@ -14,12 +14,8 @@ import {
   EyeOff,
   Save,
   Check,
-  AlertCircle,
   Settings as SettingsIcon,
-  Smartphone,
   Mail,
-  Globe,
-  Key
 } from "lucide-react";
 import {
   Card,
@@ -51,7 +47,6 @@ import { cn } from "@netpost/ui";
 export default function SettingsPage() {
   const { user } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
-  const [showApiKey, setShowApiKey] = useState(false);
   const [notifications, setNotifications] = useState({
     email: true,
     push: true,
@@ -61,7 +56,7 @@ export default function SettingsPage() {
     priceChanges: false,
     marketing: false,
   });
-  const [platforms, setPlatforms] = useState({
+  const [platforms] = useState({
     ebay: { connected: true, status: "active", sales: 147 },
     poshmark: { connected: true, status: "active", sales: 89 },
     mercari: { connected: false, status: "disconnected", sales: 0 },

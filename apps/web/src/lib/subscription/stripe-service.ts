@@ -367,6 +367,7 @@ class StripeService {
       success_url: params.successUrl,
       cancel_url: params.cancelUrl,
       metadata: params.metadata,
+      // Note: billing_mode 'flexible' not typed in current SDK; omit to satisfy types
     };
 
     if (params.customerId) {
@@ -375,6 +376,7 @@ class StripeService {
 
     if (params.trialDays) {
       sessionParams.subscription_data = {
+        ...(sessionParams.subscription_data || {}),
         trial_period_days: params.trialDays,
       };
     }
@@ -386,12 +388,68 @@ class StripeService {
   }
 
   /**
+   * Create embedded checkout session (returns client_secret)
+   */
+  static async createEmbeddedCheckoutSession(params: {
+    customerId?: string;
+    priceId: string;
+    returnUrl: string; // must include {CHECKOUT_SESSION_ID}
+    trialDays?: number;
+    metadata?: Record<string, string>;
+  }): Promise<Stripe.Checkout.Session> {
+    const stripe = this.getStripe();
+    const sessionParams: Stripe.Checkout.SessionCreateParams = {
+      ui_mode: 'embedded',
+      line_items: [
+        { price: params.priceId, quantity: 1 },
+      ],
+      mode: 'subscription',
+      // return_url should contain the template for session id
+      return_url: params.returnUrl,
+      metadata: params.metadata,
+      // Note: billing_mode 'flexible' not typed in current SDK; omit to satisfy types
+    };
+
+    if (params.customerId) {
+      sessionParams.customer = params.customerId;
+    }
+    if (params.trialDays) {
+      sessionParams.subscription_data = {
+        ...(sessionParams.subscription_data || {}),
+        trial_period_days: params.trialDays,
+      };
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionParams);
+    console.log(`🧩 Created embedded checkout session: ${session.id}`);
+    return session;
+  }
+
+  /**
+   * Retrieve a Checkout Session by ID
+   */
+  static async retrieveCheckoutSession(sessionId: string): Promise<Stripe.Checkout.Session> {
+    const stripe = this.getStripe();
+    return await stripe.checkout.sessions.retrieve(sessionId);
+  }
+
+  /**
+   * List recent invoices for a customer
+   */
+  static async listInvoicesForCustomer(customerId: string, limit = 6): Promise<Stripe.ApiList<Stripe.Invoice>> {
+    const stripe = this.getStripe();
+    return await stripe.invoices.list({ customer: customerId, limit });
+  }
+
+
+
+  /**
    * Verify webhook signature
    */
   static verifyWebhookSignature(body: string, signature: string): Stripe.Event {
     const stripe = this.getStripe();
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-    
+
     if (!webhookSecret) {
       throw new Error('Missing STRIPE_WEBHOOK_SECRET environment variable');
     }

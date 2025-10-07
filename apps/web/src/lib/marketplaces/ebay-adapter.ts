@@ -28,7 +28,7 @@ import type {
 } from '@netpost/shared-types';
 
 // eBay specific types
-interface EBayCategory {
+interface _EBayCategory {
   CategoryID: string;
   CategoryName: string;
   CategoryParentID?: string;
@@ -36,7 +36,7 @@ interface EBayCategory {
   LeafCategory: boolean;
 }
 
-interface EBayShippingPolicy {
+interface _EBayShippingPolicy {
   ShippingPolicyID: string;
   ShippingPolicyName: string;
   ShippingCost: {
@@ -45,7 +45,7 @@ interface EBayShippingPolicy {
   };
 }
 
-interface EBayItemSpecific {
+interface _EBayItemSpecific {
   Name: string;
   Value: string[];
 }
@@ -66,7 +66,7 @@ interface EBayListingResponse {
   };
 }
 
-interface EBayError {
+interface _EBayError {
   ErrorCode: string;
   ShortMessage: string;
   LongMessage: string;
@@ -96,7 +96,7 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
   }
 
   protected getDefaultApiBaseUrl(): string {
-    const isProduction = (this.connection.marketplace_metadata as any)?.environment === 'production';
+    const isProduction = (this.connection.marketplace_metadata as { environment?: string })?.environment === 'production';
     return isProduction ? this.EBAY_API_BASE : this.EBAY_SANDBOX_API_BASE;
   }
 
@@ -136,7 +136,7 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
   /**
    * Complete OAuth flow by exchanging authorization code for access token
    */
-  async completeOAuthFlow(code: string, state: string): Promise<OAuth2Credentials> {
+  async completeOAuthFlow(code: string, _state: string): Promise<OAuth2Credentials> {
     const clientId = this.getClientId();
     const clientSecret = this.getClientSecret();
 
@@ -484,7 +484,7 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
         );
       }
 
-      return response.data.fulfillmentPolicies?.map((policy: any) => ({
+      return response.data.fulfillmentPolicies?.map((policy: Record<string, unknown>) => ({
         id: policy.fulfillmentPolicyId,
         name: policy.name,
         cost: policy.shippingOptions?.[0]?.shippingCost?.value || 0,
@@ -514,7 +514,7 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
         );
       }
 
-      return response.data.returnPolicies?.map((policy: any) => ({
+      return response.data.returnPolicies?.map((policy: Record<string, unknown>) => ({
         id: policy.returnPolicyId,
         name: policy.name,
         days: policy.returnPeriod?.value || 30,
@@ -530,7 +530,7 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
   /**
    * Upload photo to eBay
    */
-  async uploadPhoto(photoUrl: string, listingId?: string): Promise<string> {
+  async uploadPhoto(photoUrl: string, _listingId?: string): Promise<string> {
     await this.checkRateLimit();
 
     try {
@@ -607,7 +607,7 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
         );
       }
 
-      return response.data.inventoryItems?.map((item: any) =>
+      return response.data.inventoryItems?.map((item: Record<string, unknown>) =>
         this.mapEBayDataToListingRecord(item)
       ) || [];
     } catch (error) {
@@ -631,7 +631,7 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
     await this.checkRateLimit();
 
     try {
-      const response = await this.makeApiRequest(
+      const _response = await this.makeApiRequest(
         `sell/analytics/v1/seller_standards_profile`
       );
 
@@ -785,7 +785,7 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
            Math.random().toString(36).substring(2, 15);
   }
 
-  private buildEBayListingData(listing: CreateListingInput): any {
+  private buildEBayListingData(listing: CreateListingInput): Record<string, unknown> {
     return {
       availability: {
         shipToLocationAvailability: {
@@ -807,8 +807,8 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
     };
   }
 
-  private buildEBayUpdateData(updates: UpdateListingInput): any {
-    const updateData: any = {};
+  private buildEBayUpdateData(updates: UpdateListingInput): Record<string, unknown> {
+    const updateData: Record<string, unknown> = {};
 
     if (updates.title) {
       updateData.product = { ...updateData.product, title: updates.title };
@@ -854,7 +854,7 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
     return specifics;
   }
 
-  private calculateFees(listingFees?: any): {
+  private calculateFees(listingFees?: { Fee?: Array<{ Name: string; Value: number }> }): {
     listing_fee?: number;
     final_value_fee?: number;
     total_fees?: number;
@@ -866,7 +866,7 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
     let listingFee = 0;
     let finalValueFee = 0;
 
-    listingFees.Fee.forEach((fee: any) => {
+    listingFees.Fee.forEach((fee: { Name: string; Value: number }) => {
       if (fee.Name === 'ListingFee') {
         listingFee = fee.Value;
       } else if (fee.Name === 'FinalValueFee') {
@@ -893,7 +893,7 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
     return statusMap[ebayStatus] || 'active';
   }
 
-  private mapEBayDataToListingRecord(ebayData: any): ListingRecord {
+  private mapEBayDataToListingRecord(ebayData: { sku?: string; itemId?: string; listingDetails?: { viewItemURL?: string }; product?: { title?: string; description?: string }; pricingSummary?: { price?: { value?: string; currency?: string } }; status?: string }): ListingRecord {
     // This would map eBay API response to our ListingRecord format
     // Implementation depends on the specific eBay API response structure
     return {
@@ -914,10 +914,10 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
     } as unknown as ListingRecord;
   }
 
-  private mapEBayCategories(categoryNode: any): Array<{ id: string; name: string; parent_id?: string }> {
+  private mapEBayCategories(categoryNode: unknown): Array<{ id: string; name: string; parent_id?: string }> {
     const categories: Array<{ id: string; name: string; parent_id?: string }> = [];
 
-    function traverse(node: any, parentId?: string) {
+    function traverse(node: { category?: { categoryId: string; categoryName: string }; childCategoryTreeNodes?: unknown[] } | undefined, parentId?: string) {
       if (node.category) {
         categories.push({
           id: node.category.categoryId,
@@ -926,7 +926,7 @@ export class EBayAdapter extends BaseMarketplaceAdapter {
         });
 
         if (node.childCategoryTreeNodes) {
-          node.childCategoryTreeNodes.forEach((child: any) => {
+          node.childCategoryTreeNodes.forEach((child) => {
             traverse(child, node.category.categoryId);
           });
         }

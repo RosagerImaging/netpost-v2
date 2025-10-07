@@ -9,7 +9,6 @@ import { getMarketplaceConfig, validateMarketplaceRequirements } from '../market
 import type {
   CreateListingInput,
   MarketplaceType,
-  CrossPostingPlan,
 } from '@netpost/shared-types';
 import type { InventoryItemRecord } from '@netpost/shared-types';
 import type { MarketplaceConnectionSafe } from '@netpost/shared-types';
@@ -189,7 +188,7 @@ export class CrossListingService {
    */
   static generateDefaultFormData(
     inventoryItem: InventoryItemRecord,
-    availableMarketplaces: MarketplaceType[]
+    _availableMarketplaces: MarketplaceType[]
   ): CrossListingFormData {
     return {
       inventory_item_id: inventoryItem.id,
@@ -220,7 +219,7 @@ export class CrossListingService {
     markupPercentage?: number,
     marketplaceSpecificPrices?: Record<MarketplaceType, number>
   ): Record<MarketplaceType, number> {
-    const prices: Record<MarketplaceType, number> = {} as any;
+    const prices: Record<MarketplaceType, number> = {} as Record<MarketplaceType, number>;
 
     if (strategy === 'fixed') {
       // Use same price for all marketplaces
@@ -373,7 +372,7 @@ export class CrossListingService {
 
       for (const marketplace of formData.marketplaces) {
         const listingData = this.generateMarketplaceListingData(formData, marketplace);
-        const config = getMarketplaceConfig(marketplace);
+        const _config = getMarketplaceConfig(marketplace);
 
         // Estimate fees (simplified calculation)
         const estimatedFees = this.estimateMarketplaceFees(marketplace, listingData.listing_price);
@@ -554,7 +553,7 @@ export class CrossListingService {
   /**
    * Log cross-listing activity for audit trail
    */
-  private static async logCrossListingActivity(userId: string, activity: any): Promise<void> {
+  private static async logCrossListingActivity(userId: string, activity: Record<string, unknown>): Promise<void> {
     try {
       const activityLog = {
         user_id: userId,

@@ -21,7 +21,7 @@ import type {
 } from '@netpost/shared-types';
 
 // Common API response types
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: string;
@@ -37,7 +37,7 @@ export interface ListingCreationResult {
   external_listing_id: string;
   external_url: string;
   status: ListingStatus;
-  marketplace_data?: Record<string, any>;
+  marketplace_data?: Record<string, unknown>;
   fees?: {
     listing_fee?: number;
     final_value_fee?: number;
@@ -55,7 +55,7 @@ export interface EndListingOptions {
 export interface EndListingResult {
   success: boolean;
   ended_at?: string;
-  external_response?: any;
+  external_response?: unknown;
   error?: string;
 }
 
@@ -179,10 +179,10 @@ export abstract class BaseMarketplaceAdapter {
     return headers;
   }
 
-  protected async makeApiRequest<T = any>(
+  protected async makeApiRequest<T = unknown>(
     endpoint: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
-    data?: any
+    data?: unknown
   ): Promise<ApiResponse<T>> {
     const url = this.buildApiUrl(endpoint);
     const headers = this.getApiHeaders();
@@ -273,7 +273,7 @@ export abstract class BaseMarketplaceAdapter {
   }
 
   // Validation utilities
-  protected validateRequiredFields(data: any, requiredFields: string[]): void {
+  protected validateRequiredFields(data: Record<string, unknown>, requiredFields: string[]): void {
     const missingFields = requiredFields.filter(field => !data[field]);
     if (missingFields.length > 0) {
       throw new MarketplaceApiError(
@@ -317,7 +317,7 @@ export abstract class BaseMarketplaceAdapter {
   }
 
   // Logging and monitoring
-  protected log(level: 'info' | 'warn' | 'error', message: string, data?: any): void {
+  protected log(level: 'info' | 'warn' | 'error', message: string, data?: Record<string, unknown>): void {
     const logEntry = {
       timestamp: new Date().toISOString(),
       marketplace: this.getMarketplaceType(),

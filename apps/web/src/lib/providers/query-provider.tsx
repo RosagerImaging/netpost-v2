@@ -16,7 +16,8 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
             retry: (failureCount, error) => {
               // Don't retry for 4xx errors
               if (error instanceof Error && 'status' in error) {
-                const status = (error as any).status;
+                type HttpError = Error & { status?: number };
+                const status = (error as HttpError).status;
                 if (status >= 400 && status < 500) {
                   return false;
                 }

@@ -117,7 +117,17 @@ export class EmailService {
       throw new Error('Resend not initialized');
     }
 
-    const emailData: any = {
+    type ResendEmailData = {
+      from: string;
+      to: string[];
+      subject: string;
+      html?: string;
+      text?: string;
+      reply_to?: string;
+      attachments?: unknown[];
+    };
+
+    const emailData: ResendEmailData = {
       from: `${this.fromName} <${this.fromEmail}>`,
       to: Array.isArray(options.to) ? options.to : [options.to],
       subject: options.subject,
@@ -146,7 +156,7 @@ export class EmailService {
    * Send bulk emails (for notifications to multiple users)
    */
   async sendBulkEmails(
-    recipients: Array<{ email: string; variables?: Record<string, any> }>,
+    recipients: Array<{ email: string; variables?: Record<string, unknown> }>,
     template: EmailTemplate
   ): Promise<EmailDeliveryResult[]> {
     const results: EmailDeliveryResult[] = [];
@@ -203,8 +213,8 @@ export class EmailService {
    * Get email delivery statistics
    */
   async getDeliveryStats(
-    startDate: Date,
-    endDate: Date
+    _startDate: Date,
+    _endDate: Date
   ): Promise<{
     sent: number;
     delivered: number;
@@ -226,7 +236,7 @@ export class EmailService {
    */
   private personalizeTemplate(
     template: EmailTemplate,
-    variables: Record<string, any>
+    variables: Record<string, unknown>
   ): EmailTemplate {
     let personalizedSubject = template.subject;
     let personalizedHtml = template.html;

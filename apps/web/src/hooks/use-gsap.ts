@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 
+type GSAPLike = { fromTo: (targets: unknown, fromVars: unknown, toVars: unknown) => unknown };
+
 export function useGsap() {
-  const [gsap, setGsap] = useState<any>(null);
+  const [gsap, setGsap] = useState<GSAPLike | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

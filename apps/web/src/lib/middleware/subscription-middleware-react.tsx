@@ -4,7 +4,7 @@ import { SubscriptionMiddlewareOptions } from './subscription-middleware';
 
 export function withSubscriptionAccess<P extends object>(
   Component: React.ComponentType<P>,
-  options: SubscriptionMiddlewareOptions = {}
+  _options: SubscriptionMiddlewareOptions = {}
 ) {
   return function SubscriptionProtectedComponent(props: P) {
     // TODO: Integrate with auth context

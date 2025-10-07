@@ -13,7 +13,7 @@ import type {
 
 // Create a properly typed supabase admin client for the web app
 // Temporarily using any to bypass type resolution issues in monorepo
-const supabaseAdmin = createClient<any>(
+const supabaseAdmin = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );

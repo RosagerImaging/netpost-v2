@@ -19,6 +19,8 @@ import type {
   UpdateInventoryItemInput,
 } from '@netpost/shared-types';
 import { useEffect } from 'react';
+type InventoryPage = { items: InventoryItemRecord[]; total: number; nextCursor?: string };
+
 
 /**
  * Hook for fetching paginated inventory items with infinite scroll
@@ -62,7 +64,7 @@ export function useInventory(params: InventoryQueryParams = {}) {
       user.id,
       // On insert
       (payload) => {
-        queryClient.setQueryData(['inventory', user.id, params], (oldData: any) => {
+        queryClient.setQueryData(['inventory', user.id, params], (oldData: { pages: InventoryPage[]; pageParams: unknown[] } | undefined) => {
           if (!oldData) return oldData;
 
           // Add new item to the beginning of the first page
@@ -85,10 +87,10 @@ export function useInventory(params: InventoryQueryParams = {}) {
       },
       // On update
       (payload) => {
-        queryClient.setQueryData(['inventory', user.id, params], (oldData: any) => {
+        queryClient.setQueryData(['inventory', user.id, params], (oldData: { pages: InventoryPage[]; pageParams: unknown[] } | undefined) => {
           if (!oldData) return oldData;
 
-          const newPages = oldData.pages.map((page: any) => ({
+          const newPages = oldData.pages.map((page: InventoryPage) => ({
             ...page,
             items: page.items.map((item: InventoryItemRecord) =>
               item.id === payload.new.id ? payload.new : item
@@ -103,10 +105,10 @@ export function useInventory(params: InventoryQueryParams = {}) {
       // On delete (soft delete)
       (payload) => {
         if (payload.old.deleted_at) {
-          queryClient.setQueryData(['inventory', user.id, params], (oldData: any) => {
+          queryClient.setQueryData(['inventory', user.id, params], (oldData: { pages: InventoryPage[]; pageParams: unknown[] } | undefined) => {
             if (!oldData) return oldData;
 
-            const newPages = oldData.pages.map((page: any) => ({
+            const newPages = oldData.pages.map((page: InventoryPage) => ({
               ...page,
               items: page.items.filter((item: InventoryItemRecord) => item.id !== payload.old.id),
               total: page.total - 1,

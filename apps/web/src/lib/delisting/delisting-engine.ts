@@ -15,7 +15,6 @@ import {
   DELISTING_ERROR_CODES,
   DelistingErrorCode,
   getRetryDelay,
-  isRetryableError,
 } from '@netpost/shared-types';
 
 interface DelistingResult {
@@ -23,7 +22,7 @@ interface DelistingResult {
   success: boolean;
   error?: DelistingError;
   delisted_at?: string;
-  external_response?: any;
+  external_response?: unknown;
   duration_ms?: number;
 }
 
@@ -137,13 +136,13 @@ class DelistingEngine {
             : result.value.error;
 
           delistingResults.push({
-            marketplace: listing.marketplace_type as any,
+            marketplace: listing.marketplace_type as MarketplaceType,
             success: false,
             error: {
               name: 'DelistingError',
               code: DELISTING_ERROR_CODES.INTERNAL_ERROR,
               message: error?.message || 'Unknown error',
-              marketplace: listing.marketplace_type as any,
+              marketplace: listing.marketplace_type as MarketplaceType,
               listing_id: listing.id,
               external_id: listing.external_listing_id,
             },
@@ -224,7 +223,7 @@ class DelistingEngine {
    * Delist from a specific marketplace
    */
   private async delistFromMarketplace(
-    listing: any,
+    listing: { marketplace_type: MarketplaceType | string; id: string; external_listing_id: string },
     job: DelistingJob
   ): Promise<DelistingResult> {
     const startTime = Date.now();
@@ -247,19 +246,19 @@ class DelistingEngine {
         throw new DelistingError({
           code: DELISTING_ERROR_CODES.INVALID_TOKEN,
           message: `No active connection for ${marketplace}`,
-          marketplace: marketplace as any,
+          marketplace: marketplace,
           listing_id: listing.id,
           external_id: listing.external_listing_id,
         });
       }
 
       // Create marketplace adapter
-      const adapter = await createAdapter(connection, marketplace as any);
+      const adapter = await createAdapter(connection, marketplace);
       if (!adapter) {
         throw new DelistingError({
           code: DELISTING_ERROR_CODES.INTERNAL_ERROR,
           message: `Failed to create adapter for ${marketplace}`,
-          marketplace: marketplace as any,
+          marketplace: marketplace,
           listing_id: listing.id,
           external_id: listing.external_listing_id,
         });
@@ -330,12 +329,12 @@ class DelistingEngine {
         {
           listing_id: listing.id,
           external_listing_id: listing.external_listing_id,
-          error_code: (error as any)?.code || DELISTING_ERROR_CODES.UNKNOWN_ERROR,
+          error_code: (err.code) || DELISTING_ERROR_CODES.UNKNOWN_ERROR,
           error_message: error instanceof Error ? error.message : 'Unknown error',
           duration_ms: duration,
         },
         error instanceof Error ? error.message : 'Unknown error',
-        (error as any)?.code
+        err.code
       );
 
       return {
@@ -345,7 +344,7 @@ class DelistingEngine {
           name: 'DelistingError',
           code: DELISTING_ERROR_CODES.INTERNAL_ERROR,
           message: error instanceof Error ? error.message : 'Unknown error',
-          marketplace: marketplace as any,
+          marketplace: marketplace,
           listing_id: listing.id,
           external_id: listing.external_listing_id,
         },
@@ -358,12 +357,13 @@ class DelistingEngine {
    * Map marketplace adapter errors to delisting errors
    */
   private mapAdapterErrorToDelistingError(
-    error: any,
+    error: unknown,
     marketplace: MarketplaceType,
-    listing: any
+    listing: { id: string; external_listing_id: string }
   ): DelistingError {
     let code: DelistingErrorCode = DELISTING_ERROR_CODES.UNKNOWN_ERROR;
-    const message = error.message || 'Unknown error';
+    const err = error as { message?: string; status?: number; code?: string };
+    const message = err.message || 'Unknown error';
     let permanent = false;
     let retryAfter: number | undefined;
 
@@ -387,7 +387,7 @@ class DelistingEngine {
       code = DELISTING_ERROR_CODES.TIMEOUT;
     } else if (error.message?.includes('network') || error.code === 'NETWORK_ERROR') {
       code = DELISTING_ERROR_CODES.NETWORK_ERROR;
-    } else if (error.status >= 500) {
+    } else if ((err.status ?? 0) >= 500) {
       code = DELISTING_ERROR_CODES.API_UNAVAILABLE;
     }
 
@@ -395,7 +395,7 @@ class DelistingEngine {
       name: 'DelistingError',
       code,
       message,
-      marketplace: marketplace as any,
+      marketplace: marketplace,
       listing_id: listing.id,
       external_id: listing.external_listing_id,
       retry_after: retryAfter,
@@ -412,7 +412,7 @@ class DelistingEngine {
     startedAt?: string,
     completedAt?: string
   ): Promise<void> {
-    const updates: any = { status };
+    const updates: Record<string, unknown> = { status };
 
     if (startedAt) {
       updates.started_at = startedAt;
@@ -438,8 +438,8 @@ class DelistingEngine {
     totalCompleted: number,
     totalFailed: number
   ): Promise<void> {
-    const successLog: Record<string, any> = {};
-    const errorLog: Record<string, any> = {};
+    const successLog: Record<string, unknown> = {};
+    const errorLog: Record<string, unknown> = {};
     const completedMarketplaces: string[] = [];
     const failedMarketplaces: string[] = [];
 
@@ -486,7 +486,7 @@ class DelistingEngine {
     action: string,
     marketplace?: MarketplaceType,
     success: boolean = true,
-    contextData: any = {},
+    contextData: Record<string, unknown> = {},
     errorMessage?: string,
     errorCode?: string
   ): Promise<void> {

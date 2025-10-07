@@ -5,7 +5,6 @@ import { InventoryItem } from "./InventoryItem";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { EmptyState } from "./EmptyState";
 import { useInventory } from "../hooks/useInventory";
-import type { InventoryItemRecord } from "@netpost/shared-types";
 
 interface InventoryGridProps {
   viewMode: 'grid' | 'list';

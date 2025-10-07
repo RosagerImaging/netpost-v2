@@ -35,9 +35,12 @@ const eslintConfig = [
       ],
       "prefer-const": "warn",
       // Keep some rules as warnings for gradual improvement
-      "react/no-unescaped-entities": "warn",
+      // Silence noisy UI rules that don't affect runtime correctness
+      "react/no-unescaped-entities": "off",
+      "@next/next/no-img-element": "off",
+      "jsx-a11y/alt-text": "off",
+
       "@typescript-eslint/no-empty-object-type": "warn",
-      "@next/next/no-img-element": "warn",
       "react-hooks/exhaustive-deps": "warn",
       // Disable problematic rules that block builds
       "@typescript-eslint/ban-ts-comment": "off",

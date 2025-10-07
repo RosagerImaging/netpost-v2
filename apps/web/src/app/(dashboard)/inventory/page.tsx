@@ -48,7 +48,7 @@ type ViewMode = 'grid' | 'list';
 
 export default function InventoryPage() {
   const { user } = useAuth();
-  const [items, setItems] = useState<InventoryItem[]>([]);
+  const [items] = useState<InventoryItem[]>([]);
   const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState("All");

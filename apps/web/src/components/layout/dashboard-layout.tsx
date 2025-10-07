@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -16,9 +16,11 @@ import {
   BarChart3,
   Bell,
   LogOut,
+  RefreshCw,
 } from "lucide-react";
-import { Navigation, Button } from "@netpost/ui";
+import { Navigation, Button, Input, Badge } from "@netpost/ui";
 import { cn } from "@netpost/ui";
+import { FocusScope } from "@radix-ui/react-focus-scope";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -37,6 +39,84 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
   const router = useRouter();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [globalSearch, setGlobalSearch] = useState("");
+  const [syncStatus, setSyncStatus] = useState<"idle" | "syncing" | "success" | "error">("success");
+  const [lastSyncedAt, setLastSyncedAt] = useState(() => Date.now());
+  const [timeTicker, setTimeTicker] = useState(() => Date.now());
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setTimeTicker(Date.now()), 60000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) {
+      document.body.style.overflow = "";
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isMobileMenuOpen]);
+
+  const relativeSyncLabel = useMemo(() => {
+    const diffMs = Math.max(0, timeTicker - lastSyncedAt);
+    const diffMinutes = Math.round(diffMs / 60000);
+
+    if (diffMinutes <= 0) {
+      return "Last sync: just now";
+    }
+
+    if (diffMinutes === 1) {
+      return "Last sync: 1 minute ago";
+    }
+
+    if (diffMinutes < 60) {
+      return `Last sync: ${diffMinutes} minutes ago`;
+    }
+
+    const diffHours = Math.round(diffMinutes / 60);
+    return `Last sync: ${diffHours} hour${diffHours === 1 ? "" : "s"} ago`;
+  }, [timeTicker, lastSyncedAt]);
+
+  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!globalSearch.trim()) {
+      return;
+    }
+
+    const query = globalSearch.trim();
+    router.push(`/search?query=${encodeURIComponent(query)}`);
+    setGlobalSearch("");
+  };
+
+  const handleManualSync = async () => {
+    if (syncStatus === "syncing") {
+      return;
+    }
+
+    setSyncStatus("syncing");
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1200));
+      const timestamp = Date.now();
+      setLastSyncedAt(timestamp);
+      setTimeTicker(timestamp);
+      setSyncStatus("success");
+    } catch (error) {
+      console.error("Failed to sync dashboard state", error);
+      setSyncStatus("error");
+    }
+  };
+
+  const syncStatusLabel = syncStatus === "syncing"
+    ? "Syncing..."
+    : syncStatus === "error"
+      ? "Sync failed"
+      : "In sync";
+  const isSyncing = syncStatus === "syncing";
 
   // Navigation items configuration
   const navItems = [
@@ -227,16 +307,23 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
         )}
         onClick={() => setMobileMenuOpen(false)}
         aria-hidden={!isMobileMenuOpen}
+        role="dialog"
+        aria-modal={isMobileMenuOpen}
       >
-        <aside
-          id="mobile-navigation"
-          className="glass-card fixed top-0 left-0 h-full w-72 max-w-[80vw] border-r border-white/10"
-          onClick={(e) => e.stopPropagation()}
-          role="navigation"
-          aria-label="Mobile navigation"
-        >
-          {sidebarContent}
-        </aside>
+        <FocusScope asChild loop trapped>
+          <aside
+            id="mobile-navigation"
+            className="glass-card fixed top-0 left-0 h-full w-72 max-w-[80vw] border-r border-white/10"
+            onClick={(e) => e.stopPropagation()}
+            role="navigation"
+            aria-label="Mobile navigation"
+          >
+            <h2 id="mobile-navigation-title" className="sr-only">
+              Mobile navigation
+            </h2>
+            {sidebarContent}
+          </aside>
+        </FocusScope>
       </div>
 
       <div className="flex">
@@ -258,6 +345,52 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
           className="flex-1 overflow-hidden"
           role="main"
         >
+          <div className="sticky top-0 z-20 hidden items-center gap-6 border-b border-white/10 bg-black/30 px-8 py-4 backdrop-blur lg:flex">
+            <form
+              onSubmit={handleSearchSubmit}
+              role="search"
+              aria-label="Global search"
+              className="flex flex-1 items-center gap-3"
+            >
+              <Input
+                value={globalSearch}
+                onChange={(event) => setGlobalSearch(event.target.value)}
+                placeholder="Search inventory, listings, automations..."
+                className="glass-input"
+                aria-label="Search NetPost"
+              />
+              <Button type="submit" variant="secondary" size="sm">
+                Search
+              </Button>
+            </form>
+
+            <div className="flex items-center gap-4">
+              <div className="flex flex-col">
+                <span className="text-xs font-medium uppercase tracking-[0.3em] text-muted-foreground">
+                  Operations
+                </span>
+                <span className="text-sm text-muted-foreground" role="status" aria-live="polite">
+                  {relativeSyncLabel}
+                </span>
+              </div>
+              <Badge variant="secondary" className="uppercase tracking-[0.3em] text-[10px]">
+                Platform: eBay ✅
+              </Badge>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleManualSync}
+                disabled={isSyncing}
+                className="inline-flex items-center gap-2"
+                aria-live="polite"
+                aria-label="Sync platform data"
+              >
+                <RefreshCw className={cn("h-4 w-4", isSyncing && "animate-spin")} />
+                {syncStatusLabel}
+              </Button>
+            </div>
+          </div>
+
           {children}
         </main>
       </div>

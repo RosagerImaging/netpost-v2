@@ -10,12 +10,9 @@ import { createAdapter } from '@/lib/marketplaces';
 import { retryWithBackoff } from '@/lib/utils/concurrency';
 import {
   MarketplaceType,
-  SaleEvent,
   ProcessSaleEventRequest,
   ProcessSaleEventResponse,
-  PollingResult,
 } from '@netpost/shared-types';
-import type { ListingRecord } from '@netpost/shared-types';
 import crypto from 'crypto';
 
 // Circuit breaker state for each marketplace
@@ -59,13 +56,6 @@ const POLLING_CONFIGS: Record<MarketplaceType, PollingConfig> = {
   shopify: { enabled: true, intervalMinutes: 15, maxItemsPerPoll: 100, lookbackDays: 1 },
   custom: { enabled: true, intervalMinutes: 60, maxItemsPerPoll: 25, lookbackDays: 3 },
 };
-
-interface PollingState {
-  lastPolledAt: string;
-  nextPageToken?: string;
-  totalPolled: number;
-  salesFound: number;
-}
 
 /**
  * Get or initialize circuit breaker state
@@ -155,7 +145,7 @@ function generateEventHash(
  */
 async function saveSaleEventFromPolling(
   marketplace: MarketplaceType,
-  listingData: any,
+  listingData: Record<string, unknown>,
   userId: string,
   inventoryItemId?: string,
   listingId?: string
@@ -615,12 +605,12 @@ async function pollMarketplace(marketplace: MarketplaceType): Promise<{
  */
 export async function pollAllMarketplaces(): Promise<{
   success: boolean;
-  results: Partial<Record<MarketplaceType, any>>;
+  results: Partial<Record<MarketplaceType, unknown>>;
   totalSalesFound: number;
 }> {
   console.log('Starting marketplace polling cycle');
 
-  const results: Partial<Record<MarketplaceType, any>> = {};
+  const results: Partial<Record<MarketplaceType, unknown>> = {};
   let totalSalesFound = 0;
 
   // Poll each marketplace that has polling enabled
@@ -649,7 +639,7 @@ export async function pollAllMarketplaces(): Promise<{
  */
 export async function getPollingStatus(): Promise<{
   enabled_marketplaces: MarketplaceType[];
-  last_poll_results: Partial<Record<MarketplaceType, any>>;
+  last_poll_results: Partial<Record<MarketplaceType, unknown>>;
   next_poll_times: Partial<Record<MarketplaceType, string>>;
 }> {
   const enabledMarketplaces = Object.entries(POLLING_CONFIGS)
@@ -667,7 +657,7 @@ export async function getPollingStatus(): Promise<{
   }
 
   // TODO: Get last poll results from a polling status table
-  const lastPollResults: Partial<Record<MarketplaceType, any>> = {};
+  const lastPollResults: Partial<Record<MarketplaceType, unknown>> = {};
 
   return {
     enabled_marketplaces: enabledMarketplaces,
@@ -682,7 +672,7 @@ export async function getPollingStatus(): Promise<{
 export async function testPolling(
   userId: string,
   marketplace: MarketplaceType
-): Promise<any> {
+): Promise<unknown> {
   if (process.env.NODE_ENV !== 'development') {
     throw new Error('Test polling only available in development');
   }

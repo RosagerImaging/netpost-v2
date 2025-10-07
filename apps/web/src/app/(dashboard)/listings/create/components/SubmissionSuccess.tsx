@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   CheckCircle,
-  ExternalLink,
   RotateCcw,
   Eye,
   Share2,
@@ -21,10 +20,19 @@ import {
   Clock,
   DollarSign
 } from 'lucide-react';
+import type { InventoryItemRecord } from '@netpost/shared-types';
+
+type SubmissionResult = {
+  formData?: {
+    marketplaces?: string[];
+    baseListing?: { title?: string; price?: number };
+    marketplaceCustomizations?: Record<string, { title?: string; price?: number }>;
+  };
+} | null;
 
 interface SubmissionSuccessProps {
-  result: any;
-  selectedItem: any;
+  result: SubmissionResult;
+  selectedItem: InventoryItemRecord | null;
   onStartOver: () => void;
   onViewListings: () => void;
 }
@@ -53,7 +61,7 @@ export function SubmissionSuccess({
     return names[marketplace] || marketplace;
   };
 
-  const getMarketplaceIcon = (marketplace: string) => {
+  const getMarketplaceIcon = (_marketplace: string) => {
     // In a real implementation, you'd have actual marketplace icons
     return '🏪';
   };
@@ -151,7 +159,7 @@ export function SubmissionSuccess({
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {marketplaces.map((marketplace: string, index: number) => {
+            {marketplaces.map((marketplace: string) => {
               const customization = result?.formData?.marketplaceCustomizations?.[marketplace] || {};
               const price = customization.price || baseListing.price || 0;
               const title = customization.title || baseListing.title || selectedItem?.title;

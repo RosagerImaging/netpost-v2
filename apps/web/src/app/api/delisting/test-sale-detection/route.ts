@@ -135,7 +135,15 @@ export async function GET() {
 /**
  * Create a test sale event for development
  */
-async function createTestSaleEvent(params: any) {
+type CreateTestSaleEventParams = {
+  userId?: string;
+  marketplace?: MarketplaceType;
+  externalListingId?: string;
+  salePrice?: number;
+  inventoryItemId?: string;
+};
+
+async function createTestSaleEvent(params: CreateTestSaleEventParams) {
   const supabase = await createClient();
 
   try {

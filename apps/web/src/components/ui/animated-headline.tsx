@@ -22,12 +22,12 @@ export function AnimatedHeadline({ text, className = "" }: AnimatedHeadlineProps
     container.innerHTML = "";
 
     // Create word containers
-    words.forEach((word, wordIndex) => {
+    words.forEach((word, _wordIndex) => {
       const wordDiv = document.createElement("div");
       wordDiv.className = "inline-block overflow-hidden mr-2";
 
       // Create character spans
-      word.split("").forEach((char, charIndex) => {
+      word.split("").forEach((char, _charIndex) => {
         const charSpan = document.createElement("span");
         charSpan.textContent = char;
         charSpan.className = "inline-block";

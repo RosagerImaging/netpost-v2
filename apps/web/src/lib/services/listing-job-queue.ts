@@ -244,7 +244,7 @@ export class ListingJobQueue {
   }
 
   private async updateListingWithResult(job: ListingJob, result: ListingCreationResult): Promise<void> {
-    const updates: any = {
+    const updates: Record<string, unknown> = {
       external_listing_id: result.external_listing_id,
       external_url: result.external_url,
       status: result.status,
@@ -324,7 +324,7 @@ export class ListingJobQueue {
     errorMessage?: string,
     result?: ListingCreationResult
   ): Promise<void> {
-    const updates: any = {
+    const updates: Record<string, unknown> = {
       status,
       updated_at: new Date().toISOString(),
     };
@@ -396,7 +396,7 @@ export class ListingJobQueue {
     });
   }
 
-  private async logActivity(action: string, data: any): Promise<void> {
+  private async logActivity(action: string, data: Record<string, unknown>): Promise<void> {
     // Activity logging for audit trail
     try {
       const activityLog = {

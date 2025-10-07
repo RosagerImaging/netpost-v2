@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import { listingJobQueue, type ListingJob, type JobStats } from '@/lib/services/listing-job-queue';
-import type { Listing, ListingStatus, MarketplaceType } from '@netpost/shared-types';
+import type { Listing, ListingStatus } from '@netpost/shared-types';
 import {
   Card,
   CardHeader,

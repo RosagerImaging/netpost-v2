@@ -17,17 +17,18 @@ import {
   AlertTriangle,
   CheckCircle,
   Loader2,
-  ExternalLink,
   DollarSign,
   Package,
-  Camera,
   Tag
 } from 'lucide-react';
 
+import type { CrossListingFormData } from '@/lib/services/cross-listing-service';
+import type { InventoryItemRecord } from '@netpost/shared-types';
+
 interface ListingPreviewProps {
-  formData: any;
-  selectedItem: any;
-  onSubmit: (data: any) => Promise<void>;
+  formData: CrossListingFormData;
+  selectedItem: InventoryItemRecord | null;
+  onSubmit: (data: { item: InventoryItemRecord | null; formData: CrossListingFormData; submittedAt: string }) => Promise<void>;
   onEdit: () => void;
 }
 
@@ -172,7 +173,7 @@ export function ListingPreview({ formData, selectedItem, onSubmit, onEdit }: Lis
                 <p className="text-sm">
                   Base: <span className="font-medium">{formatPrice(formData.baseListing?.price || 0)}</span>
                 </p>
-                {formData.marketplaceCustomizations && Object.entries(formData.marketplaceCustomizations).some(([_, config]: [string, any]) => config.price) && (
+                {formData.marketplaceCustomizations && Object.entries(formData.marketplaceCustomizations).some(([_, config]: [string, { price?: number }]) => !!config.price) && (
                   <p className="text-xs text-muted-foreground">Custom pricing applied</p>
                 )}
               </div>

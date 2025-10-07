@@ -26,10 +26,19 @@ export interface SubscriptionMiddlewareOptions {
 
 export interface SubscriptionContext {
   userId: string;
-  subscription: any;
+  subscription: import('../subscription/subscription-service').UserSubscription;
   hasAccess: boolean;
   reason?: string;
   upgradeRequired?: boolean;
+}
+
+
+// Map UsageLimit enum to UsageTracker MetricType values
+function mapUsageLimitToMetricType(limit: UsageLimit): import('../subscription/usage-tracker').MetricType {
+  // STORAGE_MB usage limit maps to 'storage_used' metric
+  if (limit === UsageLimit.STORAGE_MB) return 'storage_used';
+  // Other enum values share the same identifier as MetricType
+  return limit as unknown as import('../subscription/usage-tracker').MetricType;
 }
 
 /**
@@ -134,7 +143,7 @@ export function withSubscriptionProtection(
         // Fire and forget - don't wait for usage tracking
         UsageTracker.trackUsage({
           userId,
-          metricType: options.trackUsage.type as any,
+          metricType: mapUsageLimitToMetricType(options.trackUsage.type),
           value: options.trackUsage.amount || 1,
         }).catch(error => {
           console.error('Failed to track usage:', error);
@@ -156,7 +165,7 @@ export function withSubscriptionProtection(
  */
 export function requiresSubscription(options: SubscriptionMiddlewareOptions = {}) {
   return function decorator(
-    target: any,
+    target: unknown,
     propertyKey: string,
     descriptor: PropertyDescriptor
   ) {
@@ -173,13 +182,13 @@ export function requiresSubscription(options: SubscriptionMiddlewareOptions = {}
  */
 export function tracksUsage(usageType: UsageLimit, amount = 1) {
   return function decorator(
-    target: any,
+    target: unknown,
     propertyKey: string,
     descriptor: PropertyDescriptor
   ) {
     const originalMethod = descriptor.value;
 
-    descriptor.value = async function (request: NextRequest, ...args: any[]) {
+    descriptor.value = async function (request: NextRequest, ...args: unknown[]) {
       const result = await originalMethod.call(this, request, ...args);
 
       // Track usage after successful response
@@ -188,7 +197,7 @@ export function tracksUsage(usageType: UsageLimit, amount = 1) {
         if (userId) {
           UsageTracker.trackUsage({
             userId,
-            metricType: usageType as any,
+            metricType: mapUsageLimitToMetricType(usageType),
             value: amount,
           }).catch(error => {
             console.error('Failed to track usage:', error);
@@ -218,7 +227,7 @@ async function getUserIdFromRequest(request: NextRequest): Promise<string | null
     // Check for authorization header and extract user ID
     const authHeader = request.headers.get('authorization');
     if (authHeader && authHeader.startsWith('Bearer ')) {
-      const token = authHeader.substring(7);
+      const _token = authHeader.substring(7);
       // Decode JWT or validate token to get user ID
       // This would integrate with your auth system (Supabase, NextAuth, etc.)
       // For now, returning null
@@ -237,12 +246,12 @@ async function getUserIdFromRequest(request: NextRequest): Promise<string | null
  */
 
 export const requiresPaidSubscription = (options: Omit<SubscriptionMiddlewareOptions, 'allowTrialUsers'> = {}) =>
-  withSubscriptionProtection(async (request, context) => {
+  withSubscriptionProtection(async (_request, _context) => {
     return NextResponse.next();
   }, { ...options, allowTrialUsers: false });
 
 export const requiresProSubscription = (options: SubscriptionMiddlewareOptions = {}) =>
-  withSubscriptionProtection(async (request, context) => {
+  withSubscriptionProtection(async (_request, context) => {
     if (context.subscription.tier !== 'pro') {
       return NextResponse.json(
         { error: 'Pro subscription required' },
@@ -253,17 +262,17 @@ export const requiresProSubscription = (options: SubscriptionMiddlewareOptions =
   }, options);
 
 export const requiresAIFeature = (options: SubscriptionMiddlewareOptions = {}) =>
-  withSubscriptionProtection(async (request, context) => {
+  withSubscriptionProtection(async (_request, _context) => {
     return NextResponse.next();
   }, { ...options, requiresFeature: Feature.AI_ASSISTANT });
 
 export const requiresBulkOperations = (options: SubscriptionMiddlewareOptions = {}) =>
-  withSubscriptionProtection(async (request, context) => {
+  withSubscriptionProtection(async (_request, _context) => {
     return NextResponse.next();
   }, { ...options, requiresFeature: Feature.BULK_OPERATIONS });
 
 export const limitsInventoryItems = (amount = 1, options: SubscriptionMiddlewareOptions = {}) =>
-  withSubscriptionProtection(async (request, context) => {
+  withSubscriptionProtection(async (_request, _context) => {
     return NextResponse.next();
   }, {
     ...options,
@@ -272,7 +281,7 @@ export const limitsInventoryItems = (amount = 1, options: SubscriptionMiddleware
   });
 
 export const limitsApiCalls = (amount = 1, options: SubscriptionMiddlewareOptions = {}) =>
-  withSubscriptionProtection(async (request, context) => {
+  withSubscriptionProtection(async (_request, _context) => {
     return NextResponse.next();
   }, {
     ...options,
@@ -281,7 +290,7 @@ export const limitsApiCalls = (amount = 1, options: SubscriptionMiddlewareOption
   });
 
 export const limitsMarketplaceConnections = (amount = 1, options: SubscriptionMiddlewareOptions = {}) =>
-  withSubscriptionProtection(async (request, context) => {
+  withSubscriptionProtection(async (_request, _context) => {
     return NextResponse.next();
   }, {
     ...options,

@@ -1,0 +1,1 @@
+After installing Docker, user needs to resume at the post-install steps: run `docker run --rm hello-world`, then re-run Supabase types generation with `npx supabase gen types typescript --db-url "postgresql://postgres:<password>@db.hfvrnidlwnrwvhrhyzzr.supabase.co:5432/postgres?sslmode=require" --schema public > packages/shared-types/src/database/index.ts` once Docker is running.

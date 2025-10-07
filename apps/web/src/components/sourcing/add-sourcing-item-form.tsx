@@ -4,8 +4,6 @@ import React, { useState } from "react";
 import {
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
   Button,
   FormField,
   FormSelect,
@@ -18,7 +16,7 @@ import {
   ToastProvider,
   ToastViewport,
 } from "@netpost/ui";
-import { Plus, Save, X } from "lucide-react";
+import { Plus, Save } from "lucide-react";
 
 interface SourcingItem {
   id?: string;
@@ -131,7 +129,7 @@ export function AddSourcingItemForm({ onItemSaved, onDraftSaved }: AddSourcingIt
       });
       setErrors({});
       setIsOpen(false);
-    } catch (error) {
+    } catch (_error) {
       setToastMessage("Failed to save item");
       setToastType("error");
       setShowToast(true);
@@ -152,7 +150,7 @@ export function AddSourcingItemForm({ onItemSaved, onDraftSaved }: AddSourcingIt
       setToastType("success");
       setShowToast(true);
       setIsOpen(false);
-    } catch (error) {
+    } catch (_error) {
       setToastMessage("Failed to save draft");
       setToastType("error");
       setShowToast(true);

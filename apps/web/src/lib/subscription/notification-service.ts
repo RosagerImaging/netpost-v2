@@ -3,7 +3,7 @@
  * Handles email notifications for subscription events using EmailService and templates
  */
 
-import { emailService, EmailDeliveryResult } from '../services/email-service';
+import { emailService } from '../services/email-service';
 import {
   subscriptionEmailTemplates,
   SubscriptionEmailContext
@@ -363,7 +363,7 @@ export class NotificationService {
       userEmail: string;
       userName: string;
       type: 'welcome' | 'usage_warning' | 'payment_failed' | 'cancellation' | 'beta_feedback';
-      context: any;
+      context: Record<string, unknown>;
     }>
   ): Promise<NotificationResult[]> {
     try {

@@ -104,7 +104,7 @@ export function useCrossListingForm(initialData?: Partial<CrossListingFormData>)
       photo_urls: [],
       tags: [],
     },
-    marketplace_customizations: {} as any,
+    marketplace_customizations: {} as Record<MarketplaceType, Partial<CreateListingInput>>,
     pricing_strategy: 'fixed',
     auto_relist: false,
     ...initialData,
@@ -156,8 +156,8 @@ export function useCrossListingForm(initialData?: Partial<CrossListingFormData>)
       marketplaces: prev.marketplaces.filter(mp => mp !== marketplace),
       marketplace_customizations: Object.fromEntries(
         Object.entries(prev.marketplace_customizations).filter(([key]) => key !== marketplace)
-      ) as any,
-    } as any));
+      ) as Record<MarketplaceType, Partial<CreateListingInput>>,
+    }));
   };
 
   const resetForm = () => {
@@ -173,7 +173,7 @@ export function useCrossListingForm(initialData?: Partial<CrossListingFormData>)
         photo_urls: [],
         tags: [],
       },
-      marketplace_customizations: {} as any,
+      marketplace_customizations: {} as Record<MarketplaceType, Partial<CreateListingInput>>,
       pricing_strategy: 'fixed',
       auto_relist: false,
     });

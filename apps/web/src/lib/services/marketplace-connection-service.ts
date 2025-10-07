@@ -9,17 +9,13 @@ import {
   createMarketplaceAdapter,
   isMarketplaceSupported,
   type AuthFlow,
-  type MarketplaceApiError,
-  type AuthenticationError,
 } from '../marketplaces';
 import type { MarketplaceType } from '@netpost/shared-types';
 import type {
   MarketplaceConnectionRecord,
   MarketplaceConnectionSafe,
   CreateMarketplaceConnectionInput,
-  UpdateMarketplaceConnectionInput,
   MarketplaceCredentials,
-  OAuth1Credentials,
   OAuth2Credentials,
   ApiKeyCredentials,
   HealthCheckResult,
@@ -28,7 +24,7 @@ import type {
 } from '@netpost/shared-types';
 
 // Service response types
-export interface ConnectionServiceResponse<T = any> {
+export interface ConnectionServiceResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: string;
@@ -312,7 +308,7 @@ export class MarketplaceConnectionService {
         ? new Date(Date.now() + credentials.expires_in * 1000).toISOString()
         : null;
 
-      const { data: updatedConnection, error: updateError } = await supabase
+      const { error: updateError } = await supabase
         .from('marketplace_connections')
         .update({
           connection_status: 'active',
@@ -361,7 +357,7 @@ export class MarketplaceConnectionService {
   static async storeApiKeyCredentials(
     marketplace: MarketplaceType,
     credentials: ApiKeyCredentials,
-    metadata?: any
+    metadata?: Record<string, unknown>
   ): Promise<ConnectionServiceResponse<MarketplaceConnectionSafe>> {
     try {
       const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -470,7 +466,7 @@ export class MarketplaceConnectionService {
         ? 'expired'
         : 'error';
 
-      const updateData: any = {
+      const updateData: Record<string, unknown> = {
         connection_status: status,
         status_message: healthResult.error_message || undefined,
         last_connection_check: new Date().toISOString(),
@@ -682,7 +678,7 @@ export class MarketplaceConnectionService {
       if (error || !data) return null;
 
       // In production, this would decrypt the credentials
-      return JSON.parse(data.credentials_encrypted);
+      return JSON.parse(data.credentials_encrypted) as MarketplaceCredentials;
     } catch {
       return null;
     }

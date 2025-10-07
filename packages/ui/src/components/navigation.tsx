@@ -30,11 +30,20 @@ const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
               key={item.href}
               data-testid={item.testId}
               onClick={() => onItemClick?.(item)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  onItemClick?.(item);
+                }
+              }}
               className={cn(
                 "group text-secondary-text relative flex items-center rounded-md px-3 py-2.5 text-sm font-medium transition-all duration-200 ease-in-out hover:text-primary-500 w-full text-left",
                 isActive && "text-primary-500 bg-primary-500/10",
                 collapsed ? "justify-center" : ""
               )}
+              aria-current={isActive ? "page" : undefined}
+              aria-label={collapsed ? item.name : undefined}
+              role="link"
             >
               {/* Glow effect for active/hover states */}
               <span

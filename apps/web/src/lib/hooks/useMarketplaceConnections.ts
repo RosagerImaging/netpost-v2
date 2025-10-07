@@ -44,10 +44,14 @@ export function useMarketplaceConnections(
  * Hook to fetch a single marketplace connection
  */
 export function useMarketplaceConnection(connectionId: string | null) {
-  return useQuery({
+  type ErrorLike = { success: false; error: string };
+  type SuccessLike = import('../services/marketplace-connection-service').ConnectionServiceResponse<MarketplaceConnectionSafe>;
+  type Result = SuccessLike | ErrorLike;
+
+  return useQuery<Result, Error>({
     queryKey: marketplaceConnectionKeys.detail(connectionId || ''),
-    queryFn: () => {
-      if (!connectionId) return Promise.resolve({ success: false, error: 'No connection ID' });
+    queryFn: async () => {
+      if (!connectionId) return { success: false, error: 'No connection ID' } as ErrorLike;
       return MarketplaceConnectionService.getConnection(connectionId);
     },
     enabled: !!connectionId,
@@ -115,7 +119,7 @@ export function useStoreApiKeyCredentials() {
     }: {
       marketplace: MarketplaceType;
       credentials: ApiKeyCredentials;
-      metadata?: any;
+      metadata?: Record<string, unknown>;
     }) => MarketplaceConnectionService.storeApiKeyCredentials(marketplace, credentials, metadata),
     onSuccess: (data) => {
       if (data.success) {

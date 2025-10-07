@@ -11,14 +11,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { createClient } from '@/lib/supabase/server';
 import {
-  SaleEvent,
   ProcessSaleEventRequest,
   ProcessSaleEventResponse,
   EBayWebhookPayload,
   PoshmarkWebhookPayload,
   FacebookWebhookPayload,
   MarketplaceType,
-  DELISTING_ERROR_CODES,
 } from '@netpost/shared-types';
 
 // ============================================================================

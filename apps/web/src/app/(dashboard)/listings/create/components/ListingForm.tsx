@@ -25,9 +25,9 @@ interface ListingFormProps {
 
 export function ListingForm({
   formData,
-  selectedItem,
+  selectedItem: _selectedItem,
   onUpdateBaseListing,
-  onUpdateMarketplaceCustomization,
+  onUpdateMarketplaceCustomization: _onUpdateMarketplaceCustomization,
   onUpdateFormData,
   validation,
   onComplete,
@@ -99,7 +99,7 @@ export function ListingForm({
           {tabs.map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => setActiveTab(tab.id as 'basic' | 'pricing' | 'marketplace_specific')}
               className={`whitespace-nowrap border-b-2 py-2 px-1 text-sm font-medium ${
                 activeTab === tab.id
                   ? 'border-indigo-500 text-indigo-600'
@@ -233,7 +233,7 @@ export function ListingForm({
                     name="pricing_strategy"
                     value="fixed"
                     checked={formData.pricing_strategy === 'fixed'}
-                    onChange={(e) => onUpdateFormData({ pricing_strategy: e.target.value as any })}
+                    onChange={(e) => onUpdateFormData({ pricing_strategy: e.target.value as 'fixed' | 'percentage_markup' | 'marketplace_specific' })}
                     className="mt-1 h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
                   />
                   <div className="ml-3">
@@ -248,7 +248,7 @@ export function ListingForm({
                     name="pricing_strategy"
                     value="percentage_markup"
                     checked={formData.pricing_strategy === 'percentage_markup'}
-                    onChange={(e) => onUpdateFormData({ pricing_strategy: e.target.value as any })}
+                    onChange={(e) => onUpdateFormData({ pricing_strategy: e.target.value as 'fixed' | 'percentage_markup' | 'marketplace_specific' })}
                     className="mt-1 h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
                   />
                   <div className="ml-3">
@@ -263,7 +263,7 @@ export function ListingForm({
                     name="pricing_strategy"
                     value="marketplace_specific"
                     checked={formData.pricing_strategy === 'marketplace_specific'}
-                    onChange={(e) => onUpdateFormData({ pricing_strategy: e.target.value as any })}
+                    onChange={(e) => onUpdateFormData({ pricing_strategy: e.target.value as 'fixed' | 'percentage_markup' | 'marketplace_specific' })}
                     className="mt-1 h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
                   />
                   <div className="ml-3">

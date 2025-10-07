@@ -6,14 +6,14 @@
  */
 
 import { createClient } from '@supabase/supabase-js';
+import type { Database } from '@/lib/supabase/types';
 
 // Create a properly typed supabase admin client for the web app
-// Temporarily using any to bypass type resolution issues in monorepo
-const supabaseAdmin = createClient<any>(
+const supabaseAdmin = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
-import { StripeService, SubscriptionTier, SUBSCRIPTION_TIERS } from './stripe-service';
+import { SubscriptionTier, SUBSCRIPTION_TIERS } from './stripe-service';
 
 // Type definitions
 export interface UserSubscription {
@@ -103,6 +103,146 @@ export interface UsageCheckResult {
  * Subscription Service Class
  * Handles all subscription-related business logic
  */
+type SubscriptionRow = Database['public']['Tables']['user_subscriptions']['Row'] & {
+  subscription_tiers: Pick<
+    Database['public']['Tables']['subscription_tiers']['Row'],
+    | 'tier_name'
+    | 'display_name'
+    | 'max_inventory_items'
+    | 'max_marketplace_connections'
+    | 'max_api_calls_per_month'
+    | 'max_storage_mb'
+    | 'has_ai_assistant'
+    | 'has_advanced_analytics'
+    | 'has_priority_support'
+    | 'has_bulk_operations'
+    | 'has_custom_branding'
+  >;
+};
+
+function parseDate(value: string | null | undefined): Date | undefined {
+  if (!value) return undefined;
+  return new Date(value);
+}
+
+function parseMandatoryDate(value: string | null | undefined, field: string): Date {
+  if (!value) {
+    throw new Error(`Expected ${field} to be present on subscription record.`);
+  }
+  return new Date(value);
+}
+
+function resolveBillingCycle(value: string | null | undefined): UserSubscription['billingCycle'] {
+  return value === 'yearly' ? 'yearly' : 'monthly';
+}
+
+type UserSubscriptionsInsert = Database['public']['Tables']['user_subscriptions']['Insert'];
+type UserSubscriptionsUpdate = Database['public']['Tables']['user_subscriptions']['Update'];
+type SubscriptionLimitsInsert = Database['public']['Tables']['subscription_limits']['Insert'];
+type SubscriptionHistoryInsert = Database['public']['Tables']['subscription_history']['Insert'];
+type SubscriptionPaymentsInsert = Database['public']['Tables']['subscription_payments']['Insert'];
+
+type IncrementUsageArgs = Parameters<typeof supabaseAdmin.rpc<'increment_usage'>>[1];
+
+function buildSubscriptionInsert(
+  params: CreateSubscriptionParams,
+  tierId: number
+): UserSubscriptionsInsert {
+  return {
+    user_id: params.userId,
+    tier_id: tierId,
+    stripe_subscription_id: params.stripeSubscriptionId ?? null,
+    stripe_customer_id: params.stripeCustomerId ?? null,
+    status: params.status,
+    current_period_start: params.currentPeriodStart?.toISOString() ?? null,
+    current_period_end: params.currentPeriodEnd?.toISOString() ?? null,
+    trial_start: params.trialStart ? params.trialStart.toISOString() : null,
+    trial_end: params.trialEnd ? params.trialEnd.toISOString() : null,
+    is_beta_user: params.isBetaUser ?? false,
+    beta_invitation_code: params.betaInvitationCode ?? null,
+    billing_cycle: params.billingCycle ?? 'monthly',
+  } satisfies UserSubscriptionsInsert;
+}
+
+function buildSubscriptionUpdate(
+  updates: Partial<{
+    status: SubscriptionStatus;
+    currentPeriodStart: Date;
+    currentPeriodEnd: Date;
+    cancelAt: Date | null;
+    canceledAt: Date | null;
+    lastPaymentDate: Date;
+    tierId: number;
+  }>
+): UserSubscriptionsUpdate {
+  const payload: UserSubscriptionsUpdate = {};
+  if (updates.status) payload.status = updates.status;
+  if (updates.currentPeriodStart) payload.current_period_start = updates.currentPeriodStart.toISOString();
+  if (updates.currentPeriodEnd) payload.current_period_end = updates.currentPeriodEnd.toISOString();
+  if (updates.cancelAt !== undefined) payload.cancel_at = updates.cancelAt instanceof Date ? updates.cancelAt.toISOString() : null;
+  if (updates.canceledAt !== undefined) payload.canceled_at = updates.canceledAt instanceof Date ? updates.canceledAt.toISOString() : null;
+  if (updates.lastPaymentDate) payload.last_payment_date = updates.lastPaymentDate.toISOString();
+  if (updates.tierId !== undefined) payload.tier_id = updates.tierId;
+  return payload;
+}
+
+function buildSubscriptionLimitsInsert(subscriptionId: string): SubscriptionLimitsInsert {
+  return {
+    subscription_id: subscriptionId,
+    current_inventory_items: 0,
+    current_marketplace_connections: 0,
+    current_storage_mb: 0,
+    monthly_api_calls: 0,
+    monthly_listings_created: 0,
+  } satisfies SubscriptionLimitsInsert;
+}
+
+function buildSubscriptionHistoryInsert(params: {
+  userId: string;
+  subscriptionId: string;
+  eventType: SubscriptionHistoryInsert['event_type'];
+  fromTierId?: number;
+  toTierId?: number;
+  reason?: string;
+  triggeredBy: SubscriptionHistoryInsert['triggered_by'];
+  metadata?: Record<string, unknown>;
+}): SubscriptionHistoryInsert {
+  return {
+    user_id: params.userId,
+    subscription_id: params.subscriptionId,
+    event_type: params.eventType,
+    from_tier_id: params.fromTierId ?? null,
+    to_tier_id: params.toTierId ?? null,
+    reason: params.reason ?? null,
+    triggered_by: params.triggeredBy,
+    metadata: params.metadata ?? {},
+  } satisfies SubscriptionHistoryInsert;
+}
+
+function buildSubscriptionPaymentInsert(params: RecordPaymentParams): SubscriptionPaymentsInsert {
+  return {
+    stripe_subscription_id: params.stripeSubscriptionId,
+    stripe_invoice_id: params.stripeInvoiceId,
+    amount: params.amount,
+    currency: params.currency,
+    paid_at: params.paidAt.toISOString(),
+    success: params.success,
+    failure_reason: params.failureReason ?? null,
+  } satisfies SubscriptionPaymentsInsert;
+}
+
+function buildIncrementUsageArgs(
+  subscriptionId: string,
+  fieldName: string,
+  increment: number
+): IncrementUsageArgs {
+  return {
+    subscription_id: subscriptionId,
+    field_name: fieldName,
+    increment_value: increment,
+  } as IncrementUsageArgs;
+}
+
 export class SubscriptionService {
   /**
    * Create a new subscription
@@ -110,8 +250,8 @@ export class SubscriptionService {
   static async createSubscription(params: CreateSubscriptionParams): Promise<UserSubscription> {
     try {
       // Get tier ID
-      const { data: tierData, error: tierError } = await (supabaseAdmin
-        .from('subscription_tiers') as any)
+      const { data: tierData, error: tierError } = await supabaseAdmin
+        .from('subscription_tiers')
         .select('id')
         .eq('tier_name', params.tier)
         .single();
@@ -123,20 +263,7 @@ export class SubscriptionService {
       // Create subscription record
       const { data: subscriptionData, error: subscriptionError } = await supabaseAdmin
         .from('user_subscriptions')
-        .insert({
-          user_id: params.userId,
-          tier_id: (tierData as any).id,
-          stripe_subscription_id: params.stripeSubscriptionId,
-          stripe_customer_id: params.stripeCustomerId,
-          status: params.status,
-          current_period_start: params.currentPeriodStart?.toISOString(),
-          current_period_end: params.currentPeriodEnd?.toISOString(),
-          trial_start: params.trialStart?.toISOString(),
-          trial_end: params.trialEnd?.toISOString(),
-          is_beta_user: params.isBetaUser || false,
-          beta_invitation_code: params.betaInvitationCode,
-          billing_cycle: params.billingCycle || 'monthly',
-        } as any)
+        .insert(buildSubscriptionInsert(params, (tierData as { id: number }).id))
         .select(`
           *,
           subscription_tiers!inner(tier_name)
@@ -148,21 +275,21 @@ export class SubscriptionService {
       }
 
       // Create initial subscription limits
-      await this.initializeSubscriptionLimits((subscriptionData as any).id);
+      await this.initializeSubscriptionLimits((subscriptionData as SubscriptionRow).id);
 
       // Record subscription creation in history
       await this.recordSubscriptionHistory({
         userId: params.userId,
-        subscriptionId: (subscriptionData as any).id,
+        subscriptionId: (subscriptionData as SubscriptionRow).id,
         eventType: 'created',
-        toTierId: (tierData as any).id,
+        toTierId: (tierData as { id: number }).id,
         reason: `Subscription created with tier: ${params.tier}`,
         triggeredBy: 'system',
       });
 
       console.log(`✅ Created subscription for user ${params.userId} with tier ${params.tier}`);
 
-      return this.mapSubscriptionData(subscriptionData);
+      return this.mapSubscriptionData(subscriptionData as SubscriptionRow);
     } catch (error) {
       console.error('❌ Failed to create subscription:', error);
       throw error;
@@ -187,7 +314,7 @@ export class SubscriptionService {
         return null;
       }
 
-      return this.mapSubscriptionData(data);
+      return this.mapSubscriptionData(data as SubscriptionRow);
     } catch (error) {
       console.error('❌ Failed to get user subscription:', error);
       return null;
@@ -199,7 +326,7 @@ export class SubscriptionService {
    */
   static async updateSubscriptionFromStripe(params: UpdateSubscriptionFromStripeParams): Promise<void> {
     try {
-      const updateData: any = {};
+      const updateData: Record<string, unknown> = {};
 
       if (params.status) updateData.status = params.status;
       if (params.currentPeriodStart) updateData.current_period_start = params.currentPeriodStart.toISOString();
@@ -220,12 +347,12 @@ export class SubscriptionService {
           throw new Error(`Subscription tier not found: ${params.tier}`);
         }
 
-        updateData.tier_id = (tierData as any).id;
+        updateData.tier_id = (tierData as { id: number }).id;
       }
 
-      const { error } = await (supabaseAdmin
-        .from('user_subscriptions') as any)
-        .update(updateData as any)
+      const { error } = await supabaseAdmin
+        .from('user_subscriptions')
+        .update(updateData)
         .eq('stripe_subscription_id', params.stripeSubscriptionId);
 
       if (error) {
@@ -324,7 +451,7 @@ export class SubscriptionService {
         listings_created: 'monthly_listings_created',
       }[limitType];
 
-      const { error } = await (supabaseAdmin as any).rpc('increment_usage', {
+      const { error } = await supabaseAdmin.rpc('increment_usage', {
         subscription_id: subscription.id,
         field_name: updateField,
         increment_value: increment,
@@ -348,15 +475,7 @@ export class SubscriptionService {
     try {
       const { error } = await supabaseAdmin
         .from('subscription_payments')
-        .insert({
-          stripe_subscription_id: params.stripeSubscriptionId,
-          stripe_invoice_id: params.stripeInvoiceId,
-          amount: params.amount,
-          currency: params.currency,
-          paid_at: params.paidAt.toISOString(),
-          success: params.success,
-          failure_reason: params.failureReason,
-        } as any);
+        .insert(buildSubscriptionPaymentInsert(params));
 
       if (error) {
         throw new Error(`Failed to record payment: ${error.message}`);
@@ -423,14 +542,7 @@ export class SubscriptionService {
     try {
       const { error } = await supabaseAdmin
         .from('subscription_limits')
-        .insert({
-          subscription_id: subscriptionId,
-          current_inventory_items: 0,
-          current_marketplace_connections: 0,
-          current_storage_mb: 0,
-          monthly_api_calls: 0,
-          monthly_listings_created: 0,
-        });
+        .insert(buildSubscriptionLimitsInsert(subscriptionId));
 
       if (error) {
         throw new Error(`Failed to initialize subscription limits: ${error.message}`);
@@ -454,21 +566,12 @@ export class SubscriptionService {
     toTierId?: number;
     reason?: string;
     triggeredBy: 'user' | 'admin' | 'system' | 'stripe';
-    metadata?: Record<string, any>;
+    metadata?: Record<string, unknown>;
   }): Promise<void> {
     try {
       const { error } = await supabaseAdmin
         .from('subscription_history')
-        .insert({
-          user_id: params.userId,
-          subscription_id: params.subscriptionId,
-          event_type: params.eventType,
-          from_tier_id: params.fromTierId,
-          to_tier_id: params.toTierId,
-          reason: params.reason,
-          triggered_by: params.triggeredBy,
-          metadata: params.metadata || {},
-        });
+        .insert(buildSubscriptionHistoryInsert(params));
 
       if (error) {
         throw new Error(`Failed to record subscription history: ${error.message}`);
@@ -484,30 +587,30 @@ export class SubscriptionService {
   /**
    * Map database subscription data to TypeScript interface
    */
-  private static mapSubscriptionData(data: any): UserSubscription {
+  private static mapSubscriptionData(data: SubscriptionRow): UserSubscription {
     return {
       id: data.id,
       userId: data.user_id,
       tierId: data.tier_id,
       tier: data.subscription_tiers.tier_name as SubscriptionTier,
-      stripeSubscriptionId: data.stripe_subscription_id,
-      stripeCustomerId: data.stripe_customer_id,
+      stripeSubscriptionId: data.stripe_subscription_id ?? undefined,
+      stripeCustomerId: data.stripe_customer_id ?? undefined,
       status: data.status as SubscriptionStatus,
-      currentPeriodStart: data.current_period_start ? new Date(data.current_period_start) : undefined,
-      currentPeriodEnd: data.current_period_end ? new Date(data.current_period_end) : undefined,
-      trialStart: data.trial_start ? new Date(data.trial_start) : undefined,
-      trialEnd: data.trial_end ? new Date(data.trial_end) : undefined,
-      cancelAt: data.cancel_at ? new Date(data.cancel_at) : undefined,
-      canceledAt: data.canceled_at ? new Date(data.canceled_at) : undefined,
-      isBetaUser: data.is_beta_user,
-      betaInvitationCode: data.beta_invitation_code,
-      betaInvitedBy: data.beta_invited_by,
-      betaFeedbackSubmitted: data.beta_feedback_submitted,
-      billingCycle: data.billing_cycle,
-      lastPaymentDate: data.last_payment_date ? new Date(data.last_payment_date) : undefined,
-      nextBillingDate: data.next_billing_date ? new Date(data.next_billing_date) : undefined,
-      createdAt: new Date(data.created_at),
-      updatedAt: new Date(data.updated_at),
+      currentPeriodStart: parseDate(data.current_period_start),
+      currentPeriodEnd: parseDate(data.current_period_end),
+      trialStart: parseDate(data.trial_start),
+      trialEnd: parseDate(data.trial_end),
+      cancelAt: parseDate(data.cancel_at),
+      canceledAt: parseDate(data.canceled_at),
+      isBetaUser: Boolean(data.is_beta_user),
+      betaInvitationCode: data.beta_invitation_code ?? undefined,
+      betaInvitedBy: data.beta_invited_by ?? undefined,
+      betaFeedbackSubmitted: Boolean(data.beta_feedback_submitted),
+      billingCycle: resolveBillingCycle(data.billing_cycle),
+      lastPaymentDate: parseDate(data.last_payment_date),
+      nextBillingDate: parseDate(data.next_billing_date),
+      createdAt: parseMandatoryDate(data.created_at, 'created_at'),
+      updatedAt: parseMandatoryDate(data.updated_at, 'updated_at'),
     };
   }
 }

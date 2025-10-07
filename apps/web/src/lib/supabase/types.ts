@@ -7,7 +7,13 @@
 
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { createServerClient } from '@supabase/ssr';
+import type {
+  CookieMethodsServer,
+  CookieMethodsServerDeprecated,
+} from '@supabase/ssr';
 import type { Database } from '@netpost/shared-types';
+
+export type { Database } from '@netpost/shared-types';
 
 /**
  * Type for the properly typed Supabase client
@@ -33,11 +39,23 @@ export function createTypedSupabaseClient(
 /**
  * Create a typed Supabase server client for SSR usage
  */
+type ServerCookieStore = CookieMethodsServer | CookieMethodsServerDeprecated;
+
+function isModernCookieStore(store: ServerCookieStore): store is CookieMethodsServer {
+  return typeof (store as CookieMethodsServer).getAll === 'function';
+}
+
 export function createTypedSupabaseServerClient(
   supabaseUrl: string,
   supabaseKey: string,
-  cookieStore: any
+  cookieStore: ServerCookieStore
 ): TypedSupabaseServerClient {
+  if (isModernCookieStore(cookieStore)) {
+    return createServerClient<Database>(supabaseUrl, supabaseKey, {
+      cookies: cookieStore,
+    }) as TypedSupabaseServerClient;
+  }
+
   return createServerClient<Database>(supabaseUrl, supabaseKey, {
     cookies: cookieStore,
   }) as TypedSupabaseServerClient;

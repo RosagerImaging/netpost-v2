@@ -74,9 +74,8 @@ export async function POST(request: NextRequest) {
 /**
  * GET /api/delisting/process-job - Get pending jobs for processing
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
-    const supabase = await createClient();
 
     // This endpoint is for system/admin use to process pending jobs
     // In production, this would be called by a background job processor

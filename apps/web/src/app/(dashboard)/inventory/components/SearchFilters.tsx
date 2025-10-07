@@ -18,8 +18,8 @@ import {
 interface SearchFiltersProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
-  filters: Record<string, any>;
-  onFiltersChange: (filters: Record<string, any>) => void;
+  filters: Record<string, unknown>;
+  onFiltersChange: (filters: Record<string, unknown>) => void;
   sortBy: string;
   onSortByChange: (sortBy: string) => void;
   sortDirection: 'asc' | 'desc';
@@ -54,7 +54,7 @@ export function SearchFilters({
     ).length;
   }, [filters]);
 
-  const handleFilterChange = (key: string, value: any) => {
+  const handleFilterChange = (key: string, value: unknown) => {
     onFiltersChange({
       ...filters,
       [key]: value,

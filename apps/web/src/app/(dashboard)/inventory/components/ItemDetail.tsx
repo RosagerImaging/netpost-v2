@@ -14,7 +14,6 @@ import {
   CurrencyDollarIcon,
   MapPinIcon,
   ScaleIcon,
-  ArrowsRightLeftIcon,
   PhotoIcon,
   DocumentIcon,
   VideoCameraIcon,

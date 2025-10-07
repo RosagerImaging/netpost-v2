@@ -39,15 +39,14 @@ export default function CreateCrossListingPage() {
 
   const [currentStep, setCurrentStep] = useState<CrossListingStep>('item_selection');
   const [selectedItem, setSelectedItem] = useState<InventoryItemRecord | null>(null);
-  const [submissionResult, setSubmissionResult] = useState<any>(null);
+  const [submissionResult, setSubmissionResult] = useState<unknown>(null);
 
   const {
     formData,
     updateFormData,
     updateBaseListing,
     updateMarketplaceCustomization,
-    addMarketplace,
-    removeMarketplace,
+
     resetForm,
     validation,
     isValid,
@@ -106,7 +105,7 @@ export default function CreateCrossListingPage() {
     setCurrentStep('preview');
   };
 
-  const handleSubmit = async (submissionData: any) => {
+  const handleSubmit = async (submissionData: unknown) => {
     setSubmissionResult(submissionData);
     setCurrentStep('success');
   };
@@ -172,7 +171,7 @@ export default function CreateCrossListingPage() {
                 {steps.map((step, stepIdx) => {
                   const isCurrentStep = step.id === currentStep;
                   const isCompletedStep = getCurrentStepIndex() > stepIdx;
-                  const isUpcomingStep = getCurrentStepIndex() < stepIdx;
+                  // const isUpcomingStep = getCurrentStepIndex() < stepIdx;
 
                   return (
                     <li

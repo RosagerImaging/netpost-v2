@@ -436,7 +436,8 @@ export async function getQueueStats(): Promise<{
       .order('created_at', { ascending: true });
 
     // Group by hour
-    const activityByHour: Record<string, any> = {};
+    type HourActivity = { hour: string; events_processed: number; jobs_created: number; errors: number };
+    const activityByHour: Record<string, HourActivity> = {};
     recentActivity?.forEach(event => {
       const hour = new Date(event.created_at).toISOString().slice(0, 13) + ':00:00';
       if (!activityByHour[hour]) {

@@ -6,10 +6,11 @@
  */
 
 import { createClient } from '@supabase/supabase-js';
+import type { Database } from '@/lib/supabase/types';
 
 // Create a properly typed supabase admin client for the web app
 // Temporarily using any to bypass type resolution issues in monorepo
-const supabaseAdmin = createClient<any>(
+const supabaseAdmin = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
@@ -58,7 +59,7 @@ export interface TrackUsageParams {
   metricType: MetricType;
   value: number;
   timestamp?: Date;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**

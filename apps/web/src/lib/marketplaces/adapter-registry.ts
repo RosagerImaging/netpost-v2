@@ -57,7 +57,7 @@ export function isMarketplaceSupported(marketplace: MarketplaceType): boolean {
  * Get marketplace-specific configuration
  */
 export function getMarketplaceConfig(marketplace: MarketplaceType) {
-  const configs: Record<MarketplaceType, any> = {
+  const configs: Record<MarketplaceType, { name: string; required_fields?: string[]; optional_fields?: string[]; [key: string]: unknown }> = {
     ebay: {
       name: 'eBay',
       auth_method: 'oauth2',
@@ -292,7 +292,7 @@ function getMarketplaceFeatures(marketplace: MarketplaceType): string[] {
  */
 export function validateMarketplaceRequirements(
   marketplace: MarketplaceType,
-  listingData: any
+  listingData: Record<string, unknown>
 ): { valid: boolean; errors: string[] } {
   const config = getMarketplaceConfig(marketplace);
   const errors: string[] = [];

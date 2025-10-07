@@ -24,12 +24,12 @@ import type {
 } from '@netpost/shared-types';
 import type {
   OAuth2Credentials,
-  ApiKeyCredentials,
+
   HealthCheckResult,
 } from '@netpost/shared-types';
 
 // Poshmark specific types
-interface PoshmarkBrand {
+interface _PoshmarkBrand {
   id: string;
   name: string;
   verified: boolean;
@@ -43,7 +43,7 @@ interface PoshmarkCategory {
   subcategories?: PoshmarkCategory[];
 }
 
-interface PoshmarkSize {
+interface _PoshmarkSize {
   id: string;
   name: string;
   category_id: string;
@@ -59,10 +59,10 @@ interface PoshmarkListingResponse {
   commission_rate?: number;
 }
 
-interface PoshmarkError {
+interface _PoshmarkError {
   error_code: string;
   error_message: string;
-  details?: Record<string, any>;
+  details?: Record<string, unknown>;
 }
 
 /**
@@ -126,7 +126,7 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
   /**
    * Complete OAuth flow
    */
-  async completeOAuthFlow(code: string, state: string): Promise<OAuth2Credentials> {
+  async completeOAuthFlow(code: string, _state: string): Promise<OAuth2Credentials> {
     const clientId = this.getClientId();
     const clientSecret = this.getClientSecret();
 
@@ -579,7 +579,7 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
         );
       }
 
-      return response.data.listings?.map((item: any) =>
+      return response.data.listings?.map((item: Record<string, unknown>) =>
         this.mapPoshmarkDataToListingRecord(item)
       ) || [];
     } catch (error) {
@@ -766,7 +766,7 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
     return category ? sizeRequiredCategories.some(cat => category.includes(cat)) : false;
   }
 
-  private async buildPoshmarkListingData(listing: CreateListingInput): Promise<any> {
+  private async buildPoshmarkListingData(listing: CreateListingInput): Promise<Record<string, unknown>> {
     return {
       title: listing.title,
       description: listing.description,
@@ -783,8 +783,8 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
     };
   }
 
-  private buildPoshmarkUpdateData(updates: UpdateListingInput): any {
-    const updateData: any = {};
+  private buildPoshmarkUpdateData(updates: UpdateListingInput): Record<string, unknown> {
+    const updateData: Record<string, unknown> = {};
 
     if (updates.title) updateData.title = updates.title;
     if (updates.description) updateData.description = updates.description;
@@ -841,7 +841,7 @@ export class PoshmarkAdapter extends BaseMarketplaceAdapter {
     return statusMap[poshmarkStatus] || 'active';
   }
 
-  private mapPoshmarkDataToListingRecord(poshmarkData: any): ListingRecord {
+  private mapPoshmarkDataToListingRecord(poshmarkData: { id?: string; listing_id?: string; url?: string; listing_url?: string; title?: string; description?: string; price?: string | number; status?: string; photos?: string[]; tags?: string[]; category?: string; brand?: string; size?: string; color?: string }): ListingRecord {
     return {
       id: '', // Internal ID
       user_id: this.connection.user_id,
