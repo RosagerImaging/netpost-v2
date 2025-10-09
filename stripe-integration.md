@@ -4,11 +4,8 @@ Create and manage subscriptions to accept recurring payments.
 
 # Stripe-hosted page
 
-> This is a Stripe-hosted page for when platform is web and ui is stripe-hosted. View the full page at https://docs.stripe.com/billing/subscriptions/build-subscriptions?platform=web&ui=stripe-hosted.
+> This is a Stripe-hosted page for when platform is web and ui is stripe-hosted. View the full page at <https://docs.stripe.com/billing/subscriptions/build-subscriptions?platform=web&ui=stripe-hosted>.
 
-# Stripe-hosted page
-
-> This is a Stripe-hosted page for when platform is web and ui is stripe-hosted. View the full page at https://docs.stripe.com/billing/subscriptions/build-subscriptions?platform=web&ui=stripe-hosted.
 Complexity: 2/5
 Customize logo, images, and colors.
 

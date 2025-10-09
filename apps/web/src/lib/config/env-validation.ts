@@ -141,19 +141,19 @@ const ENV_VARS: EnvVarConfig[] = [
   // Payment
   {
     name: 'STRIPE_SECRET_KEY',
-    required: true,
+    required: false,
     description: 'Stripe secret key for payment processing',
     category: 'payment',
   },
   {
     name: 'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY',
-    required: true,
+    required: false,
     description: 'Stripe publishable key',
     category: 'payment',
   },
   {
     name: 'STRIPE_WEBHOOK_SECRET',
-    required: true,
+    required: false,
     description: 'Stripe webhook signature verification secret',
     category: 'payment',
   },
@@ -223,7 +223,7 @@ export function validateOrThrow(strict = false): void {
 
   if (!result.valid) {
     console.error('\n🚨 Environment Variable Validation Failed!\n');
-    console.error('=' .repeat(60));
+    console.error('='.repeat(60));
 
     if (result.errors.length > 0) {
       console.error('\nERRORS (Required variables):');

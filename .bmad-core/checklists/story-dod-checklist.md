@@ -70,7 +70,7 @@ The goal is quality delivery, not just checking boxes.]]
    - [ ] Any new dependencies added were either pre-approved in the story requirements OR explicitly approved by the user during development (approval documented in story file).
    - [ ] If new dependencies were added, they are recorded in the appropriate project files (e.g., `package.json`, `requirements.txt`) with justification.
    - [ ] No known security vulnerabilities introduced by newly added and approved dependencies.
-   - [ ] If new environment variables or configurations were introduced by the story, they are documented and handled securely.
+   - [ ] If new environment variables or configurations were introduced by the story, they ...................................................................................................................................................................................,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,are documented and handled securely.
 
 7. **Documentation (If Applicable):**
 
